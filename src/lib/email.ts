@@ -12,7 +12,7 @@ function getFrom(): string {
   return (
     process.env.RESEND_FROM_EMAIL ||
     process.env.RESEND_FROM ||
-    "Electreia <noreply@electreia.co.uk>"
+    "Nivro <noreply@nivro.co.uk>"
   );
 }
 
@@ -21,7 +21,7 @@ function getReplyTo(): string | undefined {
 }
 
 function getSiteUrl(): string {
-  const raw = process.env.NEXT_PUBLIC_SITE_URL || "https://electreia.co.uk";
+  const raw = process.env.NEXT_PUBLIC_SITE_URL || "https://nivro.co.uk";
   return raw.replace(/\/+$/, "");
 }
 
@@ -73,22 +73,22 @@ function emailWrapper(content: string, options: { preheader?: string } = {}): st
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Electreia</title>
+  <title>Nivro</title>
 </head>
 <body style="margin:0;padding:0;background:${BG_COLOR};font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:${TEXT_COLOR};">
   ${preheader}
   <div style="max-width:600px;margin:0 auto;padding:32px 16px;">
     <div style="text-align:center;margin-bottom:24px;">
       <a href="${getSiteUrl()}" style="text-decoration:none;">
-        <span style="font-size:24px;font-weight:900;color:${BRAND_COLOR};letter-spacing:-0.03em;">Electreia</span>
+        <span style="font-size:24px;font-weight:900;color:${BRAND_COLOR};letter-spacing:-0.03em;">Nivro</span>
       </a>
     </div>
     <div style="background:#fff;border-radius:12px;padding:32px;border:1px solid #e5e5e5;">
       ${content}
     </div>
     <div style="text-align:center;margin-top:24px;font-size:12px;color:#999;line-height:1.6;">
-      <p style="margin:0 0 4px;">&copy; ${new Date().getFullYear()} Electreia. All rights reserved.</p>
-      <p style="margin:0;">LORDCARE LIMITED &middot; Bridgend, Mid Glamorgan, Academy House, 11 Dunraven Place &middot; Reg. 16020956 &middot; <a href="${getSiteUrl()}" style="color:${BRAND_COLOR};text-decoration:none;">electreia.co.uk</a></p>
+      <p style="margin:0 0 4px;">&copy; ${new Date().getFullYear()} Nivro. All rights reserved.</p>
+      <p style="margin:0;">EDGEBRAY LIMITED &middot; Bridgend, Mid Glamorgan, Academy House, 11 Dunraven Place &middot; Reg. 16020956 &middot; <a href="${getSiteUrl()}" style="color:${BRAND_COLOR};text-decoration:none;">nivro.co.uk</a></p>
       <p style="margin:8px 0 0;">
         <a href="${getSiteUrl()}/en/policies/privacy" style="color:#999;text-decoration:underline;margin:0 6px;">Privacy</a>
         <a href="${getSiteUrl()}/en/policies/terms" style="color:#999;text-decoration:underline;margin:0 6px;">Terms</a>
@@ -128,10 +128,10 @@ export async function sendWelcomeEmail(email: string, name?: string | null): Pro
 
   return send({
     to: email,
-    subject: "Welcome to Electreia!",
+    subject: "Welcome to Nivro!",
     html: emailWrapper(
       `
-      <h1 style="margin:0 0 16px;font-size:22px;font-weight:800;color:${TEXT_COLOR};">${greeting}, welcome to Electreia!</h1>
+      <h1 style="margin:0 0 16px;font-size:22px;font-weight:800;color:${TEXT_COLOR};">${greeting}, welcome to Nivro!</h1>
       <p style="color:${MUTED_COLOR};line-height:1.6;margin:0 0 16px;">
         Your account has been created successfully. You now have access to thousands of electrical materials and supplies at competitive prices.
       </p>
@@ -153,7 +153,7 @@ export async function sendWelcomeEmail(email: string, name?: string | null): Pro
         Standard 2-year EU warranty on all products
       </p>
     `,
-      { preheader: `${greeting}! Your Electreia account is ready.` },
+      { preheader: `${greeting}! Your Nivro account is ready.` },
     ),
   });
 }
@@ -385,7 +385,7 @@ export async function sendOrderInvoiceEmail(data: OrderEmailData): Promise<boole
           <td style="width:50%;vertical-align:top;padding-right:12px;">
             <p style="margin:0 0 4px;font-size:11px;color:#999;text-transform:uppercase;letter-spacing:0.06em;font-weight:700;">From</p>
             <p style="margin:0;font-size:13px;color:${TEXT_COLOR};line-height:1.55;">
-              <strong>LORDCARE LIMITED</strong><br />
+              <strong>EDGEBRAY LIMITED</strong><br />
               Registration number: 16020956<br />
               Academy House, 11 Dunraven Place<br />
               Bridgend, Mid Glamorgan<br />
@@ -406,7 +406,7 @@ export async function sendOrderInvoiceEmail(data: OrderEmailData): Promise<boole
 
       <p style="color:#999;font-size:12px;margin:24px 0 0;line-height:1.6;text-align:center;">
         VAT is included in the prices shown where applicable. This invoice serves as proof of purchase.<br />
-        For any questions, reply to this email or contact <a href="mailto:info@electreia.co.uk" style="color:${BRAND_COLOR};">info@electreia.co.uk</a>.
+        For any questions, reply to this email or contact <a href="mailto:info@nivro.co.uk" style="color:${BRAND_COLOR};">info@nivro.co.uk</a>.
       </p>
     `,
       { preheader: `Invoice for order #${id} — ${formatEur(toNum(data.total))}` },
@@ -536,12 +536,12 @@ export async function sendPasswordResetEmail(email: string, resetUrl: string, na
   const greeting = name ? `Hi ${escape(name)}` : "Hi there";
   return send({
     to: email,
-    subject: "Reset your Electreia password",
+    subject: "Reset your Nivro password",
     html: emailWrapper(
       `
       <h1 style="margin:0 0 16px;font-size:22px;font-weight:800;color:${TEXT_COLOR};">Reset your password</h1>
       <p style="color:${MUTED_COLOR};line-height:1.6;margin:0 0 16px;">
-        ${greeting}, we received a request to reset the password on your Electreia account.
+        ${greeting}, we received a request to reset the password on your Nivro account.
         Click the button below to choose a new password. This link expires in <strong>1 hour</strong>.
       </p>
       ${button(resetUrl, "Reset Password")}
@@ -554,7 +554,7 @@ export async function sendPasswordResetEmail(email: string, resetUrl: string, na
         If you didn&rsquo;t request this, you can safely ignore this email — your password won&rsquo;t change.
       </p>
     `,
-      { preheader: "Reset your Electreia password — link expires in 1 hour." },
+      { preheader: "Reset your Nivro password — link expires in 1 hour." },
     ),
   });
 }
@@ -606,7 +606,7 @@ export async function sendContactFormEmail(submission: ContactSubmission): Promi
 export async function sendContactAutoReplyEmail(submission: ContactSubmission): Promise<boolean> {
   return send({
     to: submission.email,
-    subject: "We received your message — Electreia",
+    subject: "We received your message — Nivro",
     html: emailWrapper(
       `
       <h1 style="margin:0 0 16px;font-size:22px;font-weight:800;color:${TEXT_COLOR};">Thanks for reaching out!</h1>

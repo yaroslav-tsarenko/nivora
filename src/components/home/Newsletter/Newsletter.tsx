@@ -61,7 +61,7 @@ export function Newsletter() {
       <div className="relative mx-auto flex max-w-3xl flex-col items-center gap-6 text-center">
         <span className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-white/70">
           <span className="h-px w-6 bg-white/40" />
-          Electreia dispatch
+          Nivro dispatch
         </span>
         <div className="flex flex-col gap-2">
           <h2 className="font-serif text-3xl font-medium tracking-tight sm:text-[40px]">

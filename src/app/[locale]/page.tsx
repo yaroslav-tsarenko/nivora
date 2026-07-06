@@ -390,13 +390,13 @@ export default async function HomePage() {
         data={{
           "@context": "https://schema.org",
           "@type": "Organization",
-          name: "Nivora",
-          legalName: "NIVORA RETAIL LIMITED",
-          alternateName: ["nivora.co.uk"],
-          url: "https://nivora.co.uk",
-          sameAs: ["https://nivora.co.uk"],
+          name: "Nivro",
+          legalName: "EDGEBRAY LIMITED",
+          alternateName: ["nivro.co.uk"],
+          url: "https://nivro.co.uk",
+          sameAs: ["https://nivro.co.uk"],
           description:
-            "Nivora — bright, honest electronics retail. Audio, laptops, smartphones, TV & video, cameras, smart home, gaming, wearables and accessories. Shipped from the United Kingdom.",
+            "Nivro — bright, honest electronics retail. Audio, laptops, smartphones, TV & video, cameras, smart home, gaming, wearables and accessories. Shipped from the United Kingdom.",
         }}
       />
       {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}

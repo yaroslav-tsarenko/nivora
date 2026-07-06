@@ -17,9 +17,9 @@ async function main() {
     update: {},
     create: {
       id: "default",
-      name: "Ravora",
+      name: "Nivro",
       description: "Refined athletic apparel for men, women and kids. Shipped from the United Kingdom.",
-      email: "info@ravora.co.uk",
+      email: "info@nivro.co.uk",
       currency: "GBP",
       taxRate: 20,
       freeShippingMin: 100,
@@ -67,7 +67,7 @@ async function main() {
       title: "About Us",
       slug: "about-us",
       content:
-        "<p>Welcome to Ravora — a curated apparel edit for men, women and kids.</p><p>We design and source athletic and everyday apparel with sustainable materials — organic cottons, recycled polyesters, and honest fits. Shipped from the United Kingdom with free delivery over £100.</p>",
+        "<p>Welcome to Nivro — a curated apparel edit for men, women and kids.</p><p>We design and source athletic and everyday apparel with sustainable materials — organic cottons, recycled polyesters, and honest fits. Shipped from the United Kingdom with free delivery over £100.</p>",
       isActive: true,
     },
   });

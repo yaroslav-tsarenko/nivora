@@ -17,7 +17,7 @@ interface ChipProps extends React.HTMLAttributes<HTMLSpanElement> {
 }
 
 /**
- * Electreia Chip — replaces HeroUI's Chip.
+ * Nivro Chip — replaces HeroUI's Chip.
  * Editorial pill: soft warm-toned surfaces, hairline borders.
  */
 export function Chip({

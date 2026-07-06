@@ -29,13 +29,13 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
     title: category.name,
     description:
       category.description ||
-      `Shop ${category.name} products at Electreia. Browse electronics, accessories, electrical materials and installation supplies.`,
+      `Shop ${category.name} products at Nivro. Browse electronics, accessories, electrical materials and installation supplies.`,
     alternates: { canonical: `/${locale}/catalog/${category.slug}` },
     openGraph: {
-      title: `${category.name} | Electreia`,
+      title: `${category.name} | Nivro`,
       description:
         category.description ||
-        `Shop ${category.name} products at Electreia.`,
+        `Shop ${category.name} products at Nivro.`,
       url: `/${locale}/catalog/${category.slug}`,
     },
   };

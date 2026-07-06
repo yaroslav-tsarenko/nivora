@@ -10,25 +10,26 @@ import { Breadcrumbs } from "@/components/layout/Breadcrumbs/Breadcrumbs";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Mail, MapPin, Clock, Send,
+  Mail, MapPin, Clock, Send, Phone,
   CheckCircle, MessageSquare, HelpCircle, ShieldCheck,
 } from "lucide-react";
+import { brand, brandAddressLine } from "@/lib/brand";
 
 const INPUT_CLASS =
   "w-full rounded-lg border border-[color:var(--color-line)] bg-[color:var(--color-bg-elevated)] px-4 py-2.5 text-sm text-[color:var(--color-text)] placeholder:text-[color:var(--color-text-tertiary)] focus:border-[color:var(--color-primary)] focus:outline-none focus:ring-2 focus:ring-[color:var(--color-primary)]/20 transition-colors";
 
 const CONTACT_INFO = [
-  { icon: Mail, title: "Email Us", detail: "info@electreia.co.uk", sub: "General inquiries — reply within 24h" },
-  { icon: Mail, title: "Wholesale (B2B)", detail: "b2b@electreia.co.uk", sub: "Bulk and trade orders" },
-  { icon: MapPin, title: "Our Office", detail: "Bridgend, Mid Glamorgan", sub: "LORDCARE LIMITED", tooltip: "Academy House, 11 Dunraven Place, Bridgend, Mid Glamorgan, CF31 1JF, United Kingdom\nCompany No. 16020956" },
-  { icon: Clock, title: "Working Hours", detail: "Mon-Fri 9:00-18:00", sub: "Sat 10:00-14:00" },
+  { icon: Mail, title: "Email us", detail: brand.contact.email, sub: "General enquiries — reply within 24h" },
+  { icon: Phone, title: "Call our team", detail: brand.contact.phone, sub: "Sales, order help & product advice" },
+  { icon: MapPin, title: "Registered office", detail: `${brand.company.address.city}, ${brand.company.address.country}`, sub: `${brand.company.legalName} · Co. No. ${brand.company.number}`, tooltip: `${brandAddressLine}\nCompany No. ${brand.company.number}` },
+  { icon: Clock, title: "Support hours", detail: "Mon–Fri 9:00–18:00", sub: "Sat 10:00–14:00 (GMT)" },
 ];
 
 const TOPICS = [
-  { icon: MessageSquare, label: "General Inquiry", value: "general" },
-  { icon: HelpCircle, label: "Order & Sizing", value: "support" },
-  { icon: ShieldCheck, label: "Returns & Exchanges", value: "returns" },
-  { icon: Send, label: "Business / Wholesale", value: "business" },
+  { icon: MessageSquare, label: "General enquiry", value: "general" },
+  { icon: HelpCircle, label: "Order & delivery", value: "support" },
+  { icon: ShieldCheck, label: "Returns & warranty", value: "returns" },
+  { icon: Send, label: "Business / B2B", value: "business" },
 ];
 
 export default function ContactPage() {

@@ -68,7 +68,7 @@ export function NewsletterBanner() {
           <span className="mt-1 text-[10px] font-semibold uppercase tracking-[0.2em]">Off</span>
         </motion.div>
         <div className="flex flex-col gap-1">
-          <span className="eyebrow">Electreia dispatch</span>
+          <span className="eyebrow">Nivro dispatch</span>
           <h2 className="font-serif text-2xl font-medium tracking-tight text-[color:var(--color-text)] sm:text-3xl">
             Subscribe &amp; save 10%
           </h2>

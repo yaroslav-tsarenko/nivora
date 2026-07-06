@@ -37,12 +37,13 @@ import {
   Trash2,
   Star,
   Percent,
+  Repeat,
 } from "lucide-react";
 import { useCart } from "@/providers/CartProvider";
 import { useAuth } from "@/providers/AuthProvider";
 import { ThemeToggle } from "./ThemeToggle";
 import { AnimatePresence, motion } from "framer-motion";
-import { NivoraLogo } from "../NivoraLogo";
+import { NivroLogo } from "../NivroLogo";
 import { CurrencySwitcher } from "./CurrencySwitcher";
 
 interface Category {
@@ -53,10 +54,6 @@ interface Category {
   children?: Category[];
 }
 
-/**
- * Nivora — coherent electronics taxonomy. 9 departments powering the
- * mega-menu, category rail, footer and quick-search scope.
- */
 const DEPARTMENTS: Array<{
   slug: string;
   name: string;
@@ -82,7 +79,7 @@ const DEPARTMENTS: Array<{
     ],
     promo: {
       title: "Sony · Bose · Sonos",
-      subtitle: "Up to £120 off on flagship audio",
+      subtitle: "Up to £120 off flagship audio",
       href: "/catalog/audio-headphones",
       badge: "Save £120",
     },
@@ -124,7 +121,7 @@ const DEPARTMENTS: Array<{
     ],
     promo: {
       title: "Trade in your phone",
-      subtitle: "Instant online valuation · up to £700",
+      subtitle: "Instant valuation · up to £700",
       href: "/catalog/smartphones",
       badge: "Trade-in",
     },
@@ -145,7 +142,7 @@ const DEPARTMENTS: Array<{
     ],
     promo: {
       title: "Free 5-year TV warranty",
-      subtitle: "On selected LG, Sony & Samsung sets",
+      subtitle: "On selected LG, Sony & Samsung",
       href: "/catalog/tv-video",
       badge: "5-yr warranty",
     },
@@ -267,7 +264,7 @@ const ROTATING_PROMOS = [
   { icon: Package, text: "Order by 8pm for next-day delivery" },
   { icon: Zap, text: "0% interest-free finance available at checkout" },
   { icon: Sparkles, text: "Trade in your old device — up to £700 credit" },
-  { icon: Star, text: "Rated 4.9 / 5 on Trustpilot · 12,400 reviews" },
+  { icon: Star, text: "Rated 4.9 / 5 on Trustpilot" },
 ];
 
 function useDropdownDismiss(onClose: () => void) {
@@ -299,7 +296,7 @@ export function Header() {
 
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [megaOpen, setMegaOpen] = useState(false);
+  const [deptOpen, setDeptOpen] = useState(false);
   const [activeDept, setActiveDept] = useState<string>(DEPARTMENTS[0].slug);
   const [accountOpen, setAccountOpen] = useState(false);
   const [miniCartOpen, setMiniCartOpen] = useState(false);
@@ -312,9 +309,6 @@ export function Header() {
   const [searchFocus, setSearchFocus] = useState(false);
   const [mobileAcc, setMobileAcc] = useState<string | null>(null);
 
-  const hoverTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  // — Scroll condensing
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -322,15 +316,13 @@ export function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // — Mobile drawer lock
   useEffect(() => {
-    document.body.style.overflow = mobileOpen ? "hidden" : "";
+    document.body.style.overflow = mobileOpen || deptOpen ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
-  }, [mobileOpen]);
+  }, [mobileOpen, deptOpen]);
 
-  // — Rotating promo
   useEffect(() => {
     const t = setInterval(
       () => setPromoIdx((p) => (p + 1) % ROTATING_PROMOS.length),
@@ -339,7 +331,6 @@ export function Header() {
     return () => clearInterval(t);
   }, []);
 
-  // — Live categories
   useEffect(() => {
     fetch("/api/categories")
       .then((r) => r.json())
@@ -349,10 +340,9 @@ export function Header() {
       .catch(() => {});
   }, []);
 
-  // — Recent searches
   useEffect(() => {
     try {
-      const raw = localStorage.getItem("nivora-recent-search");
+      const raw = localStorage.getItem("nivro-recent-search");
       if (raw) setRecentSearches(JSON.parse(raw));
     } catch {
       /* noop */
@@ -363,7 +353,7 @@ export function Header() {
     setRecentSearches((prev) => {
       const next = [q, ...prev.filter((v) => v !== q)].slice(0, 6);
       try {
-        localStorage.setItem("nivora-recent-search", JSON.stringify(next));
+        localStorage.setItem("nivro-recent-search", JSON.stringify(next));
       } catch {
         /* noop */
       }
@@ -388,16 +378,6 @@ export function Header() {
   const activeDeptData = DEPARTMENTS.find((d) => d.slug === activeDept)!;
   const activeDeptLive = findLiveDept(activeDept);
 
-  const openMega = () => {
-    if (hoverTimer.current) clearTimeout(hoverTimer.current);
-    setMegaOpen(true);
-  };
-  const closeMegaSoon = () => {
-    if (hoverTimer.current) clearTimeout(hoverTimer.current);
-    hoverTimer.current = setTimeout(() => setMegaOpen(false), 120);
-  };
-
-  const megaDismissRef = useDropdownDismiss(() => setMegaOpen(false));
   const accountDismissRef = useDropdownDismiss(() => setAccountOpen(false));
   const cartDismissRef = useDropdownDismiss(() => setMiniCartOpen(false));
   const searchDismissRef = useDropdownDismiss(() => {
@@ -409,7 +389,7 @@ export function Header() {
     <>
       <header
         className={[
-          "sticky top-0 z-40 w-full transition-shadow duration-300",
+          "sticky top-0 z-40 w-full transition-all duration-300",
           "bg-white dark:bg-[color:var(--color-bg)]",
           scrolled
             ? "shadow-[0_1px_0_0_rgba(17,24,38,0.06),0_10px_30px_-20px_rgba(17,24,38,0.15)]"
@@ -417,7 +397,7 @@ export function Header() {
         ].join(" ")}
         role="banner"
       >
-        {/* ── Tier 1 · Utility strip (deep navy — collapses on scroll) ─── */}
+        {/* ── Utility strip — deep navy ─────────────────────────────── */}
         <div
           className={[
             "overflow-hidden bg-[#111826] text-white/85 transition-[max-height,opacity] duration-300",
@@ -427,30 +407,24 @@ export function Header() {
         >
           <div className="relative mx-auto flex h-10 max-w-[1280px] items-center justify-between px-4 sm:px-6 lg:px-8">
             <div className="flex items-center gap-4">
-              <Link
-                href="/contact"
-                className="inline-flex items-center gap-1.5 text-[11px] font-medium tracking-wide transition-colors hover:text-white"
-              >
+              <Link href="/contact" className="inline-flex items-center gap-1.5 text-[11px] font-medium tracking-wide transition-colors hover:text-white">
                 <HelpCircle size={12} /> Help centre
               </Link>
               <span className="h-3 w-px bg-white/15" />
-              <Link
-                href="/account/orders"
-                className="inline-flex items-center gap-1.5 text-[11px] font-medium tracking-wide transition-colors hover:text-white"
-              >
+              <Link href="/account/orders" className="inline-flex items-center gap-1.5 text-[11px] font-medium tracking-wide transition-colors hover:text-white">
                 <Package size={12} /> Track my order
               </Link>
               <span className="hidden h-3 w-px bg-white/15 sm:inline-block" />
-              <Link
-                href="/contact"
-                className="hidden items-center gap-1.5 text-[11px] font-medium tracking-wide transition-colors hover:text-white sm:inline-flex"
-              >
-                <MapPin size={12} /> Store & stock finder
+              <Link href="/contact" className="hidden items-center gap-1.5 text-[11px] font-medium tracking-wide transition-colors hover:text-white sm:inline-flex">
+                <MapPin size={12} /> Store finder
+              </Link>
+              <span className="hidden h-3 w-px bg-white/15 md:inline-block" />
+              <Link href="/contact" className="hidden items-center gap-1.5 text-[11px] font-medium tracking-wide transition-colors hover:text-white md:inline-flex">
+                <Repeat size={12} className="text-[#5EE0D1]" /> Trade in — up to £700
               </Link>
             </div>
 
-            {/* Center — rotating shipping / promo message */}
-            <div className="pointer-events-none absolute left-1/2 hidden -translate-x-1/2 items-center gap-2 text-[11px] font-medium tracking-wide text-white/90 md:inline-flex">
+            <div className="pointer-events-none absolute left-1/2 hidden -translate-x-1/2 items-center gap-2 text-[11px] font-medium tracking-wide text-white/90 lg:inline-flex">
               <AnimatePresence mode="wait">
                 <motion.span
                   key={promoIdx}
@@ -485,28 +459,60 @@ export function Header() {
           </div>
         </div>
 
-        {/* ── Tier 2 · Main bar (logo · big search · account/wishlist/cart) ── */}
+        {/* ── MAIN ROW — one row only ────────────────────────────────
+             Layout: [Shop by dept trigger] · [logo] · [search] · [right cluster]
+        */}
         <div className="border-b border-[color:var(--color-line)] bg-white dark:bg-[color:var(--color-bg)]">
-          <div className="mx-auto flex max-w-[1280px] items-center gap-4 px-4 py-3.5 sm:px-6 lg:gap-6 lg:px-8">
-            {/* Logo */}
-            <Link
-              href="/"
-              className="shrink-0"
-              aria-label="Nivora"
-            >
-              <NivoraLogo size={scrolled ? 22 : 26} />
-            </Link>
-
+          <div className={[
+            "mx-auto flex max-w-[1280px] items-center gap-3 px-4 sm:px-6 lg:gap-4 lg:px-8",
+            scrolled ? "py-2.5" : "py-3.5",
+          ].join(" ")}>
             {/* Mobile menu trigger */}
             <button
               onClick={() => setMobileOpen(true)}
               aria-label="Open menu"
-              className="ml-auto inline-flex h-10 w-10 items-center justify-center rounded-lg text-[color:var(--color-text)] hover:bg-[color:var(--color-bg-secondary)] lg:hidden"
+              className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-[color:var(--color-text)] hover:bg-[color:var(--color-bg-secondary)] lg:hidden"
             >
-              <Menu size={20} />
+              <Menu size={22} />
             </button>
 
-            {/* High-intent search with scope dropdown */}
+            {/* LEFT ANCHOR — Shop by department flyout trigger (persistent, vertical anchor) */}
+            <button
+              type="button"
+              onClick={() => setDeptOpen(true)}
+              aria-expanded={deptOpen}
+              aria-haspopup="dialog"
+              className={[
+                "hidden lg:inline-flex h-11 shrink-0 items-center gap-2.5 rounded-full pl-3 pr-4 text-[13.5px] font-bold transition-all",
+                deptOpen
+                  ? "bg-[#1E6BE6] text-white shadow-[0_6px_20px_rgba(30,107,230,0.35)]"
+                  : "bg-[#111826] text-white hover:bg-[#1E6BE6]",
+              ].join(" ")}
+            >
+              <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/10">
+                <LayoutGrid size={15} />
+              </span>
+              <span className="flex flex-col items-start leading-tight">
+                <span className="text-[9.5px] font-semibold uppercase tracking-[0.14em] text-white/70">
+                  Browse
+                </span>
+                <span>Shop by department</span>
+              </span>
+            </button>
+
+            {/* Logo */}
+            <Link
+              href="/"
+              className={[
+                "shrink-0 transition-opacity",
+                scrolled ? "opacity-95" : "opacity-100",
+              ].join(" ")}
+              aria-label="Nivro"
+            >
+              <NivroLogo size={scrolled ? 20 : 24} />
+            </Link>
+
+            {/* Central search */}
             <div
               ref={searchDismissRef}
               className="relative hidden min-w-0 flex-1 lg:block"
@@ -514,23 +520,21 @@ export function Header() {
               <form
                 onSubmit={handleSearch}
                 className={[
-                  "relative flex h-12 min-w-0 items-stretch overflow-hidden rounded-full border-2 bg-white transition-all dark:bg-[color:var(--color-bg-elevated)]",
+                  "relative flex h-11 min-w-0 items-stretch overflow-hidden rounded-full border bg-white transition-all dark:bg-[color:var(--color-bg-elevated)]",
                   searchFocus
                     ? "border-[#1E6BE6] shadow-[0_0_0_4px_rgba(30,107,230,0.14)]"
                     : "border-[color:var(--color-line)]",
                 ].join(" ")}
               >
-                {/* Scope selector */}
                 <div className="relative">
                   <button
                     type="button"
                     aria-haspopup="listbox"
                     aria-expanded={scopeOpen}
                     onClick={() => setScopeOpen((v) => !v)}
-                    className="inline-flex h-full items-center gap-1.5 border-r border-[color:var(--color-line)] bg-[color:var(--color-bg-secondary)] px-4 text-[12px] font-semibold text-[color:var(--color-text)] hover:bg-[#E8F0FE] hover:text-[#1E6BE6]"
+                    className="inline-flex h-full items-center gap-1.5 border-r border-[color:var(--color-line)] bg-[color:var(--color-bg-secondary)] px-3.5 text-[12px] font-semibold text-[color:var(--color-text)] hover:bg-[#E8F0FE] hover:text-[#1E6BE6]"
                   >
-                    <LayoutGrid size={14} className="text-[#1E6BE6]" />
-                    <span className="max-w-[110px] truncate">
+                    <span className="max-w-[100px] truncate">
                       {SEARCH_SCOPES.find((s) => s.value === scope)?.label}
                     </span>
                     <ChevronDown size={12} />
@@ -573,8 +577,8 @@ export function Header() {
 
                 <input
                   type="text"
-                  className="min-w-0 flex-1 bg-transparent px-5 text-[15px] text-[color:var(--color-text)] placeholder:text-[color:var(--color-text-tertiary)] focus:outline-none"
-                  placeholder="Search millions of products — laptops, TVs, headphones, cameras…"
+                  className="min-w-0 flex-1 bg-transparent px-4 text-[14px] text-[color:var(--color-text)] placeholder:text-[color:var(--color-text-tertiary)] focus:outline-none"
+                  placeholder="Search Nivro — laptops, TVs, headphones…"
                   value={searchQuery}
                   onFocus={() => setSearchFocus(true)}
                   onChange={(e) => setSearchQuery(e.target.value)}
@@ -583,13 +587,12 @@ export function Header() {
                 <button
                   type="submit"
                   aria-label="Search"
-                  className="inline-flex items-center gap-1.5 bg-[#1E6BE6] px-6 text-[13px] font-semibold text-white transition-all hover:bg-[#1857BF]"
+                  className="inline-flex items-center gap-1.5 bg-[#1E6BE6] px-5 text-[13px] font-semibold text-white transition-all hover:bg-[#1857BF]"
                 >
-                  <Search size={16} /> Search
+                  <Search size={15} />
                 </button>
               </form>
 
-              {/* Suggestions dropdown */}
               <AnimatePresence>
                 {searchFocus && (recentSearches.length > 0 || searchQuery.length > 0) && (
                   <motion.div
@@ -645,7 +648,7 @@ export function Header() {
               </AnimatePresence>
             </div>
 
-            {/* Right cluster — Account · Compare · Wishlist · Cart */}
+            {/* RIGHT CLUSTER — account / compare / wishlist / basket */}
             <div className="hidden items-center gap-1 lg:flex">
               {/* Account */}
               <div
@@ -659,18 +662,20 @@ export function Header() {
                   onClick={() => setAccountOpen((v) => !v)}
                   aria-haspopup="menu"
                   aria-expanded={accountOpen}
-                  className="inline-flex h-11 items-center gap-2 rounded-lg px-3 text-[color:var(--color-text)] transition-colors hover:bg-[color:var(--color-bg-secondary)]"
+                  className="inline-flex h-11 items-center gap-2 rounded-lg px-2.5 text-[color:var(--color-text)] transition-colors hover:bg-[color:var(--color-bg-secondary)]"
                 >
-                  <UserIcon size={20} strokeWidth={1.75} />
-                  <span className="hidden text-left leading-tight xl:inline-flex xl:flex-col">
+                  <UserIcon size={19} strokeWidth={1.75} />
+                  <span className={[
+                    "hidden text-left leading-tight",
+                    scrolled ? "" : "xl:inline-flex xl:flex-col",
+                  ].join(" ")}>
                     <span className="text-[10px] uppercase tracking-[0.14em] text-[color:var(--color-text-tertiary)]">
                       {user ? "Signed in" : "Hi there"}
                     </span>
-                    <span className="text-[13px] font-semibold">
+                    <span className="text-[12.5px] font-semibold">
                       {user ? "Account" : "Sign in"}
                     </span>
                   </span>
-                  <ChevronDown size={12} />
                 </button>
                 <AnimatePresence>
                   {accountOpen && (
@@ -742,37 +747,29 @@ export function Header() {
                 </AnimatePresence>
               </div>
 
-              {/* Compare */}
-              <Link
-                href="/account/wishlist"
-                className="inline-flex h-11 items-center gap-2 rounded-lg px-3 text-[color:var(--color-text)] transition-colors hover:bg-[color:var(--color-bg-secondary)]"
-                aria-label="Compare"
-              >
-                <GitCompare size={20} strokeWidth={1.75} />
-                <span className="hidden text-left leading-tight xl:inline-flex xl:flex-col">
-                  <span className="text-[10px] uppercase tracking-[0.14em] text-[color:var(--color-text-tertiary)]">
-                    Compare
-                  </span>
-                  <span className="text-[13px] font-semibold">0 items</span>
-                </span>
-              </Link>
+              {/* Compare — hidden on scroll */}
+              {!scrolled && (
+                <Link
+                  href="/account/wishlist"
+                  className="inline-flex h-11 items-center gap-2 rounded-lg px-2.5 text-[color:var(--color-text)] transition-colors hover:bg-[color:var(--color-bg-secondary)]"
+                  aria-label="Compare"
+                >
+                  <GitCompare size={19} strokeWidth={1.75} />
+                </Link>
+              )}
 
-              {/* Wishlist */}
-              <Link
-                href="/account/wishlist"
-                className="inline-flex h-11 items-center gap-2 rounded-lg px-3 text-[color:var(--color-text)] transition-colors hover:bg-[color:var(--color-bg-secondary)]"
-                aria-label="Wishlist"
-              >
-                <Heart size={20} strokeWidth={1.75} />
-                <span className="hidden text-left leading-tight xl:inline-flex xl:flex-col">
-                  <span className="text-[10px] uppercase tracking-[0.14em] text-[color:var(--color-text-tertiary)]">
-                    Wishlist
-                  </span>
-                  <span className="text-[13px] font-semibold">Saved</span>
-                </span>
-              </Link>
+              {/* Wishlist — hidden on scroll */}
+              {!scrolled && (
+                <Link
+                  href="/account/wishlist"
+                  className="inline-flex h-11 items-center gap-2 rounded-lg px-2.5 text-[color:var(--color-text)] transition-colors hover:bg-[color:var(--color-bg-secondary)]"
+                  aria-label="Wishlist"
+                >
+                  <Heart size={19} strokeWidth={1.75} />
+                </Link>
+              )}
 
-              {/* Cart with mini-cart hover */}
+              {/* Cart */}
               <div
                 ref={cartDismissRef}
                 className="relative"
@@ -785,7 +782,7 @@ export function Header() {
                   aria-label={t("cart")}
                 >
                   <div className="relative">
-                    <ShoppingCart size={19} strokeWidth={1.75} />
+                    <ShoppingCart size={18} strokeWidth={1.75} />
                     {itemCount > 0 && (
                       <motion.span
                         key={cartBounce}
@@ -798,11 +795,11 @@ export function Header() {
                       </motion.span>
                     )}
                   </div>
-                  <span className="hidden text-left leading-tight xl:inline-flex xl:flex-col">
+                  <span className="text-left leading-tight hidden xl:inline-flex xl:flex-col">
                     <span className="text-[10px] uppercase tracking-[0.14em] text-white/80">
                       Basket
                     </span>
-                    <span className="text-[13px] font-semibold tabular-nums">
+                    <span className="text-[12.5px] font-semibold tabular-nums">
                       £{subtotal.toFixed(2)}
                     </span>
                   </span>
@@ -905,7 +902,7 @@ export function Header() {
               <input
                 type="text"
                 className="min-w-0 flex-1 bg-transparent px-2 py-2 text-sm text-[color:var(--color-text)] placeholder:text-[color:var(--color-text-tertiary)] focus:outline-none"
-                placeholder="Search Nivora"
+                placeholder="Search Nivro"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
@@ -919,149 +916,131 @@ export function Header() {
             </form>
           </div>
         </div>
+      </header>
 
-        {/* ── Tier 3 · Persistent department nav — mega-menu ─────────────── */}
-        <div
-          ref={megaDismissRef}
-          className="hidden border-b border-[color:var(--color-line)] bg-[color:var(--color-bg-secondary)] lg:block"
-          onMouseLeave={closeMegaSoon}
-        >
-          <div className="mx-auto flex h-12 max-w-[1280px] items-center gap-1 px-4 sm:px-6 lg:px-8">
-            <button
-              type="button"
-              onClick={() => setMegaOpen((v) => !v)}
-              onMouseEnter={openMega}
-              aria-expanded={megaOpen}
-              aria-haspopup="true"
-              className={[
-                "inline-flex h-9 shrink-0 items-center gap-2 rounded-lg px-3.5 text-[12.5px] font-bold uppercase tracking-wide transition-all",
-                megaOpen
-                  ? "bg-[#1E6BE6] text-white shadow-[0_4px_14px_rgba(30,107,230,0.35)]"
-                  : "bg-[#111826] text-white hover:bg-[#1E6BE6]",
-              ].join(" ")}
+      {/* ── LEFT-SIDE VERTICAL DEPARTMENT FLYOUT (desktop) ──────────
+           Structural anchor: opens from the left as a vertical rail
+           with a secondary panel showing sub-categories + brands + promo.
+      */}
+      <AnimatePresence>
+        {deptOpen && (
+          <div className="fixed inset-0 z-50 hidden lg:block" aria-modal="true" role="dialog" aria-label="Shop by department">
+            <motion.div
+              className="absolute inset-0 bg-[#111826]/45 backdrop-blur-sm"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setDeptOpen(false)}
+            />
+            <motion.aside
+              className="absolute inset-y-0 left-0 flex w-[900px] max-w-[92vw] overflow-hidden bg-white shadow-[0_30px_60px_-20px_rgba(17,24,38,0.35)] dark:bg-[color:var(--color-bg)]"
+              initial={{ x: "-100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "-100%" }}
+              transition={{ type: "spring", damping: 30, stiffness: 300 }}
             >
-              <LayoutGrid size={14} />
-              All categories
-              <ChevronDown
-                size={12}
-                className={`transition-transform ${megaOpen ? "rotate-180" : ""}`}
-              />
-            </button>
-
-            {DEPARTMENTS.slice(0, 8).map((d) => (
-              <button
-                key={d.slug}
-                type="button"
-                onMouseEnter={() => {
-                  openMega();
-                  setActiveDept(d.slug);
-                }}
-                onClick={() => router.push(`/en/catalog/${d.slug}`)}
-                className={[
-                  "inline-flex h-9 shrink-0 items-center gap-1.5 rounded-md px-2.5 text-[13px] font-semibold transition-colors",
-                  activeDept === d.slug && megaOpen
-                    ? "bg-white text-[#1E6BE6] shadow-sm"
-                    : "text-[color:var(--color-text)] hover:bg-white hover:text-[#1E6BE6]",
-                ].join(" ")}
+              {/* Rail — vertical department list */}
+              <nav
+                aria-label="Departments"
+                className="flex w-[280px] shrink-0 flex-col border-r border-[color:var(--color-line)] bg-[#F5F7FA]"
               >
-                <d.Icon size={14} className="text-[#1E6BE6]" />
-                {d.short}
-              </button>
-            ))}
-
-            <div className="ml-auto flex items-center gap-2 text-[12.5px] font-semibold">
-              <Link
-                href="/catalog?onSale=true"
-                className="inline-flex items-center gap-1.5 rounded-md bg-[#FDE7E5] px-2.5 py-1 text-[#F0453A] transition-colors hover:bg-[#F0453A] hover:text-white"
-              >
-                <Percent size={13} /> Deals
-              </Link>
-              <Link
-                href="/catalog?sort=newest"
-                className="inline-flex items-center gap-1.5 rounded-md bg-[#E1F7F4] px-2.5 py-1 text-[#0B9A8D] transition-colors hover:bg-[#0FB5A6] hover:text-white"
-              >
-                <Sparkles size={13} /> New in
-              </Link>
-              <Link
-                href="/contact"
-                className="hidden items-center gap-1.5 rounded-md px-2.5 py-1 text-[color:var(--color-text-secondary)] transition-colors hover:text-[#1E6BE6] xl:inline-flex"
-              >
-                Business
-              </Link>
-            </div>
-          </div>
-
-          {/* Mega-menu panel */}
-          <AnimatePresence>
-            {megaOpen && (
-              <motion.div
-                initial={{ opacity: 0, y: -6 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -6 }}
-                transition={{ duration: 0.18 }}
-                className="absolute inset-x-0 top-full z-30 border-t border-[color:var(--color-line)] bg-white shadow-[0_28px_60px_-24px_rgba(17,24,38,0.25)] dark:bg-[color:var(--color-bg-elevated)]"
-                onMouseEnter={openMega}
-                onMouseLeave={closeMegaSoon}
-                role="dialog"
-                aria-label="Shop by department"
-              >
-                <div className="mx-auto grid max-w-[1280px] grid-cols-[240px_1fr_280px] gap-8 px-4 py-8 sm:px-6 lg:px-8">
-                  {/* Rail — departments list */}
-                  <nav
-                    aria-label="Departments"
-                    className="flex flex-col gap-1 border-r border-[color:var(--color-line)] pr-4"
+                <div className="flex items-center justify-between border-b border-[color:var(--color-line)] px-5 py-4">
+                  <div className="flex flex-col">
+                    <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#5B6472]">
+                      Browse
+                    </span>
+                    <span className="font-display text-[17px] font-bold text-[#111826]">
+                      Departments
+                    </span>
+                  </div>
+                  <button
+                    onClick={() => setDeptOpen(false)}
+                    aria-label="Close"
+                    className="inline-flex h-9 w-9 items-center justify-center rounded-full text-[#5B6472] hover:bg-white hover:text-[#111826]"
                   >
-                    {DEPARTMENTS.map((d) => (
-                      <button
-                        key={d.slug}
-                        type="button"
-                        onMouseEnter={() => setActiveDept(d.slug)}
-                        onClick={() => router.push(`/en/catalog/${d.slug}`)}
-                        className={[
-                          "group flex items-center justify-between gap-2 rounded-lg px-2.5 py-2 text-left text-[13.5px] font-medium transition-colors",
-                          activeDept === d.slug
-                            ? "bg-[#E8F0FE] text-[#1E6BE6]"
-                            : "text-[color:var(--color-text)] hover:bg-[color:var(--color-bg-secondary)]",
-                        ].join(" ")}
-                      >
-                        <span className="inline-flex items-center gap-2.5">
-                          <d.Icon size={16} className="text-[#1E6BE6]" />
-                          <span className="font-semibold">{d.name}</span>
-                        </span>
-                        <ChevronRight
-                          size={13}
-                          className={`transition-transform ${activeDept === d.slug ? "translate-x-0.5" : ""}`}
-                        />
-                      </button>
-                    ))}
-                  </nav>
-
-                  {/* Center — sub-categories from live DB + featured brands */}
-                  <div className="flex flex-col gap-5">
-                    <div className="flex items-baseline justify-between">
-                      <div className="flex flex-col">
-                        <span className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[color:var(--color-text-tertiary)]">
-                          Department
-                        </span>
-                        <Link
-                          href={`/catalog/${activeDeptData.slug}`}
-                          className="mt-0.5 font-display text-xl font-bold text-[color:var(--color-text)] hover:text-[#1E6BE6]"
+                    <X size={16} />
+                  </button>
+                </div>
+                <ul className="flex-1 overflow-y-auto py-2">
+                  {DEPARTMENTS.map((d) => {
+                    const live = findLiveDept(d.slug);
+                    const isActive = activeDept === d.slug;
+                    return (
+                      <li key={d.slug}>
+                        <button
+                          type="button"
+                          onMouseEnter={() => setActiveDept(d.slug)}
+                          onFocus={() => setActiveDept(d.slug)}
+                          onClick={() => {
+                            setDeptOpen(false);
+                            router.push(`/en/catalog/${d.slug}`);
+                          }}
+                          className={[
+                            "group flex w-full items-center justify-between gap-3 px-5 py-3 text-left text-[13.5px] font-semibold transition-colors",
+                            isActive
+                              ? "bg-white text-[#1E6BE6] shadow-[inset_3px_0_0_0_#1E6BE6]"
+                              : "text-[#111826] hover:bg-white",
+                          ].join(" ")}
                         >
-                          {activeDeptData.name}
-                        </Link>
-                        <span className="mt-1 text-[13px] text-[color:var(--color-text-secondary)]">
-                          {activeDeptData.tagline}
-                        </span>
-                      </div>
-                      {activeDeptLive?._count && (
-                        <span className="text-[11px] text-[color:var(--color-text-tertiary)] tabular-nums">
-                          {activeDeptLive._count.products.toLocaleString()} products
-                        </span>
-                      )}
-                    </div>
+                          <span className="inline-flex items-center gap-3">
+                            <span className={[
+                              "inline-flex h-8 w-8 items-center justify-center rounded-lg transition-colors",
+                              isActive ? "bg-[#E8F0FE] text-[#1E6BE6]" : "bg-[#E8F0FE]/60 text-[#1E6BE6] group-hover:bg-[#E8F0FE]",
+                            ].join(" ")}>
+                              <d.Icon size={16} />
+                            </span>
+                            <span className="flex flex-col leading-tight">
+                              <span>{d.name}</span>
+                              {live?._count?.products ? (
+                                <span className="text-[10px] font-medium uppercase tracking-[0.12em] text-[#8A94A6]">
+                                  {live._count.products.toLocaleString()} products
+                                </span>
+                              ) : null}
+                            </span>
+                          </span>
+                          <ChevronRight size={13} className="text-[#8A94A6]" />
+                        </button>
+                      </li>
+                    );
+                  })}
+                </ul>
+                <div className="border-t border-[color:var(--color-line)] px-5 py-4">
+                  <Link
+                    href="/catalog?onSale=true"
+                    onClick={() => setDeptOpen(false)}
+                    className="flex items-center justify-between rounded-lg bg-[#FDE7E5] px-3 py-2 text-[12.5px] font-bold text-[#F0453A] transition-colors hover:bg-[#F0453A] hover:text-white"
+                  >
+                    <span className="inline-flex items-center gap-2">
+                      <Percent size={14} /> Today's deals
+                    </span>
+                    <ArrowRight size={13} />
+                  </Link>
+                </div>
+              </nav>
 
+              {/* Secondary panel — active dept sub-categories, brands, promo */}
+              <div className="flex flex-1 flex-col overflow-y-auto">
+                <div className="border-b border-[color:var(--color-line)] px-8 py-6">
+                  <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#5B6472]">
+                    Department
+                  </div>
+                  <Link
+                    href={`/catalog/${activeDeptData.slug}`}
+                    onClick={() => setDeptOpen(false)}
+                    className="mt-1 inline-flex items-center gap-2 font-display text-[26px] font-bold text-[#111826] hover:text-[#1E6BE6]"
+                  >
+                    {activeDeptData.name}
+                    <ArrowRight size={18} className="text-[#1E6BE6]" />
+                  </Link>
+                  <p className="mt-1 text-[14px] text-[#5B6472]">
+                    {activeDeptData.tagline}
+                  </p>
+                </div>
+
+                <div className="grid flex-1 grid-cols-[1fr_240px] gap-6 px-8 py-6">
+                  <div className="flex flex-col gap-5">
                     <div>
-                      <div className="mb-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-[color:var(--color-text-tertiary)]">
+                      <div className="mb-2 text-[10px] font-bold uppercase tracking-[0.14em] text-[#5B6472]">
                         Shop by category
                       </div>
                       <div className="grid grid-cols-2 gap-x-6 gap-y-1">
@@ -1080,11 +1059,12 @@ export function Header() {
                           <Link
                             key={sub.slug + sub.label}
                             href={`/catalog/${sub.slug}`}
-                            className="group flex items-center justify-between rounded-md px-2 py-1.5 text-[13.5px] text-[color:var(--color-text)] transition-colors hover:bg-[#E8F0FE] hover:text-[#1E6BE6]"
+                            onClick={() => setDeptOpen(false)}
+                            className="group flex items-center justify-between rounded-md px-2 py-1.5 text-[13.5px] text-[#111826] transition-colors hover:bg-[#E8F0FE] hover:text-[#1E6BE6]"
                           >
                             <span>{sub.label}</span>
                             {typeof sub.count === "number" ? (
-                              <span className="text-[11px] text-[color:var(--color-text-tertiary)] tabular-nums">
+                              <span className="text-[11px] text-[#8A94A6] tabular-nums">
                                 {sub.count}
                               </span>
                             ) : (
@@ -1099,15 +1079,16 @@ export function Header() {
                     </div>
 
                     <div className="border-t border-[color:var(--color-line)] pt-4">
-                      <div className="mb-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-[color:var(--color-text-tertiary)]">
+                      <div className="mb-2 text-[10px] font-bold uppercase tracking-[0.14em] text-[#5B6472]">
                         Featured brands
                       </div>
                       <div className="flex flex-wrap items-center gap-1.5">
-                        {["Apple", "Samsung", "LG", "Sony", "Bose", "HP", "Lenovo", "Google"].map((b) => (
+                        {["Apple", "Samsung", "LG", "Sony", "Bose", "HP", "Lenovo", "Google", "Sonos"].map((b) => (
                           <Link
                             key={b}
                             href={`/search?q=${encodeURIComponent(b)}`}
-                            className="inline-flex items-center rounded-full border border-[color:var(--color-line)] bg-white px-2.5 py-1 text-[11.5px] font-semibold text-[color:var(--color-text)] transition-colors hover:border-[#1E6BE6] hover:bg-[#E8F0FE] hover:text-[#1E6BE6]"
+                            onClick={() => setDeptOpen(false)}
+                            className="inline-flex items-center rounded-full border border-[color:var(--color-line)] bg-white px-2.5 py-1 text-[11.5px] font-semibold text-[#111826] transition-colors hover:border-[#1E6BE6] hover:bg-[#E8F0FE] hover:text-[#1E6BE6]"
                           >
                             {b}
                           </Link>
@@ -1116,38 +1097,36 @@ export function Header() {
                     </div>
                   </div>
 
-                  {/* Right — promo tile */}
+                  {/* Promo tile */}
                   <Link
                     href={activeDeptData.promo.href}
+                    onClick={() => setDeptOpen(false)}
                     className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-[color:var(--color-line)] bg-gradient-to-br from-[#1E6BE6] to-[#0FB5A6] p-5 text-white"
                   >
-                    <div
-                      aria-hidden
-                      className="pointer-events-none absolute inset-0 retail-dots opacity-25"
-                    />
+                    <div aria-hidden className="pointer-events-none absolute inset-0 retail-dots opacity-25" />
                     <div className="relative z-10">
                       <span className="mb-3 inline-flex w-fit items-center gap-1 rounded-full bg-white/20 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.14em] backdrop-blur">
                         {activeDeptData.promo.badge}
                       </span>
-                      <div className="font-display text-xl font-bold leading-tight">
+                      <div className="font-display text-[17px] font-bold leading-tight">
                         {activeDeptData.promo.title}
                       </div>
-                      <div className="mt-1.5 text-[13px] text-white/85">
+                      <div className="mt-1.5 text-[12.5px] text-white/85">
                         {activeDeptData.promo.subtitle}
                       </div>
                     </div>
-                    <div className="relative z-10 mt-4 inline-flex items-center gap-1.5 text-[12px] font-bold uppercase tracking-[0.12em] text-white transition-transform group-hover:translate-x-0.5">
-                      Shop now <ArrowRight size={13} />
+                    <div className="relative z-10 mt-4 inline-flex items-center gap-1.5 text-[11.5px] font-bold uppercase tracking-[0.12em] transition-transform group-hover:translate-x-0.5">
+                      Shop now <ArrowRight size={12} />
                     </div>
                   </Link>
                 </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      </header>
+              </div>
+            </motion.aside>
+          </div>
+        )}
+      </AnimatePresence>
 
-      {/* ── Mobile drawer ─────────────────────────────────────────────── */}
+      {/* ── Mobile drawer ─────────────────────────────────────────── */}
       <AnimatePresence>
         {mobileOpen && (
           <>
@@ -1166,7 +1145,7 @@ export function Header() {
               transition={{ type: "spring", damping: 30, stiffness: 300 }}
             >
               <div className="flex items-center justify-between border-b border-[color:var(--color-line)] px-5 py-4">
-                <NivoraLogo size={22} />
+                <NivroLogo size={22} />
                 <button
                   onClick={() => setMobileOpen(false)}
                   className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-[color:var(--color-text-secondary)] hover:bg-[color:var(--color-bg-secondary)]"
@@ -1177,7 +1156,6 @@ export function Header() {
               </div>
 
               <div className="flex-1 overflow-y-auto px-3 py-3">
-                {/* Departments accordion */}
                 <div className="mb-4">
                   <div className="px-2 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-[color:var(--color-text-tertiary)]">
                     Shop by department
@@ -1251,7 +1229,6 @@ export function Header() {
                   })}
                 </div>
 
-                {/* Utility links */}
                 <div className="mb-4 flex flex-col gap-1">
                   <div className="px-2 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-[color:var(--color-text-tertiary)]">
                     Quick links
@@ -1276,7 +1253,6 @@ export function Header() {
                 </div>
               </div>
 
-              {/* Footer of the drawer — account CTAs */}
               <div className="border-t border-[color:var(--color-line)] px-5 py-4">
                 {user ? (
                   <div className="flex flex-col gap-2">

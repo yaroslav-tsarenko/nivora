@@ -1,8 +1,8 @@
-# nivora
+# nivro
 
 Bright, honest electronics retail — Audio & Headphones, Laptops & Computers,
 Smartphones, TV & Video, Cameras & Photography, Smart Home, Gaming, Wearables
-and Accessories. UK-based.
+and Accessories. UK-based, operated by **EDGEBRAY LIMITED**.
 
 ## Stack
 
@@ -26,10 +26,17 @@ npm run lint
 All colours, spacing, radii, and typography live as design tokens in
 `src/styles/variables.css` and are exposed to Tailwind through the `@theme`
 block in `src/styles/globals.css`. Do not hardcode hex values in components —
-reach for the tokens (`bg-primary`, `text-ink`, `border-line`,
-`font-display`, `font-mono`, ...).
+reach for the tokens (`bg-primary`, `text-ink`, `border-line`, `font-display`,
+`font-mono`, ...).
 
 The aesthetic is **clean light retail**: bright, airy, high-trust storefront
 with clean white surfaces, a trustworthy azure primary (`#1E6BE6`), a fresh
 teal secondary (`#0FB5A6`) and coral (`#F0453A`) reserved for deals & urgency.
 Deep navy `#111826` is used for utility strips and the footer.
+
+## Company
+
+- **EDGEBRAY LIMITED** (Company No. 15854749)
+- Academy House, 11 Dunraven Place, Bridgend, CF31 1JF, United Kingdom
+- Phone: +44 7412 839910
+- Email: info@nivro.co.uk

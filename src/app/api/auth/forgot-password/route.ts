@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
       process.env.NEXT_PUBLIC_SITE_URL ||
       process.env.NEXT_PUBLIC_BASE_URL ||
       request.headers.get("origin") ||
-      "https://electreia.co.uk";
+      "https://nivro.co.uk";
     const resetUrl = `${baseUrl.replace(/\/+$/, "")}/en/auth/reset-password?token=${token}`;
 
     scheduleEmail("password reset", () => sendPasswordResetEmail(email, resetUrl, user.name));

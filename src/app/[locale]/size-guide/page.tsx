@@ -5,7 +5,7 @@ import { ArrowRight, Ruler, Info, Cable, Battery } from "lucide-react";
 export const metadata: Metadata = {
   title: "Spec Reference",
   description:
-    "Electreia spec reference — dimensions, weight and connector guide across laptops, monitors, audio, mobile and accessories.",
+    "Nivro spec reference — dimensions, weight and connector guide across laptops, monitors, audio, mobile and accessories.",
 };
 
 const LAPTOP_SIZES = [
@@ -106,7 +106,7 @@ export default function SizeGuidePage() {
     <div className="mx-auto w-full max-w-[var(--container-content)] px-4 pb-20 pt-8 sm:px-6 lg:px-8">
       {/* Hero */}
       <div className="mb-10 flex flex-col gap-3 border-b border-[color:var(--color-line)] pb-8 sm:mb-14">
-        <span className="eyebrow">Electreia · Reference</span>
+        <span className="eyebrow">Nivro · Reference</span>
         <h1 className="font-display text-[36px] font-semibold leading-tight tracking-tight text-[color:var(--color-text)] sm:text-[52px]">
           Spec reference
         </h1>

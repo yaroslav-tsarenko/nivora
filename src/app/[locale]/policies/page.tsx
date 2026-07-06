@@ -1,7 +1,7 @@
 import { Breadcrumbs } from "@/components/layout/Breadcrumbs/Breadcrumbs";
 import { Link } from "@/i18n/routing";
 
-export const metadata = { title: "Policies — Electreia" };
+export const metadata = { title: "Policies — Nivro" };
 
 const policies = [
   { label: "Terms and Conditions", href: "/policies/terms" },
@@ -22,7 +22,7 @@ export default function PoliciesIndexPage() {
         Policies
       </h1>
       <p className="mb-6 text-[15px] leading-relaxed text-[color:var(--color-text-secondary)]">
-        Please review our policies below. These policies govern your use of the Electreia website and
+        Please review our policies below. These policies govern your use of the Nivro website and
         any purchases made through it.
       </p>
       <ul className="m-0 flex list-none flex-col gap-2 p-0">

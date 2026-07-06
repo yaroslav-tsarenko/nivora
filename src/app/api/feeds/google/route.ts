@@ -8,7 +8,7 @@ export async function GET() {
       include: { images: { orderBy: { sortOrder: "asc" }, take: 1 } },
     });
 
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://electreia.co.uk";
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nivro.co.uk";
 
     const items = products
       .map((product) => {
@@ -38,7 +38,7 @@ export async function GET() {
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:g="http://base.google.com/ns/1.0">
   <channel>
-    <title>Electreia Product Feed</title>
+    <title>Nivro Product Feed</title>
     <link>${siteUrl}</link>
     <description>Product feed for Google Merchant Center</description>
 ${items}

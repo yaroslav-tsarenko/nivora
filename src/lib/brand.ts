@@ -1,21 +1,21 @@
 /**
- * Central brand identity for Nivora.
+ * Central brand identity for Nivro.
  * Import from here instead of hardcoding company details in components.
  */
 
 export const brand = {
-  name: "nivora",
-  displayName: "Nivora",
-  domain: "nivora.co.uk",
-  url: "https://nivora.co.uk",
+  name: "nivro",
+  displayName: "Nivro",
+  domain: "nivro.co.uk",
+  url: "https://nivro.co.uk",
   tagline: "Bright, honest electronics retail.",
   description:
-    "Nivora — a bright, high-trust electronics store. Audio, laptops, smartphones, TV & video, cameras, smart home, gaming, wearables and accessories. Shipped from the United Kingdom.",
-  applicationName: "Nivora",
+    "Nivro — a bright, high-trust electronics retailer. Audio, laptops, smartphones, TV & video, cameras, smart home, gaming, wearables and accessories. Shipped from the United Kingdom.",
+  applicationName: "Nivro",
 
   company: {
-    legalName: "NIVORA RETAIL LIMITED",
-    number: "15982435",
+    legalName: "EDGEBRAY LIMITED",
+    number: "15854749",
     address: {
       line1: "Academy House",
       line2: "11 Dunraven Place",
@@ -27,14 +27,17 @@ export const brand = {
   },
 
   contact: {
-    email: "info@nivora.co.uk",
-    emailB2B: "b2b@nivora.co.uk",
-    phone: "+44 7463 590620",
-    phoneHref: "tel:+447463590620",
+    email: "info@nivro.co.uk",
+    emailB2B: "b2b@nivro.co.uk",
+    phone: "+44 7412 839910",
+    phoneHref: "tel:+447412839910",
+    contactPage: "/en/contact",
   },
 
   social: {
-    twitter: "@nivora",
+    linkedin: "https://www.linkedin.com/company/nivro-uk/",
+    instagram: "https://www.instagram.com/nivro.uk/",
+    twitter: "@nivro",
   },
 } as const;
 

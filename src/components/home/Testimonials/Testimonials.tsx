@@ -43,7 +43,7 @@ export function Testimonials() {
           Trusted by professionals across the UK
         </h2>
         <p className="text-sm text-[color:var(--color-text-secondary)]">
-          Real feedback from electricians, contractors, and procurement teams who buy from Electreia every week.
+          Real feedback from electricians, contractors, and procurement teams who buy from Nivro every week.
         </p>
       </div>
 

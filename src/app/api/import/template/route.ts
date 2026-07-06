@@ -13,7 +13,7 @@ export async function GET() {
     "Studio-grade near-field monitors with balanced-drive tweeters, tuned for flat frequency response and low listener fatigue.",
     "Balanced 6.5\" near-field pair · 200W / channel · XLR + TRS.",
     "Audio & Headphones", "Speakers", "",
-    "Electreia Reference", "8.5", "ACTIVE", "", "", "", "", "Electronics > Audio > Speakers > Studio Monitors", "new",
+    "Nivro Reference", "8.5", "ACTIVE", "", "", "", "", "Electronics > Audio > Speakers > Studio Monitors", "new",
     "Driver>>Woofer:6.5\" Kevlar|Driver>>Tweeter:1\" silk dome|Power>>Rating:200W per channel|Input>>Connector:XLR + TRS|Frequency>>Response:38Hz–22kHz",
   ];
 

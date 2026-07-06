@@ -1,6 +1,6 @@
 import { PolicyLayout, ContactBlock } from "@/components/layout/PolicyLayout/PolicyLayout";
 
-export const metadata = { title: "Returns, Refunds and Cancellation Policy — Electreia" };
+export const metadata = { title: "Returns, Refunds and Cancellation Policy — Nivro" };
 
 export default function ReturnsPolicyPage() {
   return (
@@ -8,13 +8,13 @@ export default function ReturnsPolicyPage() {
       <p>
         This Returns, Refunds and Cancellation Policy explains how order cancellations, consumer returns,
         refunds, damaged goods, faulty goods, incorrect goods, and restricted returns are handled for
-        purchases made through www.electreia.co.uk.
+        purchases made through www.nivro.co.uk.
       </p>
       <p>The Website is operated by:</p>
       <ContactBlock />
       <p>
-        In this Policy, &ldquo;Electreia&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo; or &ldquo;our&rdquo;
-        means LORDCARE LIMITED. &ldquo;Customer&rdquo;, &ldquo;you&rdquo; or &ldquo;your&rdquo; means any
+        In this Policy, &ldquo;Nivro&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo; or &ldquo;our&rdquo;
+        means EDGEBRAY LIMITED. &ldquo;Customer&rdquo;, &ldquo;you&rdquo; or &ldquo;your&rdquo; means any
         person or business placing an order through the Website.
       </p>
       <p>
@@ -27,9 +27,9 @@ export default function ReturnsPolicyPage() {
       </p>
 
       <h2>1. Scope of This Policy</h2>
-      <p>1.1 This Policy applies to physical goods purchased through Electreia.</p>
+      <p>1.1 This Policy applies to physical goods purchased through Nivro.</p>
       <p>
-        1.2 Electreia supplies electrical products, electrical materials, wiring accessories,
+        1.2 Nivro supplies electrical products, electrical materials, wiring accessories,
         lighting-related products, installation components, distribution and circuit protection products,
         sockets, switches, cables, mounting accessories, and related goods.
       </p>
@@ -63,7 +63,7 @@ export default function ReturnsPolicyPage() {
       <h2>3. Cancelling an Order Before Dispatch</h2>
       <p>3.1 You may request cancellation of an order before it has been dispatched.</p>
       <p>
-        3.2 To request cancellation, contact us as soon as possible at info@electreia.co.uk and include your
+        3.2 To request cancellation, contact us as soon as possible at info@nivro.co.uk and include your
         order number.
       </p>
       <p>
@@ -94,7 +94,7 @@ export default function ReturnsPolicyPage() {
         days after the day you receive the final parcel.
       </p>
       <p>
-        4.4 To exercise your cancellation right, you must clearly notify us by email at info@electreia.co.uk
+        4.4 To exercise your cancellation right, you must clearly notify us by email at info@nivro.co.uk
         before the cancellation period expires.
       </p>
       <p>4.5 Your email should include:</p>
@@ -163,7 +163,7 @@ export default function ReturnsPolicyPage() {
       <h2>7. Faulty, Damaged, or Incorrect Goods</h2>
       <p>
         7.1 If goods arrive faulty, damaged, incomplete, or incorrect, please contact us as soon as possible
-        at info@electreia.co.uk.
+        at info@nivro.co.uk.
       </p>
       <p>7.2 Please include:</p>
       <ul>
@@ -233,7 +233,7 @@ export default function ReturnsPolicyPage() {
         agree otherwise in writing.
       </p>
       <p>
-        9.2 For faulty, damaged, or incorrect goods, Electreia will cover reasonable return shipping costs
+        9.2 For faulty, damaged, or incorrect goods, Nivro will cover reasonable return shipping costs
         where the issue is confirmed or where we provide return instructions.
       </p>
       <p>9.3 You should not return goods without contacting us first.</p>
@@ -247,7 +247,7 @@ export default function ReturnsPolicyPage() {
       </p>
 
       <h2>10. Return Procedure</h2>
-      <p>10.1 To start a return, contact us at info@electreia.co.uk.</p>
+      <p>10.1 To start a return, contact us at info@nivro.co.uk.</p>
       <p>10.2 Please include:</p>
       <ul>
         <li>order number;</li>
@@ -314,8 +314,8 @@ export default function ReturnsPolicyPage() {
       </p>
       <p>
         12.4 Customs duties, import VAT, brokerage fees, courier handling fees, local taxes, customs
-        clearance fees, and other local charges are not charged by Electreia and are not refundable by
-        Electreia.
+        clearance fees, and other local charges are not charged by Nivro and are not refundable by
+        Nivro.
       </p>
 
       <h2>13. International Returns</h2>
@@ -335,7 +335,7 @@ export default function ReturnsPolicyPage() {
         we agree otherwise in writing.
       </p>
       <p>
-        13.5 If customs or courier charges are incurred by Electreia because of an international return,
+        13.5 If customs or courier charges are incurred by Nivro because of an international return,
         these may be deducted from any refund where permitted by law.
       </p>
 
@@ -345,7 +345,7 @@ export default function ReturnsPolicyPage() {
         checkout.
       </p>
       <p>
-        14.2 Electreia is not responsible for delays, failed deliveries, lost parcels, return charges, or
+        14.2 Nivro is not responsible for delays, failed deliveries, lost parcels, return charges, or
         additional costs caused by incorrect, incomplete, outdated, or improperly formatted address
         information provided by you.
       </p>
@@ -387,7 +387,7 @@ export default function ReturnsPolicyPage() {
         specification, or no longer needing the goods.
       </p>
       <p>
-        16.2 Any non-faulty return accepted from a Business Customer is at Electreia&rsquo;s discretion.
+        16.2 Any non-faulty return accepted from a Business Customer is at Nivro&rsquo;s discretion.
       </p>
       <p>16.3 If we agree to a Business Customer return, we may apply conditions, including:</p>
       <ul>
@@ -405,7 +405,7 @@ export default function ReturnsPolicyPage() {
       </p>
       <p>
         16.5 Business Customer refunds, where approved, may be issued as a refund, replacement, account
-        credit, or other remedy agreed by Electreia.
+        credit, or other remedy agreed by Nivro.
       </p>
 
       <h2>17. Exchanges and Replacements</h2>

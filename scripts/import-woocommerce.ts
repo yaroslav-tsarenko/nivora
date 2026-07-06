@@ -9,7 +9,7 @@ if (!connectionString) throw new Error("DIRECT_URL / DATABASE_URL not set in .en
 
 const CSV_PATH = path.resolve(
   __dirname,
-  "../data/wc-product-export-6-7-2026-1783355506237.csv",
+  "../data/wc-product-export-6-7-2026-1783365566143.csv",
 );
 
 let client: pg.Client;

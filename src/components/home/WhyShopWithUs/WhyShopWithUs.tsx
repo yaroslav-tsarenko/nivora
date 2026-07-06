@@ -41,9 +41,9 @@ export function WhyShopWithUs() {
     <section className="py-12 sm:py-16">
       <div className="mx-auto max-w-[var(--container-content)] px-4 sm:px-6 lg:px-8">
         <div className="mb-8 flex flex-col items-center gap-2 border-b border-[color:var(--color-line)] pb-6 text-center">
-          <span className="eyebrow">Why Electreia</span>
+          <span className="eyebrow">Why Nivro</span>
           <h2 className="font-serif text-3xl font-medium tracking-tight text-[color:var(--color-text)] sm:text-[40px]">
-            Why choose Electreia
+            Why choose Nivro
           </h2>
           <p className="max-w-xl text-sm text-[color:var(--color-text-secondary)]">
             Professional-grade electrical materials with expert support and fast delivery.

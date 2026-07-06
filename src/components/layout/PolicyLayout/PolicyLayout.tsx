@@ -35,15 +35,15 @@ export function ContactBlock() {
   return (
     <div className="mt-2 rounded-md border border-[color:var(--color-line)] bg-[color:var(--color-bg-secondary)] px-4 py-3.5 text-sm leading-relaxed">
       <p>
-        <strong>LORDCARE LIMITED</strong>
+        <strong>EDGEBRAY LIMITED</strong>
         <br />
         Registration number: 16020956
         <br />
         Registered office: Academy House, 11 Dunraven Place, Bridgend, Mid Glamorgan, CF31 1JF, United Kingdom
         <br />
-        General email: info@electreia.co.uk
+        General email: info@nivro.co.uk
         <br />
-        Wholesale (B2B): b2b@electreia.co.uk
+        Wholesale (B2B): b2b@nivro.co.uk
       </p>
     </div>
   );

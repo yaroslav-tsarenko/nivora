@@ -26,7 +26,7 @@ interface ButtonProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>
 }
 
 /**
- * Electreia Button — warm-editorial:
+ * Nivro Button — warm-editorial:
  *   primary  = terracotta filled  (main CTA — buy, subscribe, submit)
  *   secondary= pine outline       (secondary action — view, browse)
  *   ghost    = quiet inline       (tertiary — cancel, learn more)

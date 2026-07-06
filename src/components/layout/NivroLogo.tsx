@@ -1,8 +1,8 @@
 /**
- * Nivora wordmark — friendly geometric display face with a soft
+ * Nivro wordmark — friendly geometric display face with a soft
  * azure→teal orb that reads as bright, retail, high-trust.
  */
-export function NivoraLogo({
+export function NivroLogo({
   size = 24,
   tone = "dark",
 }: {
@@ -36,11 +36,11 @@ export function NivoraLogo({
         className={`font-display font-bold tracking-tight ${textColor}`}
         style={{ fontSize: size }}
       >
-        Nivora
+        Nivro
       </span>
     </span>
   );
 }
 
 // Legacy aliases — kept so old imports don't break during the transition.
-export const NivoraMark = NivoraLogo;
+export const NivroMark = NivroLogo;

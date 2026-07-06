@@ -11,7 +11,7 @@ export async function GET() {
       },
     });
 
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://electreia.co.uk";
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://nivro.co.uk";
 
     const feed = products.map((product) => ({
       id: product.id,

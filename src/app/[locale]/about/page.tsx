@@ -17,7 +17,7 @@ export default function AboutPage() {
         <div className="mb-8 text-center sm:mb-12">
           <span className="eyebrow">Our story</span>
           <h1 className="mb-4 mt-3 font-serif text-4xl font-medium tracking-tight text-[color:var(--color-text)] sm:text-5xl">
-            About <span className="text-[color:var(--color-accent)]">Electreia</span>
+            About <span className="text-[color:var(--color-accent)]">Nivro</span>
           </h1>
           <p className="mx-auto max-w-xl text-base leading-relaxed text-[color:var(--color-text-secondary)] sm:text-lg">
             We&apos;re on a mission to make professional-grade electrical materials accessible to electricians, contractors, and DIY installers. Finding the right cables, switchgear, and installation accessories shouldn&apos;t be complicated.
