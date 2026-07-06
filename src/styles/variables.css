@@ -1,0 +1,259 @@
+/*
+ * Nivora — "Clean Light Retail" design tokens.
+ * Bright, airy, high-trust storefront palette. Light-first, with a
+ * trustworthy azure primary and a fresh teal secondary. Coral is used
+ * only for savings/urgency. Every token has a matching dark-mode variant.
+ *
+ * Consumed by @theme in globals.css so Tailwind utilities pick these up
+ * automatically. Legacy names are aliased so older components keep working.
+ */
+
+:root {
+  /* ── Brand ──────────────────────────────────────────────────────────── */
+  --color-primary: #1E6BE6;          /* trustworthy azure — CTAs, search, links */
+  --color-primary-hover: #1857BF;
+  --color-primary-tint: #E8F0FE;     /* soft azure wash on white */
+  --color-primary-glow: rgba(30, 107, 230, 0.20);
+  --color-primary-fg: #FFFFFF;
+
+  --color-accent: #1E6BE6;           /* alias — accent === primary azure */
+  --color-accent-hover: #1857BF;
+  --color-accent-tint: #E8F0FE;
+  --color-accent-fg: #FFFFFF;
+
+  --color-teal: #0FB5A6;             /* secondary — success, in-stock, savings */
+  --color-teal-hover: #0B9A8D;
+  --color-teal-tint: #E1F7F4;
+
+  --color-coral: #F0453A;            /* deals / discount badges only */
+  --color-coral-hover: #D93A31;
+  --color-coral-tint: #FDE7E5;
+
+  --color-violet: #7C5CFF;           /* accent kept for legacy gradients */
+  --color-violet-hover: #6949E6;
+  --color-violet-tint: #EFECFF;
+
+  --color-secondary: #FFFFFF;
+  --color-price: var(--color-primary);
+  --color-cta: var(--color-primary);
+  --color-cta-hover: var(--color-primary-hover);
+  --color-header: #111826;           /* deep navy — utility strip base */
+  --color-header-secondary: #F5F7FA;
+
+  /* Legacy aliases used across older components */
+  --color-accent-light: var(--color-accent-tint);
+  --color-accent-2: var(--color-teal);
+  --color-accent-2-hover: var(--color-teal-hover);
+  --color-accent-3: var(--color-teal);
+  --color-accent-4: #5B6472;
+
+  /* ── Surfaces (light — clean paper) ─────────────────────────────────── */
+  --color-bg: #FFFFFF;               /* clean white — page bg */
+  --color-bg-elevated: #FFFFFF;      /* cards, dialogs */
+  --color-bg-secondary: #F5F7FA;     /* alternating paper section */
+  --color-bg-tertiary: #EDF1F6;      /* muted panel */
+  --color-bg-warm: #F5F7FA;
+  --color-bg-cool: #F0F5FB;
+
+  /* ── Text (light) ───────────────────────────────────────────────────── */
+  --color-text: #111826;             /* deep navy-charcoal ink */
+  --color-text-secondary: #5B6472;   /* muted text */
+  --color-text-tertiary: #8A94A6;
+  --color-text-inverse: #FFFFFF;
+
+  /* ── Lines (light) ──────────────────────────────────────────────────── */
+  --color-border: #E3E7EC;
+  --color-border-hover: #C4CDDA;
+  --color-border-strong: #A3AEBE;
+  --color-hairline: rgba(17, 24, 38, 0.08);
+
+  /* ── Status (light) ─────────────────────────────────────────────────── */
+  --color-success: #0FB5A6;          /* teal — "in stock" */
+  --color-success-light: rgba(15, 181, 166, 0.14);
+  --color-warning: #F5A524;
+  --color-warning-light: rgba(245, 165, 36, 0.14);
+  --color-danger: #F0453A;           /* coral — deals, urgency */
+  --color-danger-light: rgba(240, 69, 58, 0.10);
+  --color-info: #1E6BE6;
+
+  /* ── Elevation — soft, hairline-first ───────────────────────────────── */
+  --shadow-sm: 0 1px 2px rgba(17, 24, 38, 0.04);
+  --shadow-md: 0 4px 14px rgba(17, 24, 38, 0.06);
+  --shadow-lg: 0 12px 32px rgba(17, 24, 38, 0.08);
+  --shadow-xl: 0 24px 60px rgba(17, 24, 38, 0.10);
+  --shadow-card: 0 1px 2px rgba(17, 24, 38, 0.04);
+  --shadow-card-hover: 0 8px 24px rgba(30, 107, 230, 0.12);
+  --shadow-accent: 0 10px 24px rgba(30, 107, 230, 0.20);
+  --shadow-warm: 0 10px 24px rgba(15, 181, 166, 0.18);
+  --shadow-glow-azure: 0 0 24px rgba(30, 107, 230, 0.28);
+  --shadow-glow-violet: 0 0 24px rgba(124, 92, 255, 0.28);
+
+  /* ── Gradients ──────────────────────────────────────────────────────── */
+  --gradient-primary: linear-gradient(135deg, #1E6BE6 0%, #0FB5A6 100%);
+  --gradient-accent: linear-gradient(135deg, #1E6BE6 0%, #1857BF 100%);
+  --gradient-warm: linear-gradient(180deg, #FFFFFF 0%, #F5F7FA 100%);
+  --gradient-cool: linear-gradient(180deg, #F5F7FA 0%, #E8F0FE 100%);
+  --gradient-hero: linear-gradient(135deg, #FFFFFF 0%, #E8F0FE 100%);
+  --gradient-badge: linear-gradient(135deg, #1E6BE6 0%, #0FB5A6 100%);
+  --gradient-mint: linear-gradient(135deg, #E1F7F4 0%, #FFFFFF 100%);
+  --gradient-sunset: linear-gradient(135deg, rgba(30, 107, 230, 0.06) 0%, rgba(15, 181, 166, 0.06) 100%);
+  --gradient-electric: linear-gradient(135deg, #1E6BE6 0%, #0FB5A6 100%);
+  --gradient-card-hover: linear-gradient(180deg, rgba(30, 107, 230, 0.04) 0%, rgba(15, 181, 166, 0.04) 100%);
+
+  /* ── Radii ──────────────────────────────────────────────────────────── */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.625rem;
+  --radius-lg: 0.875rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.25rem;
+  --radius-pill: 9999px;
+
+  /* ── Layout ─────────────────────────────────────────────────────────── */
+  --max-width: 1280px;
+  --header-height: 152px;
+  --announcement-height: 36px;
+
+  /* ── Type — friendly, legible retail sans ───────────────────────────── */
+  --font-sans: "Plus Jakarta Sans", "Inter", var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Manrope", "Plus Jakarta Sans", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Manrope", ui-serif, Georgia, serif;
+  --font-mono: "JetBrains Mono", var(--font-geist-mono), ui-monospace, monospace;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* ── Promo tints ────────────────────────────────────────────────────── */
+  --promo-bg-blue: #E8F0FE;
+  --promo-bg-warm: #E1F7F4;
+  --promo-bg-green: rgba(15, 181, 166, 0.10);
+  --promo-bg-purple: #EFECFF;
+  --promo-bg-pink: rgba(240, 69, 58, 0.10);
+}
+
+[data-theme="dark"],
+.dark {
+  /* ── Brand — lifted azure/teal for dark surfaces ─────────────────────── */
+  --color-primary: #4C93FF;
+  --color-primary-hover: #6BA6FF;
+  --color-primary-tint: rgba(76, 147, 255, 0.14);
+  --color-primary-glow: rgba(76, 147, 255, 0.24);
+  --color-primary-fg: #04070C;
+
+  --color-accent: #4C93FF;
+  --color-accent-hover: #6BA6FF;
+  --color-accent-tint: rgba(76, 147, 255, 0.14);
+  --color-accent-fg: #04070C;
+
+  --color-teal: #3ED8C6;
+  --color-teal-hover: #5EE0D1;
+  --color-teal-tint: rgba(62, 216, 198, 0.14);
+
+  --color-coral: #FF6A5F;
+  --color-coral-hover: #FF8478;
+  --color-coral-tint: rgba(255, 106, 95, 0.14);
+
+  --color-violet: #9B84FF;
+  --color-violet-hover: #B29EFF;
+  --color-violet-tint: rgba(155, 132, 255, 0.18);
+
+  --color-secondary: #04070C;
+  --color-price: var(--color-primary);
+  --color-cta: var(--color-primary);
+  --color-cta-hover: var(--color-primary-hover);
+  --color-header: #0A0E17;
+  --color-header-secondary: #121826;
+
+  --color-accent-light: var(--color-accent-tint);
+  --color-accent-2: var(--color-teal);
+  --color-accent-2-hover: var(--color-teal-hover);
+  --color-accent-3: var(--color-teal);
+  --color-accent-4: #5A6478;
+
+  /* ── Surfaces — cool dark navy ─────────────────────────────────────── */
+  --color-bg: #0A0E17;
+  --color-bg-elevated: #121826;
+  --color-bg-secondary: #1A2233;
+  --color-bg-tertiary: #232C40;
+  --color-bg-warm: #161E2C;
+  --color-bg-cool: #101828;
+
+  /* ── Text ───────────────────────────────────────────────────────────── */
+  --color-text: #EDF1F5;
+  --color-text-secondary: #98A2B3;
+  --color-text-tertiary: #6B7686;
+  --color-text-inverse: #111826;
+
+  /* ── Lines ─────────────────────────────────────────────────────────── */
+  --color-border: #232C40;
+  --color-border-hover: #2F3A54;
+  --color-border-strong: #3A4667;
+  --color-hairline: rgba(237, 241, 245, 0.08);
+
+  /* ── Status ─────────────────────────────────────────────────────────── */
+  --color-success: #3ED8C6;
+  --color-success-light: rgba(62, 216, 198, 0.14);
+  --color-warning: #F5C543;
+  --color-warning-light: rgba(245, 197, 67, 0.14);
+  --color-danger: #FF6A5F;
+  --color-danger-light: rgba(255, 106, 95, 0.14);
+
+  /* ── Shadows ────────────────────────────────────────────────────────── */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.55);
+  --shadow-xl: 0 32px 80px rgba(0, 0, 0, 0.6);
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.5);
+  --shadow-card-hover: 0 14px 32px rgba(76, 147, 255, 0.30);
+  --shadow-accent: 0 12px 30px rgba(76, 147, 255, 0.35);
+  --shadow-warm: 0 12px 30px rgba(62, 216, 198, 0.28);
+  --shadow-glow-azure: 0 0 32px rgba(76, 147, 255, 0.42);
+  --shadow-glow-violet: 0 0 32px rgba(124, 92, 255, 0.42);
+
+  /* ── Gradients ──────────────────────────────────────────────────────── */
+  --gradient-primary: linear-gradient(135deg, #4C93FF 0%, #3ED8C6 100%);
+  --gradient-accent: linear-gradient(135deg, #4C93FF 0%, #1E6BE6 100%);
+  --gradient-warm: linear-gradient(180deg, #121826 0%, #0A0E17 100%);
+  --gradient-cool: linear-gradient(180deg, #0A0E17 0%, #121826 100%);
+  --gradient-hero: linear-gradient(135deg, #0A0E17 0%, #12233F 60%, #0F2B27 100%);
+  --gradient-badge: linear-gradient(135deg, #4C93FF 0%, #3ED8C6 100%);
+  --gradient-mint: linear-gradient(135deg, rgba(76, 147, 255, 0.12) 0%, rgba(62, 216, 198, 0.10) 100%);
+  --gradient-sunset: linear-gradient(135deg, rgba(76, 147, 255, 0.10) 0%, rgba(62, 216, 198, 0.10) 100%);
+  --gradient-electric: linear-gradient(135deg, #4C93FF 0%, #3ED8C6 100%);
+  --gradient-card-hover: linear-gradient(180deg, rgba(76, 147, 255, 0.06) 0%, rgba(62, 216, 198, 0.06) 100%);
+
+  /* ── Promo tints ────────────────────────────────────────────────────── */
+  --promo-bg-blue: rgba(76, 147, 255, 0.12);
+  --promo-bg-warm: rgba(62, 216, 198, 0.10);
+  --promo-bg-green: rgba(62, 216, 198, 0.10);
+  --promo-bg-purple: rgba(124, 92, 255, 0.14);
+  --promo-bg-pink: rgba(255, 106, 95, 0.10);
+
+  /* ── Tailwind @theme tokens — overrides on dark ─────────────────────── */
+  --color-bone: #0A0E17;
+  --color-paper: #121826;
+  --color-cream: #1A2233;
+  --color-surface: #121826;
+
+  --color-ink: #EDF1F5;
+  --color-ink-2: #98A2B3;
+  --color-ink-3: #6B7686;
+
+  --color-line: #232C40;
+  --color-line-strong: #3A4667;
+
+  --color-success-tint: rgba(62, 216, 198, 0.14);
+  --color-warning-tint: rgba(245, 197, 67, 0.14);
+  --color-danger-tint: rgba(255, 106, 95, 0.14);
+}
+
+/* Dark-theme photo tone smoothing */
+[data-theme="dark"] img[src*=".jpg"],
+[data-theme="dark"] img[src*=".jpeg"],
+[data-theme="dark"] img[src*=".png"],
+[data-theme="dark"] img[src*=".webp"],
+.dark img[src*=".jpg"],
+.dark img[src*=".jpeg"],
+.dark img[src*=".png"],
+.dark img[src*=".webp"] {
+  filter: brightness(0.96) contrast(1.02);
+}
