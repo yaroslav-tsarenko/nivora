@@ -1,17 +1,14 @@
-# electreia
+# nivora
 
-Precision-engineered electronics e-commerce store.
-
-Built by **LORDCARE LIMITED** (Company No. 15982435), Academy House,
-11 Dunraven Place, Bridgend, Mid Glamorgan, United Kingdom, CF31 1JF.
-
-Contact: `info@electreia.co.uk` · `+44 7463 590620`.
+Bright, honest electronics retail — Audio & Headphones, Laptops & Computers,
+Smartphones, TV & Video, Cameras & Photography, Smart Home, Gaming, Wearables
+and Accessories. UK-based.
 
 ## Stack
 
 - Next.js 16 (App Router) · React 19
 - TypeScript · Tailwind CSS v4 (CSS-first config)
-- Prisma · PostgreSQL
+- Prisma · Neon Postgres
 - next-intl (i18n)
 - Framer Motion, lucide-react, tailwind-merge
 
@@ -32,6 +29,7 @@ block in `src/styles/globals.css`. Do not hardcode hex values in components —
 reach for the tokens (`bg-primary`, `text-ink`, `border-line`,
 `font-display`, `font-mono`, ...).
 
-The aesthetic is **cool precision tech**: dark-first, high-contrast, tight
-steel neutrals with an electric-azure accent (`#2E7DFF`) and a vivid violet
-secondary (`#7C5CFF`).
+The aesthetic is **clean light retail**: bright, airy, high-trust storefront
+with clean white surfaces, a trustworthy azure primary (`#1E6BE6`), a fresh
+teal secondary (`#0FB5A6`) and coral (`#F0453A`) reserved for deals & urgency.
+Deep navy `#111826` is used for utility strips and the footer.
