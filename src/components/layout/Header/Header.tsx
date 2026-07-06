@@ -532,7 +532,7 @@ export function Header() {
                     aria-haspopup="listbox"
                     aria-expanded={scopeOpen}
                     onClick={() => setScopeOpen((v) => !v)}
-                    className="inline-flex h-full items-center gap-1.5 border-r border-[color:var(--color-line)] bg-[color:var(--color-bg-secondary)] px-3.5 text-[12px] font-semibold text-[color:var(--color-text)] hover:bg-[#E8F0FE] hover:text-[#1E6BE6]"
+                    className="inline-flex h-full items-center gap-1.5 border-r border-[color:var(--color-line)] bg-[color:var(--color-bg-secondary)] px-3.5 text-[12px] font-semibold text-[color:var(--color-text)] hover:bg-[color:var(--color-primary-tint)] hover:text-[color:var(--color-primary)]"
                   >
                     <span className="max-w-[100px] truncate">
                       {SEARCH_SCOPES.find((s) => s.value === scope)?.label}
@@ -562,7 +562,7 @@ export function Header() {
                               className={[
                                 "flex w-full items-center gap-2 px-3 py-2 text-left text-sm transition-colors",
                                 scope === s.value
-                                  ? "bg-[#E8F0FE] text-[#1E6BE6]"
+                                  ? "bg-[color:var(--color-primary-tint)] text-[color:var(--color-primary)]"
                                   : "text-[color:var(--color-text)] hover:bg-[color:var(--color-bg-secondary)]",
                               ].join(" ")}
                             >
@@ -634,10 +634,10 @@ export function Header() {
                         key={d.slug}
                         href={`/catalog/${d.slug}`}
                         onClick={() => setSearchFocus(false)}
-                        className="flex items-center justify-between rounded-md px-2 py-1.5 text-sm text-[color:var(--color-text)] hover:bg-[#E8F0FE] hover:text-[#1E6BE6]"
+                        className="flex items-center justify-between rounded-md px-2 py-1.5 text-sm text-[color:var(--color-text)] hover:bg-[color:var(--color-primary-tint)] hover:text-[color:var(--color-primary)]"
                       >
                         <span className="inline-flex items-center gap-2">
-                          <d.Icon size={14} className="text-[#1E6BE6]" />
+                          <d.Icon size={14} className="text-[color:var(--color-primary)]" />
                           {d.name}
                         </span>
                         <ArrowRight size={12} className="text-[color:var(--color-text-tertiary)]" />
@@ -699,14 +699,14 @@ export function Header() {
                           <Link
                             href="/auth/register"
                             role="menuitem"
-                            className="mt-1 flex items-center justify-center rounded-lg border border-[color:var(--color-line)] px-3 py-2.5 text-center text-[13px] font-semibold text-[color:var(--color-text)] transition-colors hover:border-[#1E6BE6] hover:text-[#1E6BE6]"
+                            className="mt-1 flex items-center justify-center rounded-lg border border-[color:var(--color-line)] px-3 py-2.5 text-center text-[13px] font-semibold text-[color:var(--color-text)] transition-colors hover:border-[color:var(--color-primary)] hover:text-[color:var(--color-primary)]"
                           >
                             Create account
                           </Link>
                           <div className="my-2 h-px bg-[color:var(--color-line)]" />
                         </>
                       ) : (
-                        <div className="mb-2 rounded-lg bg-[#E8F0FE] p-3">
+                        <div className="mb-2 rounded-lg bg-[color:var(--color-primary-tint)] p-3">
                           <div className="text-[10px] uppercase tracking-[0.14em] text-[color:var(--color-text-tertiary)]">
                             Signed in as
                           </div>
@@ -726,9 +726,9 @@ export function Header() {
                           key={item.label}
                           href={item.href}
                           role="menuitem"
-                          className="flex items-center gap-2 rounded-md px-2 py-2 text-sm text-[color:var(--color-text)] transition-colors hover:bg-[#E8F0FE] hover:text-[#1E6BE6]"
+                          className="flex items-center gap-2 rounded-md px-2 py-2 text-sm text-[color:var(--color-text)] transition-colors hover:bg-[color:var(--color-primary-tint)] hover:text-[color:var(--color-primary)]"
                         >
-                          <item.icon size={14} className="text-[#1E6BE6]" />
+                          <item.icon size={14} className="text-[color:var(--color-primary)]" />
                           {item.label}
                         </Link>
                       ))}
@@ -736,9 +736,9 @@ export function Header() {
                         <NextLink
                           href="/admin"
                           role="menuitem"
-                          className="flex items-center gap-2 rounded-md px-2 py-2 text-sm text-[color:var(--color-text)] transition-colors hover:bg-[#E8F0FE] hover:text-[#1E6BE6]"
+                          className="flex items-center gap-2 rounded-md px-2 py-2 text-sm text-[color:var(--color-text)] transition-colors hover:bg-[color:var(--color-primary-tint)] hover:text-[color:var(--color-primary)]"
                         >
-                          <Shield size={14} className="text-[#1E6BE6]" />
+                          <Shield size={14} className="text-[color:var(--color-primary)]" />
                           Admin panel
                         </NextLink>
                       )}
@@ -857,7 +857,7 @@ export function Header() {
                                   type="button"
                                   onClick={() => removeItem(it.productId)}
                                   aria-label="Remove item"
-                                  className="inline-flex h-7 w-7 items-center justify-center rounded-md text-[color:var(--color-text-tertiary)] hover:bg-[#FDE7E5] hover:text-[#F0453A]"
+                                  className="inline-flex h-7 w-7 items-center justify-center rounded-md text-[color:var(--color-text-tertiary)] hover:bg-[color:var(--color-coral-tint)] hover:text-[color:var(--color-coral)]"
                                 >
                                   <Trash2 size={12} />
                                 </button>
@@ -872,7 +872,7 @@ export function Header() {
                           <div className="mt-3 grid grid-cols-2 gap-2">
                             <Link
                               href="/cart"
-                              className="inline-flex items-center justify-center rounded-lg border border-[color:var(--color-line)] px-2 py-2.5 text-center text-[12px] font-semibold text-[color:var(--color-text)] transition-colors hover:border-[#1E6BE6] hover:text-[#1E6BE6]"
+                              className="inline-flex items-center justify-center rounded-lg border border-[color:var(--color-line)] px-2 py-2.5 text-center text-[12px] font-semibold text-[color:var(--color-text)] transition-colors hover:border-[color:var(--color-primary)] hover:text-[color:var(--color-primary)]"
                             >
                               View basket
                             </Link>
@@ -895,7 +895,7 @@ export function Header() {
           {/* Mobile search row */}
           <div className="border-t border-[color:var(--color-line)] px-4 py-2 lg:hidden">
             <form
-              className="flex items-center rounded-full border-2 border-[color:var(--color-line)] bg-white pl-4 pr-1 focus-within:border-[#1E6BE6] dark:bg-[color:var(--color-bg-elevated)]"
+              className="flex items-center rounded-full border-2 border-[color:var(--color-line)] bg-white pl-4 pr-1 focus-within:border-[color:var(--color-primary)] dark:bg-[color:var(--color-bg-elevated)]"
               onSubmit={handleSearch}
             >
               <Search size={14} className="text-[color:var(--color-text-tertiary)]" />
@@ -942,21 +942,21 @@ export function Header() {
               {/* Rail — vertical department list */}
               <nav
                 aria-label="Departments"
-                className="flex w-[280px] shrink-0 flex-col border-r border-[color:var(--color-line)] bg-[#F5F7FA]"
+                className="flex w-[280px] shrink-0 flex-col border-r border-[color:var(--color-line)] bg-[color:var(--color-bg-secondary)]"
               >
                 <div className="flex items-center justify-between border-b border-[color:var(--color-line)] px-5 py-4">
                   <div className="flex flex-col">
-                    <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#5B6472]">
+                    <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-[color:var(--color-text-secondary)]">
                       Browse
                     </span>
-                    <span className="font-display text-[17px] font-bold text-[#111826]">
+                    <span className="font-display text-[17px] font-bold text-[color:var(--color-text)]">
                       Departments
                     </span>
                   </div>
                   <button
                     onClick={() => setDeptOpen(false)}
                     aria-label="Close"
-                    className="inline-flex h-9 w-9 items-center justify-center rounded-full text-[#5B6472] hover:bg-white hover:text-[#111826]"
+                    className="inline-flex h-9 w-9 items-center justify-center rounded-full text-[color:var(--color-text-secondary)] hover:bg-[color:var(--color-bg-elevated)] hover:text-[color:var(--color-text)]"
                   >
                     <X size={16} />
                   </button>
@@ -978,27 +978,27 @@ export function Header() {
                           className={[
                             "group flex w-full items-center justify-between gap-3 px-5 py-3 text-left text-[13.5px] font-semibold transition-colors",
                             isActive
-                              ? "bg-white text-[#1E6BE6] shadow-[inset_3px_0_0_0_#1E6BE6]"
-                              : "text-[#111826] hover:bg-white",
+                              ? "bg-[color:var(--color-bg-elevated)] text-[color:var(--color-primary)] shadow-[inset_3px_0_0_0_var(--color-primary)]"
+                              : "text-[color:var(--color-text)] hover:bg-[color:var(--color-bg-elevated)]",
                           ].join(" ")}
                         >
                           <span className="inline-flex items-center gap-3">
                             <span className={[
                               "inline-flex h-8 w-8 items-center justify-center rounded-lg transition-colors",
-                              isActive ? "bg-[#E8F0FE] text-[#1E6BE6]" : "bg-[#E8F0FE]/60 text-[#1E6BE6] group-hover:bg-[#E8F0FE]",
+                              isActive ? "bg-[color:var(--color-primary-tint)] text-[color:var(--color-primary)]" : "bg-[color:var(--color-primary-tint)]/60 text-[color:var(--color-primary)] group-hover:bg-[color:var(--color-primary-tint)]",
                             ].join(" ")}>
                               <d.Icon size={16} />
                             </span>
                             <span className="flex flex-col leading-tight">
                               <span>{d.name}</span>
                               {live?._count?.products ? (
-                                <span className="text-[10px] font-medium uppercase tracking-[0.12em] text-[#8A94A6]">
+                                <span className="text-[10px] font-medium uppercase tracking-[0.12em] text-[color:var(--color-text-tertiary)]">
                                   {live._count.products.toLocaleString()} products
                                 </span>
                               ) : null}
                             </span>
                           </span>
-                          <ChevronRight size={13} className="text-[#8A94A6]" />
+                          <ChevronRight size={13} className="text-[color:var(--color-text-tertiary)]" />
                         </button>
                       </li>
                     );
@@ -1008,7 +1008,7 @@ export function Header() {
                   <Link
                     href="/catalog?onSale=true"
                     onClick={() => setDeptOpen(false)}
-                    className="flex items-center justify-between rounded-lg bg-[#FDE7E5] px-3 py-2 text-[12.5px] font-bold text-[#F0453A] transition-colors hover:bg-[#F0453A] hover:text-white"
+                    className="flex items-center justify-between rounded-lg bg-[color:var(--color-coral-tint)] px-3 py-2 text-[12.5px] font-bold text-[color:var(--color-coral)] transition-colors hover:bg-[#F0453A] hover:text-white"
                   >
                     <span className="inline-flex items-center gap-2">
                       <Percent size={14} /> Today's deals
@@ -1021,18 +1021,18 @@ export function Header() {
               {/* Secondary panel — active dept sub-categories, brands, promo */}
               <div className="flex flex-1 flex-col overflow-y-auto">
                 <div className="border-b border-[color:var(--color-line)] px-8 py-6">
-                  <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#5B6472]">
+                  <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-[color:var(--color-text-secondary)]">
                     Department
                   </div>
                   <Link
                     href={`/catalog/${activeDeptData.slug}`}
                     onClick={() => setDeptOpen(false)}
-                    className="mt-1 inline-flex items-center gap-2 font-display text-[26px] font-bold text-[#111826] hover:text-[#1E6BE6]"
+                    className="mt-1 inline-flex items-center gap-2 font-display text-[26px] font-bold text-[color:var(--color-text)] hover:text-[color:var(--color-primary)]"
                   >
                     {activeDeptData.name}
-                    <ArrowRight size={18} className="text-[#1E6BE6]" />
+                    <ArrowRight size={18} className="text-[color:var(--color-primary)]" />
                   </Link>
-                  <p className="mt-1 text-[14px] text-[#5B6472]">
+                  <p className="mt-1 text-[14px] text-[color:var(--color-text-secondary)]">
                     {activeDeptData.tagline}
                   </p>
                 </div>
@@ -1040,7 +1040,7 @@ export function Header() {
                 <div className="grid flex-1 grid-cols-[1fr_240px] gap-6 px-8 py-6">
                   <div className="flex flex-col gap-5">
                     <div>
-                      <div className="mb-2 text-[10px] font-bold uppercase tracking-[0.14em] text-[#5B6472]">
+                      <div className="mb-2 text-[10px] font-bold uppercase tracking-[0.14em] text-[color:var(--color-text-secondary)]">
                         Shop by category
                       </div>
                       <div className="grid grid-cols-2 gap-x-6 gap-y-1">
@@ -1060,11 +1060,11 @@ export function Header() {
                             key={sub.slug + sub.label}
                             href={`/catalog/${sub.slug}`}
                             onClick={() => setDeptOpen(false)}
-                            className="group flex items-center justify-between rounded-md px-2 py-1.5 text-[13.5px] text-[#111826] transition-colors hover:bg-[#E8F0FE] hover:text-[#1E6BE6]"
+                            className="group flex items-center justify-between rounded-md px-2 py-1.5 text-[13.5px] text-[color:var(--color-text)] transition-colors hover:bg-[color:var(--color-primary-tint)] hover:text-[color:var(--color-primary)]"
                           >
                             <span>{sub.label}</span>
                             {typeof sub.count === "number" ? (
-                              <span className="text-[11px] text-[#8A94A6] tabular-nums">
+                              <span className="text-[11px] text-[color:var(--color-text-tertiary)] tabular-nums">
                                 {sub.count}
                               </span>
                             ) : (
@@ -1079,7 +1079,7 @@ export function Header() {
                     </div>
 
                     <div className="border-t border-[color:var(--color-line)] pt-4">
-                      <div className="mb-2 text-[10px] font-bold uppercase tracking-[0.14em] text-[#5B6472]">
+                      <div className="mb-2 text-[10px] font-bold uppercase tracking-[0.14em] text-[color:var(--color-text-secondary)]">
                         Featured brands
                       </div>
                       <div className="flex flex-wrap items-center gap-1.5">
@@ -1088,7 +1088,7 @@ export function Header() {
                             key={b}
                             href={`/search?q=${encodeURIComponent(b)}`}
                             onClick={() => setDeptOpen(false)}
-                            className="inline-flex items-center rounded-full border border-[color:var(--color-line)] bg-white px-2.5 py-1 text-[11.5px] font-semibold text-[#111826] transition-colors hover:border-[#1E6BE6] hover:bg-[#E8F0FE] hover:text-[#1E6BE6]"
+                            className="inline-flex items-center rounded-full border border-[color:var(--color-line)] bg-[color:var(--color-bg-elevated)] px-2.5 py-1 text-[11.5px] font-semibold text-[color:var(--color-text)] transition-colors hover:border-[color:var(--color-primary)] hover:bg-[color:var(--color-primary-tint)] hover:text-[color:var(--color-primary)]"
                           >
                             {b}
                           </Link>
@@ -1175,7 +1175,7 @@ export function Header() {
                           aria-expanded={isOpen}
                         >
                           <span className="inline-flex items-center gap-3">
-                            <d.Icon size={16} className="text-[#1E6BE6]" />
+                            <d.Icon size={16} className="text-[color:var(--color-primary)]" />
                             {d.name}
                           </span>
                           <ChevronDown
@@ -1196,7 +1196,7 @@ export function Header() {
                                 <Link
                                   href={`/catalog/${d.slug}`}
                                   onClick={() => setMobileOpen(false)}
-                                  className="rounded-md px-2 py-1.5 text-sm font-semibold text-[#1E6BE6]"
+                                  className="rounded-md px-2 py-1.5 text-sm font-semibold text-[color:var(--color-primary)]"
                                 >
                                   Shop all {d.short}
                                 </Link>
@@ -1246,7 +1246,7 @@ export function Header() {
                       onClick={() => setMobileOpen(false)}
                       className="flex items-center gap-3 rounded-md px-2 py-2 text-sm font-semibold text-[color:var(--color-text)] hover:bg-[color:var(--color-bg-secondary)]"
                     >
-                      <l.icon size={14} className="text-[#1E6BE6]" />
+                      <l.icon size={14} className="text-[color:var(--color-primary)]" />
                       {l.label}
                     </Link>
                   ))}
@@ -1285,7 +1285,7 @@ export function Header() {
                     <Link
                       href="/auth/register"
                       onClick={() => setMobileOpen(false)}
-                      className="inline-flex h-11 items-center justify-center rounded-full border-2 border-[#1E6BE6] text-sm font-semibold text-[#1E6BE6]"
+                      className="inline-flex h-11 items-center justify-center rounded-full border-2 border-[#1E6BE6] text-sm font-semibold text-[color:var(--color-primary)]"
                     >
                       Register
                     </Link>

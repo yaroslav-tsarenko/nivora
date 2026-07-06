@@ -143,7 +143,7 @@ function LinkGroup({ group }: { group: Group }) {
       </button>
       {/* Desktop editorial header */}
       <h3 className="hidden pb-5 font-display text-[16px] font-bold text-white md:block">
-        <span className="relative inline-block after:absolute after:-bottom-2 after:left-0 after:h-0.5 after:w-8 after:rounded-full after:bg-[#0FB5A6]">
+        <span className="relative inline-block after:absolute after:-bottom-2 after:left-0 after:h-0.5 after:w-8 after:rounded-full after:bg-[color:var(--color-teal)]">
           {group.title}
         </span>
       </h3>
@@ -175,30 +175,30 @@ export function Footer() {
   return (
     <footer className="mt-auto" role="contentinfo">
       {/* ── A · TOP BAND — full-width newsletter + trade-in ───────── */}
-      <div className="relative bg-[#F5F7FA]">
+      <div className="relative bg-[color:var(--color-bg-secondary)]">
         <div className="mx-auto grid max-w-[1280px] gap-4 px-4 py-14 sm:px-6 lg:grid-cols-[2fr_1fr] lg:gap-6 lg:px-8">
           {/* Newsletter — leading, larger */}
-          <div className="relative flex flex-col gap-5 overflow-hidden rounded-3xl border border-[#E3E7EC] bg-white p-8 shadow-[0_1px_2px_rgba(17,24,38,0.04)] md:p-10">
-            <div aria-hidden className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-[#E8F0FE] opacity-70" />
-            <div aria-hidden className="pointer-events-none absolute -bottom-24 -right-8 h-64 w-64 rounded-full bg-[#E1F7F4] opacity-50" />
+          <div className="relative flex flex-col gap-5 overflow-hidden rounded-3xl border border-[color:var(--color-line)] bg-[color:var(--color-bg-elevated)] p-8 shadow-[0_1px_2px_rgba(17,24,38,0.04)] md:p-10">
+            <div aria-hidden className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-[color:var(--color-primary-tint)] opacity-70" />
+            <div aria-hidden className="pointer-events-none absolute -bottom-24 -right-8 h-64 w-64 rounded-full bg-[color:var(--color-teal-tint)] opacity-50" />
 
             <div className="relative flex items-center gap-2.5">
               <span className="inline-flex h-9 items-center gap-1.5 rounded-full bg-[#F0453A] px-3 text-[10.5px] font-bold uppercase tracking-[0.14em] text-white">
                 <Sparkles size={12} /> Members-only
               </span>
-              <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[#5B6472]">
+              <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[color:var(--color-text-secondary)]">
                 Save 10% on your first order over £100
               </span>
             </div>
 
             <div className="relative">
-              <h2 className="font-display text-[26px] font-extrabold leading-tight text-[#111826] md:text-[32px]">
+              <h2 className="font-display text-[26px] font-extrabold leading-tight text-[color:var(--color-text)] md:text-[32px]">
                 Deals, drops & price alerts —{" "}
                 <span className="bg-gradient-to-r from-[#1E6BE6] to-[#0FB5A6] bg-clip-text text-transparent">
                   straight to your inbox.
                 </span>
               </h2>
-              <p className="mt-3 max-w-lg text-[14px] text-[#5B6472]">
+              <p className="mt-3 max-w-lg text-[14px] text-[color:var(--color-text-secondary)]">
                 Join 120,000+ shoppers who get weekly deals, early access to
                 clearance sales and a heads-up on restocks. One click to
                 unsubscribe.
@@ -234,7 +234,7 @@ export function Footer() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.co.uk"
-                className="min-w-0 flex-1 rounded-full border border-[#E3E7EC] bg-white px-5 py-3.5 text-[14.5px] text-[#111826] placeholder:text-[#8A94A6] transition-all focus:border-[#1E6BE6] focus:outline-none focus:shadow-[0_0_0_4px_rgba(30,107,230,0.14)]"
+                className="min-w-0 flex-1 rounded-full border border-[color:var(--color-line)] bg-[color:var(--color-bg-elevated)] px-5 py-3.5 text-[14.5px] text-[color:var(--color-text)] placeholder:text-[color:var(--color-text-tertiary)] transition-all focus:border-[color:var(--color-primary)] focus:outline-none focus:shadow-[0_0_0_4px_rgba(30,107,230,0.14)]"
               />
               <button
                 type="submit"
@@ -244,14 +244,14 @@ export function Footer() {
               </button>
             </form>
             {subscribed ? (
-              <p className="relative inline-flex items-center gap-2 text-[13px] font-semibold text-[#0B9A8D]">
-                <span aria-hidden className="inline-block h-1.5 w-1.5 rounded-full bg-[#0FB5A6]" />
+              <p className="relative inline-flex items-center gap-2 text-[13px] font-semibold text-[color:var(--color-teal-hover)]">
+                <span aria-hidden className="inline-block h-1.5 w-1.5 rounded-full bg-[color:var(--color-teal)]" />
                 Thanks — your 10% off code is on its way.
               </p>
             ) : (
-              <p className="relative text-[11.5px] text-[#8A94A6]">
+              <p className="relative text-[11.5px] text-[color:var(--color-text-tertiary)]">
                 By subscribing you agree to our{" "}
-                <Link href="/policies/privacy" className="underline hover:text-[#1E6BE6]">
+                <Link href="/policies/privacy" className="underline hover:text-[color:var(--color-primary)]">
                   Privacy Policy
                 </Link>
                 .
@@ -262,7 +262,7 @@ export function Footer() {
           {/* Trade-in */}
           <Link
             href="/contact"
-            className="group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-[#0FB5A6]/25 bg-gradient-to-br from-[#1E6BE6] to-[#0FB5A6] p-8 text-white transition-all hover:shadow-[0_16px_36px_-14px_rgba(30,107,230,0.5)]"
+            className="group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-[color:var(--color-teal)]/25 bg-gradient-to-br from-[#1E6BE6] to-[#0FB5A6] p-8 text-white transition-all hover:shadow-[0_16px_36px_-14px_rgba(30,107,230,0.5)]"
           >
             <div aria-hidden className="pointer-events-none absolute inset-0 retail-dots opacity-25" />
             <div className="relative z-10 flex items-center gap-2">
@@ -340,7 +340,7 @@ export function Footer() {
 
             <Link
               href="/catalog?onSale=true"
-              className="mt-2 inline-flex w-fit items-center gap-2 rounded-full bg-white px-4 py-2.5 text-[12.5px] font-bold text-[#111826] transition-all hover:bg-[#E8F0FE] hover:text-[#1E6BE6]"
+              className="mt-2 inline-flex w-fit items-center gap-2 rounded-full bg-white px-4 py-2.5 text-[12.5px] font-bold text-[color:var(--color-text)] transition-all hover:bg-[color:var(--color-primary-tint)] hover:text-[color:var(--color-primary)]"
             >
               <Percent size={13} /> Explore today's deals
               <ArrowRight size={12} />
@@ -408,7 +408,7 @@ export function Footer() {
           {/* Rating + social */}
           <div className="flex flex-wrap items-center gap-4">
             <div className="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-3 py-2">
-              <div className="flex items-center gap-0.5 text-[#0FB5A6]">
+              <div className="flex items-center gap-0.5 text-[color:var(--color-teal)]">
                 {[0, 1, 2, 3, 4].map((i) => (
                   <Star key={i} size={12} className="fill-current" strokeWidth={0} />
                 ))}

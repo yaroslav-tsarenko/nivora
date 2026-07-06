@@ -218,7 +218,7 @@ export function HeroCarousel(_props: Props) {
     >
       {/* ── 1. FULL-BLEED primary campaign band (edge-to-edge) ────── */}
       <div
-        className="relative overflow-hidden bg-gradient-to-br from-[#F5F7FA] via-[#E8F0FE] to-[#E1F7F4]"
+        className="relative overflow-hidden bg-gradient-to-br from-[#F5F7FA] via-[#E8F0FE] to-[#E1F7F4] dark:from-[color:var(--color-bg)] dark:via-[color:var(--color-bg-elevated)] dark:to-[color:var(--color-bg-cool)]"
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}
         onTouchStart={onTouchStart}
@@ -245,7 +245,7 @@ export function HeroCarousel(_props: Props) {
               sizes="100vw"
               className="object-cover opacity-[0.16]"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-white/85 via-white/50 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-white/85 via-white/50 to-transparent dark:from-[color:var(--color-bg)]/90 dark:via-[color:var(--color-bg)]/60 dark:to-transparent" />
           </motion.div>
         </AnimatePresence>
 
@@ -263,22 +263,22 @@ export function HeroCarousel(_props: Props) {
                 <Sparkles size={11} />
                 {slide.eyebrow}
               </span>
-              <h1 className="font-display text-[2.5rem] font-extrabold leading-[1.02] tracking-tight text-[#111826] md:text-[3rem] lg:text-[3.6rem]">
+              <h1 className="font-display text-[2.5rem] font-extrabold leading-[1.02] tracking-tight text-[color:var(--color-text)] md:text-[3rem] lg:text-[3.6rem]">
                 {slide.headline}{" "}
                 <span className="bg-gradient-to-r from-[#1E6BE6] to-[#0FB5A6] bg-clip-text text-transparent">
                   {slide.headlineAccent}
                 </span>
               </h1>
-              <p className="max-w-lg text-[15.5px] leading-relaxed text-[#5B6472] md:text-base">
+              <p className="max-w-lg text-[15.5px] leading-relaxed text-[color:var(--color-text-secondary)] md:text-base">
                 {slide.sub}
               </p>
 
               <div className="flex flex-wrap items-center gap-3">
-                <div className="inline-flex items-center gap-2 rounded-full border border-[#0FB5A6]/25 bg-[#E1F7F4] px-4 py-2">
-                  <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#0B9A8D]">
+                <div className="inline-flex items-center gap-2 rounded-full border border-[color:var(--color-teal)]/25 bg-[color:var(--color-teal-tint)] px-4 py-2">
+                  <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-[color:var(--color-teal-hover)]">
                     From
                   </span>
-                  <span className="text-[17px] font-bold tabular-nums text-[#0B9A8D]">
+                  <span className="text-[17px] font-bold tabular-nums text-[color:var(--color-teal-hover)]">
                     {slide.priceFrom}
                   </span>
                 </div>
@@ -294,7 +294,7 @@ export function HeroCarousel(_props: Props) {
                 </Link>
                 <Link
                   href={slide.secondary.href}
-                  className="inline-flex items-center gap-2 rounded-full border-2 border-[#111826] px-5 py-3 text-[13.5px] font-bold text-[#111826] transition-colors hover:bg-[#111826] hover:text-white"
+                  className="inline-flex items-center gap-2 rounded-full border-2 border-[color:var(--color-text)] px-5 py-3 text-[13.5px] font-bold text-[color:var(--color-text)] transition-colors hover:bg-[color:var(--color-text)] hover:text-[color:var(--color-bg)]"
                 >
                   {slide.secondary.label}
                 </Link>
@@ -314,12 +314,12 @@ export function HeroCarousel(_props: Props) {
                   className={[
                     "h-1.5 rounded-full transition-all",
                     i === current
-                      ? "w-10 bg-[#1E6BE6]"
-                      : "w-2.5 bg-[#111826]/20 hover:bg-[#111826]/40",
+                      ? "w-10 bg-[color:var(--color-primary)]"
+                      : "w-2.5 bg-[color:var(--color-text)]/20 hover:bg-[color:var(--color-text)]/40",
                   ].join(" ")}
                 />
               ))}
-              <span className="ml-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#5B6472] tabular-nums">
+              <span className="ml-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-[color:var(--color-text-secondary)] tabular-nums">
                 {String(current + 1).padStart(2, "0")} / {String(slides.length).padStart(2, "0")}
               </span>
             </div>
@@ -328,7 +328,7 @@ export function HeroCarousel(_props: Props) {
                 type="button"
                 onClick={() => setPaused((p) => !p)}
                 aria-label={paused ? "Play" : "Pause"}
-                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[color:var(--color-line)] bg-white text-[#111826] transition-colors hover:border-[#1E6BE6] hover:text-[#1E6BE6]"
+                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[color:var(--color-line)] bg-[color:var(--color-bg-elevated)] text-[color:var(--color-text)] transition-colors hover:border-[color:var(--color-primary)] hover:text-[color:var(--color-primary)]"
               >
                 {paused ? <Play size={13} /> : <Pause size={13} />}
               </button>
@@ -336,7 +336,7 @@ export function HeroCarousel(_props: Props) {
                 type="button"
                 onClick={prev}
                 aria-label="Previous slide"
-                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[color:var(--color-line)] bg-white text-[#111826] transition-colors hover:border-[#1E6BE6] hover:text-[#1E6BE6]"
+                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[color:var(--color-line)] bg-[color:var(--color-bg-elevated)] text-[color:var(--color-text)] transition-colors hover:border-[color:var(--color-primary)] hover:text-[color:var(--color-primary)]"
               >
                 <ChevronLeft size={14} />
               </button>
@@ -344,7 +344,7 @@ export function HeroCarousel(_props: Props) {
                 type="button"
                 onClick={next}
                 aria-label="Next slide"
-                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[color:var(--color-line)] bg-white text-[#111826] transition-colors hover:border-[#1E6BE6] hover:text-[#1E6BE6]"
+                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[color:var(--color-line)] bg-[color:var(--color-bg-elevated)] text-[color:var(--color-text)] transition-colors hover:border-[color:var(--color-primary)] hover:text-[color:var(--color-primary)]"
               >
                 <ChevronRight size={14} />
               </button>
@@ -359,21 +359,21 @@ export function HeroCarousel(_props: Props) {
           {promoTiles.map((tile) => {
             const chipClasses =
               tile.accent === "coral"
-                ? "bg-[#FDE7E5] text-[#F0453A]"
+                ? "bg-[color:var(--color-coral-tint)] text-[color:var(--color-coral)]"
                 : tile.accent === "teal"
-                  ? "bg-[#E1F7F4] text-[#0B9A8D]"
-                  : "bg-[#E8F0FE] text-[#1E6BE6]";
+                  ? "bg-[color:var(--color-teal-tint)] text-[color:var(--color-teal-hover)]"
+                  : "bg-[color:var(--color-primary-tint)] text-[color:var(--color-primary)]";
             const border =
               tile.accent === "coral"
-                ? "hover:border-[#F0453A]"
+                ? "hover:border-[color:var(--color-coral)]"
                 : tile.accent === "teal"
-                  ? "hover:border-[#0FB5A6]"
-                  : "hover:border-[#1E6BE6]";
+                  ? "hover:border-[color:var(--color-teal)]"
+                  : "hover:border-[color:var(--color-primary)]";
             return (
               <Link
                 key={tile.id}
                 href={tile.href}
-                className={`group relative flex min-h-[150px] flex-col justify-between overflow-hidden rounded-3xl border border-[color:var(--color-line)] bg-white p-6 text-[#111826] transition-all hover:-translate-y-0.5 hover:shadow-[0_16px_36px_-14px_rgba(30,107,230,0.30)] ${border}`}
+                className={`group relative flex min-h-[150px] flex-col justify-between overflow-hidden rounded-3xl border border-[color:var(--color-line)] bg-[color:var(--color-bg-elevated)] p-6 text-[color:var(--color-text)] transition-all hover:-translate-y-0.5 hover:shadow-[0_16px_36px_-14px_rgba(30,107,230,0.30)] ${border}`}
               >
                 <Image
                   src={tile.image}
@@ -392,14 +392,14 @@ export function HeroCarousel(_props: Props) {
                   </span>
                   <ArrowRight
                     size={15}
-                    className="text-[#5B6472] transition-transform group-hover:translate-x-0.5"
+                    className="text-[color:var(--color-text-secondary)] transition-transform group-hover:translate-x-0.5"
                   />
                 </div>
                 <div className="relative z-10">
                   <div className="font-display text-[19px] font-bold leading-tight">
                     {tile.title}
                   </div>
-                  <div className="mt-1.5 text-[13.5px] text-[#5B6472]">
+                  <div className="mt-1.5 text-[13.5px] text-[color:var(--color-text-secondary)]">
                     {tile.sub}
                   </div>
                 </div>
@@ -417,12 +417,12 @@ export function HeroCarousel(_props: Props) {
               <Link
                 key={c.label}
                 href={c.href}
-                className="group flex min-w-[112px] flex-1 shrink-0 flex-col items-center justify-center gap-1.5 border-r border-[color:var(--color-line)] px-4 py-3.5 text-[color:var(--color-text)] transition-colors last:border-r-0 hover:bg-[#E8F0FE] hover:text-[#1E6BE6]"
+                className="group flex min-w-[112px] flex-1 shrink-0 flex-col items-center justify-center gap-1.5 border-r border-[color:var(--color-line)] px-4 py-3.5 text-[color:var(--color-text)] transition-colors last:border-r-0 hover:bg-[color:var(--color-primary-tint)] hover:text-[color:var(--color-primary)]"
               >
                 <c.icon
                   size={20}
                   strokeWidth={1.75}
-                  className="text-[#1E6BE6] transition-transform group-hover:scale-110"
+                  className="text-[color:var(--color-primary)] transition-transform group-hover:scale-110"
                 />
                 <span className="whitespace-nowrap text-[12.5px] font-semibold">
                   {c.label}
@@ -441,7 +441,7 @@ export function HeroCarousel(_props: Props) {
               key={r.label}
               className="inline-flex items-center gap-2.5 rounded-xl border border-[color:var(--color-line)] bg-[color:var(--color-bg-secondary)] px-3.5 py-2.5"
             >
-              <r.icon size={16} className="shrink-0 text-[#0FB5A6]" />
+              <r.icon size={16} className="shrink-0 text-[color:var(--color-teal)]" />
               <span className="text-[12.5px] font-semibold text-[color:var(--color-text)]">
                 {r.label}
               </span>
