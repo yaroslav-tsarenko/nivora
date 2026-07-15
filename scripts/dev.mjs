@@ -1,7 +1,7 @@
 import { spawn, execSync } from "child_process";
 
 const DB_PORTS = [51213, 51214, 51215];
-const NEXT_PORT = 3000;
+const NEXT_PORT = parseInt(process.env.PORT || "9999", 10);
 
 function killPort(port) {
   try {
@@ -31,8 +31,8 @@ let nextStarted = false;
 function startNext() {
   if (nextStarted) return;
   nextStarted = true;
-  console.log("[dev] Starting Next.js...\n");
-  const next = spawn("npx", ["next", "dev"], {
+  console.log(`[dev] Starting Next.js on port ${NEXT_PORT}...\n`);
+  const next = spawn("npx", ["next", "dev", "-p", String(NEXT_PORT)], {
     stdio: "inherit",
     env: { ...process.env, FORCE_COLOR: "1" },
   });
@@ -62,7 +62,9 @@ db.stderr.on("data", (chunk) => {
 setTimeout(() => startNext(), 5000);
 
 db.on("exit", (code) => {
-  if (!nextStarted) {
+  if (code === 0) {
+    startNext();
+  } else if (!nextStarted) {
     console.error("[dev] Prisma Postgres exited unexpectedly with code", code);
     process.exit(1);
   }
