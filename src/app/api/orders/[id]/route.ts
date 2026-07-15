@@ -10,7 +10,20 @@ export async function GET(
     const order = await prisma.order.findUnique({
       where: { id },
       include: {
-        items: true,
+        items: {
+          include: {
+            product: {
+              select: {
+                slug: true,
+                quantity: true,
+                images: {
+                  select: { url: true },
+                  take: 1,
+                },
+              },
+            },
+          },
+        },
         user: { select: { name: true, email: true, avatarUrl: true } },
       },
     });
