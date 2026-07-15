@@ -36,12 +36,18 @@ export interface OrderDetail {
   notes: string | null;
   items: {
     id: string;
+    productId: string;
     productName: string;
     productSku: string;
     variantName: string | null;
     quantity: number;
     price: number;
     total: number;
+    product?: {
+      slug: string;
+      quantity: number;
+      images: { url: string }[];
+    } | null;
   }[];
   createdAt: string;
   updatedAt: string;

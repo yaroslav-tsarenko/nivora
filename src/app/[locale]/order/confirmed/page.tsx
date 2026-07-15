@@ -2,23 +2,46 @@
 
 import { useEffect, useState, Suspense } from "react";
 import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/routing";
+import { Link, useRouter } from "@/i18n/routing";
 import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/Button";
-import { CheckCircle, Package, MapPin, Truck, Mail, ChevronRight } from "lucide-react";
+import { CheckCircle, Package, MapPin, Truck, Mail, ChevronRight, XCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import { useCurrency } from "@/providers/CurrencyProvider";
+import { useCart } from "@/providers/CartProvider";
 import { formatPrice } from "@/lib/utils/format-price";
 import { LoadingSpinner } from "@/components/shared/LoadingSpinner/LoadingSpinner";
+import { toast } from "sonner";
 import type { OrderDetail } from "@/types/order";
 
 function ConfirmedContent() {
   const t = useTranslations("notifications");
   const { currency, convert } = useCurrency();
+  const { addItem } = useCart();
+  const router = useRouter();
   const searchParams = useSearchParams();
   const orderId = searchParams.get("orderId");
   const [order, setOrder] = useState<OrderDetail | null>(null);
   const [loading, setLoading] = useState(!!orderId);
+
+  const handleReorder = () => {
+    if (!order) return;
+    for (const item of order.items) {
+      addItem({
+        productId: item.productId,
+        name: item.productName,
+        sku: item.productSku,
+        price: Number(item.price),
+        quantity: item.quantity,
+        variantName: item.variantName || undefined,
+        imageUrl: item.product?.images?.[0]?.url || null,
+        slug: item.product?.slug || item.productSku.toLowerCase(),
+        maxQuantity: item.product?.quantity || 99,
+      });
+    }
+    toast.success("Items restored to your cart!");
+    router.push("/checkout");
+  };
 
   useEffect(() => {
     if (!orderId) return;
@@ -31,35 +54,59 @@ function ConfirmedContent() {
 
   if (loading) return <LoadingSpinner />;
 
-  return (
-    <div className="mx-auto mb-16 mt-8 max-w-2xl px-4">
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.4, ease: "easeOut" }}
-        className="mb-8 text-center"
-      >
+    const isFailed = order?.paymentStatus === "FAILED" || order?.status === "CANCELLED";
+
+    return (
+      <div className="mx-auto mb-16 mt-8 max-w-2xl px-4">
         <motion.div
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-          className="mx-auto mb-4 flex h-[72px] w-[72px] items-center justify-center rounded-full bg-[color:var(--color-success)]/12 text-[color:var(--color-success)]"
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
+          className="mb-8 text-center"
         >
-          <CheckCircle size={40} strokeWidth={1.5} />
+          {isFailed ? (
+            <>
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+                className="mx-auto mb-4 flex h-[72px] w-[72px] items-center justify-center rounded-full bg-[color:var(--color-danger)]/12 text-[color:var(--color-danger)]"
+              >
+                <XCircle size={40} strokeWidth={1.5} />
+              </motion.div>
+              <span className="eyebrow text-[color:var(--color-danger)]">Payment Failed</span>
+              <h1 className="mb-2 mt-2 font-serif text-3xl font-medium tracking-tight text-[color:var(--color-text)] sm:text-[40px]">
+                Payment Unsuccessful
+              </h1>
+              <p className="text-[15px] text-[color:var(--color-text-secondary)]">
+                We could not process your transaction. Your order has been cancelled and no funds were charged.
+              </p>
+            </>
+          ) : (
+            <>
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+                className="mx-auto mb-4 flex h-[72px] w-[72px] items-center justify-center rounded-full bg-[color:var(--color-success)]/12 text-[color:var(--color-success)]"
+              >
+                <CheckCircle size={40} strokeWidth={1.5} />
+              </motion.div>
+              <span className="eyebrow">Order confirmed</span>
+              <h1 className="mb-2 mt-2 font-serif text-3xl font-medium tracking-tight text-[color:var(--color-text)] sm:text-[40px]">
+                {t("orderPlaced")}
+              </h1>
+              <p className="text-[15px] text-[color:var(--color-text-secondary)]">
+                Thank you for your order. We&apos;ll send a confirmation email shortly.
+              </p>
+            </>
+          )}
+          {order && (
+            <p className="mt-3 text-sm text-[color:var(--color-text-tertiary)]">
+              Order <strong className="text-[color:var(--color-text)]">#{order.orderNumber.slice(-8)}</strong>
+            </p>
+          )}
         </motion.div>
-        <span className="eyebrow">Order confirmed</span>
-        <h1 className="mb-2 mt-2 font-serif text-3xl font-medium tracking-tight text-[color:var(--color-text)] sm:text-[40px]">
-          {t("orderPlaced")}
-        </h1>
-        <p className="text-[15px] text-[color:var(--color-text-secondary)]">
-          Thank you for your order. We&apos;ll send a confirmation email shortly.
-        </p>
-        {order && (
-          <p className="mt-3 text-sm text-[color:var(--color-text-tertiary)]">
-            Order <strong className="text-[color:var(--color-text)]">#{order.orderNumber.slice(-8)}</strong>
-          </p>
-        )}
-      </motion.div>
 
       {order && (
         <motion.div
@@ -141,18 +188,20 @@ function ConfirmedContent() {
         </motion.div>
       )}
 
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5 }}
-        className="mb-6 flex items-center gap-2.5 rounded-lg border border-[color:var(--color-accent)]/30 bg-[color:var(--color-accent-tint)] px-4 py-3.5 text-[13px]"
-      >
-        <Mail size={16} className="shrink-0 text-[color:var(--color-accent)]" />
-        <span className="text-[color:var(--color-text)]">
-          A confirmation email has been sent to{" "}
-          <strong>{order?.customerEmail || "your email"}</strong>
-        </span>
-      </motion.div>
+      {!isFailed && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+          className="mb-6 flex items-center gap-2.5 rounded-lg border border-[color:var(--color-accent)]/30 bg-[color:var(--color-accent-tint)] px-4 py-3.5 text-[13px]"
+        >
+          <Mail size={16} className="shrink-0 text-[color:var(--color-accent)]" />
+          <span className="text-[color:var(--color-text)]">
+            A confirmation email has been sent to{" "}
+            <strong>{order?.customerEmail || "your email"}</strong>
+          </span>
+        </motion.div>
+      )}
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -160,12 +209,25 @@ function ConfirmedContent() {
         transition={{ delay: 0.6 }}
         className="flex flex-wrap gap-3"
       >
-        <Button as={Link} href="/account/orders" variant="bordered" className="flex-1 basis-[200px]" endContent={<ChevronRight size={16} />}>
-          View Orders
-        </Button>
-        <Button as={Link} href="/catalog" color="primary" className="flex-1 basis-[200px]">
-          Continue Shopping
-        </Button>
+        {isFailed ? (
+          <>
+            <Button onClick={handleReorder} color="primary" className="flex-1 basis-[200px]">
+              Reorder & Try Again
+            </Button>
+            <Button as={Link} href="/catalog" variant="bordered" className="flex-1 basis-[200px]">
+              Continue Shopping
+            </Button>
+          </>
+        ) : (
+          <>
+            <Button as={Link} href="/account/orders" variant="bordered" className="flex-1 basis-[200px]" endContent={<ChevronRight size={16} />}>
+              View Orders
+            </Button>
+            <Button as={Link} href="/catalog" color="primary" className="flex-1 basis-[200px]">
+              Continue Shopping
+            </Button>
+          </>
+        )}
       </motion.div>
     </div>
   );
