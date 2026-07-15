@@ -5,6 +5,7 @@ import { getSessionUser } from "@/lib/auth";
 import { sendOrderConfirmationEmail, sendOrderInvoiceEmail } from "@/lib/email";
 import { scheduleEmail } from "@/lib/email-jobs";
 import { resolveDiscount, markDiscountUsed } from "@/lib/discounts";
+import { createPayadmitPayment } from "@/lib/payadmit";
 
 export async function POST(request: NextRequest) {
   try {
@@ -77,7 +78,7 @@ export async function POST(request: NextRequest) {
         discountCode: discount?.code ?? null,
         discountPercent: discount?.percent ?? null,
         total,
-        paymentMethod: "manual",
+        paymentMethod: "payadmit",
         items: { create: orderItems },
       },
       include: { items: true },
@@ -94,28 +95,55 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    const emailPayload = {
-      orderId: order.id,
-      orderNumber: order.orderNumber,
-      customerName: order.customerName,
-      customerEmail: order.customerEmail,
-      items: order.items,
-      subtotal: order.subtotal,
-      taxAmount: order.taxAmount,
-      shippingCost: order.shippingCost,
-      discountAmount: order.discountAmount,
-      total: order.total,
-      shippingMethod: order.shippingMethod || "standard",
-      shippingAddress: validated.shipping,
-      createdAt: order.createdAt,
-    };
+    const userIp = request.headers.get("x-forwarded-for")?.split(",")[0].trim() ||
+                   request.headers.get("x-real-ip") ||
+                   "127.0.0.1";
+    const locale = body.locale || "en";
+    const siteUrl = request.nextUrl.origin;
 
-    scheduleEmail(`order confirmation ${order.orderNumber}`, () => sendOrderConfirmationEmail(emailPayload));
-    scheduleEmail(`order invoice ${order.orderNumber}`, () => sendOrderInvoiceEmail(emailPayload));
+    let redirectUrl: string;
+    let paymentId: string;
 
-    return NextResponse.json(order, { status: 201 });
-  } catch (error) {
+    try {
+      const payadmitResult = await createPayadmitPayment({
+        orderId: order.id,
+        orderNumber: order.orderNumber,
+        total: Number(order.total),
+        currency: "EUR",
+        locale,
+        userIp,
+        customerEmail: order.customerEmail,
+        customerPhone: order.customerPhone,
+        shippingAddress: validated.shipping,
+        userId: user?.id,
+        siteUrl,
+      });
+      redirectUrl = payadmitResult.redirectUrl;
+      paymentId = payadmitResult.paymentId;
+
+      await prisma.order.update({
+        where: { id: order.id },
+        data: { paymentId },
+      });
+    } catch (paymentError) {
+      console.error("Payadmit payment creation failed:", paymentError);
+      // Cancel the order and restore stock
+      await prisma.order.update({
+        where: { id: order.id },
+        data: { status: "CANCELLED", paymentStatus: "FAILED" },
+      });
+      for (const item of items) {
+        await prisma.product.update({
+          where: { id: item.productId },
+          data: { quantity: { increment: item.quantity } },
+        });
+      }
+      return NextResponse.json({ error: "Failed to initialize payment gateway" }, { status: 500 });
+    }
+
+    return NextResponse.json({ ...order, redirectUrl }, { status: 201 });
+  } catch (error: any) {
     console.error("Error creating order:", error);
-    return NextResponse.json({ error: "Failed to create order" }, { status: 500 });
+    return NextResponse.json({ error: error.message || "Failed to create order" }, { status: 500 });
   }
 }

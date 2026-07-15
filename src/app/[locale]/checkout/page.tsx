@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/routing";
+import { useParams } from "next/navigation";
 import Image from "next/image";
 import { Link } from "@/i18n/routing";
 import { Button } from "@/components/ui/Button";
@@ -66,6 +67,8 @@ export default function CheckoutPage() {
   const t = useTranslations("checkout");
   const nav = useTranslations("nav");
   const router = useRouter();
+  const params = useParams();
+  const locale = typeof params?.locale === "string" ? params.locale : "en";
   const { cart, clearCart } = useCart();
   const { user } = useAuth();
   const { currency, convert } = useCurrency();
@@ -175,6 +178,7 @@ export default function CheckoutPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...data,
+          locale,
           discountCode: discount?.source === "code" ? discount.code : undefined,
           items: cart.items.map((item) => ({
             productId: item.productId,
@@ -184,14 +188,23 @@ export default function CheckoutPage() {
         }),
       });
 
-      if (!res.ok) throw new Error("Order failed");
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData.error || "Order failed");
+      }
 
-      const order = await res.json();
+      const result = await res.json();
       clearCart();
-      toast.success("Order placed successfully!");
-      router.push(`/order/confirmed?orderId=${order.id}`);
-    } catch {
-      toast.error("Failed to place order. Please try again.");
+
+      if (result.redirectUrl) {
+        toast.success("Redirecting to secure payment page...");
+        window.location.href = result.redirectUrl;
+      } else {
+        toast.success("Order placed successfully!");
+        router.push(`/order/confirmed?orderId=${result.id}`);
+      }
+    } catch (err: any) {
+      toast.error(err.message || "Failed to place order. Please try again.");
     } finally {
       setSubmitting(false);
     }
