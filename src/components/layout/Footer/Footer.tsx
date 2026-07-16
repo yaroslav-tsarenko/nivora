@@ -342,9 +342,9 @@ export function Footer() {
 
             <Link
               href="/catalog?onSale=true"
-              className="mt-2 inline-flex w-fit items-center gap-2 rounded-full bg-white px-4 py-2.5 text-[12.5px] font-bold text-[color:var(--color-text)] transition-all hover:bg-[color:var(--color-primary-tint)] hover:text-[color:var(--color-primary)]"
+              className="mt-2 inline-flex w-fit items-center gap-2 rounded-full bg-gradient-to-r from-[#1E6BE6] to-[#0FB5A6] px-4 py-2.5 text-[12.5px] font-bold text-white shadow-[0_8px_24px_rgba(30,107,230,0.35)] transition-all hover:-translate-y-0.5 hover:shadow-[0_12px_28px_rgba(30,107,230,0.45)]"
             >
-              <Percent size={13} /> Explore today's deals
+              <Percent size={13} /> Explore today&apos;s deals
               <ArrowRight size={12} />
             </Link>
           </div>
