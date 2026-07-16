@@ -706,8 +706,14 @@ export function Header() {
               </AnimatePresence>
             </div>
 
-            {/* RIGHT CLUSTER — account / compare / wishlist / basket */}
+            {/* RIGHT CLUSTER — currency / account / compare / wishlist / basket */}
             <div className="hidden items-center gap-1 lg:flex">
+              {/* Currency (always visible, even after scroll) */}
+              <div className="mr-1 text-[color:var(--color-text-secondary)]">
+                <CurrencySwitcher />
+              </div>
+              <span className="mr-1 h-6 w-px bg-[color:var(--color-line)]" />
+
               {/* Account */}
               <div
                 ref={accountDismissRef}
