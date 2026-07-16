@@ -1,47 +1,53 @@
-const PLACEHOLDER_BASE = "https://placehold.co";
+/**
+ * Product image helpers.
+ *
+ * We do NOT swap missing images for random Picsum photos — that produced
+ * cars/landscapes on unrelated products. Instead we ship a small inline
+ * SVG "no image" placeholder so the layout stays clean without pretending
+ * the product has a photo.
+ */
 
-function hashString(input: string): number {
-  let h = 0;
-  for (let i = 0; i < input.length; i++) {
-    h = ((h << 5) - h + input.charCodeAt(i)) | 0;
-  }
-  return Math.abs(h);
-}
+const PLACEHOLDER_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0F1826"/>
+      <stop offset="1" stop-color="#111826"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="400" fill="url(#g)"/>
+  <g fill="none" stroke="#1E6BE6" stroke-opacity="0.35" stroke-width="1.5">
+    <rect x="120" y="140" width="160" height="120" rx="8"/>
+    <path d="M120 220 L170 175 L215 205 L260 165 L280 195"/>
+    <circle cx="240" cy="170" r="10"/>
+  </g>
+  <text x="200" y="300" text-anchor="middle" font-family="Inter, system-ui, -apple-system, sans-serif" font-size="16" font-weight="600" fill="#5EE0D1" letter-spacing="2">NIVRO</text>
+  <text x="200" y="322" text-anchor="middle" font-family="Inter, system-ui, -apple-system, sans-serif" font-size="11" fill="#94A3B8" letter-spacing="2">IMAGE UNAVAILABLE</text>
+</svg>`;
 
-function parseSize(size: string): { width: number; height: number } {
-  const [w, h] = size.split("x").map((n) => parseInt(n, 10));
-  return {
-    width: Number.isFinite(w) && w > 0 ? w : 400,
-    height: Number.isFinite(h) && h > 0 ? h : 400,
-  };
-}
+const PLACEHOLDER_DATA_URL = `data:image/svg+xml;utf8,${encodeURIComponent(PLACEHOLDER_SVG)}`;
 
 /**
- * Deterministic Picsum image derived from the product key so each product
- * consistently gets the same placeholder photo. Uses Picsum's seeded API
- * (image loads reliably; no listed remotePatterns wildcard for placehold.co).
+ * Return the original image URL if present, otherwise the branded
+ * "no image" placeholder. Never returns a random remote image.
  */
-function seededPicsum(key: string, size: string): string {
-  const { width, height } = parseSize(size);
-  const seed = hashString(key || "nivro") % 1000;
-  return `https://picsum.photos/seed/nivro-${seed}/${width}/${height}`;
-}
-
 export function getProductImage(
   imageUrl: string | null | undefined,
-  productName?: string,
-  size = "400x400"
+  _productName?: string,
+  _size = "400x400",
 ): string {
+  void _productName;
+  void _size;
   if (imageUrl && (imageUrl.startsWith("http") || imageUrl.startsWith("/"))) {
     return imageUrl;
   }
-  return seededPicsum(productName || "product", size);
+  return PLACEHOLDER_DATA_URL;
 }
 
-export function getProductImageFallback(
-  size = "400x400",
-  key?: string,
-): string {
-  if (key) return seededPicsum(key, size);
-  return `${PLACEHOLDER_BASE}/${size}/1E6BE6/FFFFFF?text=Nivro`;
+/**
+ * Placeholder used when a remote image fails to load.
+ */
+export function getProductImageFallback(_size = "400x400", _key?: string): string {
+  void _size;
+  void _key;
+  return PLACEHOLDER_DATA_URL;
 }

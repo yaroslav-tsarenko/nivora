@@ -5,6 +5,10 @@ import { useTranslations } from "next-intl";
 import { motion, AnimatePresence } from "framer-motion";
 import { Star } from "lucide-react";
 import { sanitizeProductDescription } from "@/lib/utils/sanitize-html";
+import {
+  parseProductDescription,
+  type SpecGroup,
+} from "@/lib/utils/parse-description";
 
 interface Review {
   id: string;
@@ -54,6 +58,16 @@ export function ProductTabs({ description, characteristics, reviews }: ProductTa
     () => (description ? sanitizeProductDescription(description) : ""),
     [description]
   );
+
+  const parsedDescription = useMemo(
+    () => (safeDescription ? parseProductDescription(safeDescription) : null),
+    [safeDescription],
+  );
+
+  const hasStructuredContent =
+    !!parsedDescription &&
+    (parsedDescription.narrative.length > 0 ||
+      parsedDescription.groups.length > 0);
 
   const TABS = [
     { key: "description" as const,     label: t("description") },
@@ -110,7 +124,9 @@ export function ProductTabs({ description, characteristics, reviews }: ProductTa
             transition={{ duration: 0.2 }}
           >
             {activeTab === "description" &&
-              (safeDescription ? (
+              (hasStructuredContent && parsedDescription ? (
+                <DescriptionView parsed={parsedDescription} />
+              ) : safeDescription ? (
                 <div
                   className={DESCRIPTION_CLASS}
                   dangerouslySetInnerHTML={{ __html: safeDescription }}
@@ -234,6 +250,74 @@ export function ProductTabs({ description, characteristics, reviews }: ProductTa
           </motion.div>
         </AnimatePresence>
       </div>
+    </div>
+  );
+}
+
+function DescriptionView({
+  parsed,
+}: {
+  parsed: {
+    narrative: string[];
+    groups: SpecGroup[];
+    fullDescriptionLine?: string;
+  };
+}) {
+  const { narrative, groups } = parsed;
+
+  return (
+    <div className="flex flex-col gap-8">
+      {narrative.length > 0 && (
+        <div className="max-w-[78ch] space-y-4 text-[15px] leading-[1.75] text-[color:var(--color-text-secondary)]">
+          {narrative.map((paragraph, i) => (
+            <p key={i}>{paragraph}</p>
+          ))}
+        </div>
+      )}
+
+      {groups.length > 0 && (
+        <section aria-labelledby="specs-heading" className="flex flex-col gap-4">
+          <div>
+            <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.16em] text-[color:var(--color-primary)]">
+              Full specifications
+            </span>
+            <h3
+              id="specs-heading"
+              className="mt-1 font-display text-[20px] font-bold tracking-tight text-[color:var(--color-text)]"
+            >
+              Technical details
+            </h3>
+          </div>
+
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5">
+            {groups.map((group) => (
+              <div
+                key={group.title}
+                className="overflow-hidden rounded-2xl border border-[color:var(--color-line)] bg-[color:var(--color-bg-elevated)]"
+              >
+                <h4 className="border-b border-[color:var(--color-line)] bg-[color:var(--color-bg-secondary)] px-4 py-2.5 font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-[color:var(--color-text)]">
+                  {group.title}
+                </h4>
+                <dl className="divide-y divide-[color:var(--color-line)]">
+                  {group.entries.map((entry, i) => (
+                    <div
+                      key={`${entry.label}-${i}`}
+                      className="flex items-start gap-4 px-4 py-2.5 text-sm even:bg-[color:var(--color-bg-secondary)]/40"
+                    >
+                      <dt className="w-[55%] shrink-0 text-[color:var(--color-text-secondary)]">
+                        {entry.label}
+                      </dt>
+                      <dd className="flex-1 font-mono font-semibold text-[color:var(--color-text)] [overflow-wrap:anywhere]">
+                        {entry.value}
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   );
 }
