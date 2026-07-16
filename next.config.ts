@@ -64,6 +64,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "*.nivro.co.uk",
       },
+      {
+        protocol: "https",
+        hostname: "images.nivro.co.uk",
+      },
     ],
   },
   async rewrites() {
