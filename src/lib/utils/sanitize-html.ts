@@ -70,10 +70,56 @@ function safeHref(raw: string | null): string | null {
   return null;
 }
 
+// Common HTML entities produced by WooCommerce/BigBuy exports. Product
+// descriptions are frequently double-encoded (`&lt;br/&gt;`), which renders
+// as visible text through dangerouslySetInnerHTML. Decoding these BEFORE the
+// tag-allowlist pass lets real markup render while the sanitizer below still
+// guarantees safety.
+const NAMED_ENTITIES: Record<string, string> = {
+  amp: "&",
+  lt: "<",
+  gt: ">",
+  quot: '"',
+  apos: "'",
+  nbsp: " ",
+  ndash: "–",
+  mdash: "—",
+  hellip: "…",
+  laquo: "«",
+  raquo: "»",
+  copy: "©",
+  reg: "®",
+  trade: "™",
+  bull: "•",
+  middot: "·",
+  rsquo: "’",
+  lsquo: "‘",
+  rdquo: "”",
+  ldquo: "“",
+  deg: "°",
+  times: "×",
+};
+
+function decodeHtmlEntities(input: string): string {
+  return input
+    .replace(/&#x([0-9a-fA-F]+);/g, (_m, hex) =>
+      String.fromCodePoint(parseInt(hex, 16)),
+    )
+    .replace(/&#(\d+);/g, (_m, dec) =>
+      String.fromCodePoint(parseInt(dec, 10)),
+    )
+    .replace(/&([a-zA-Z]+);/g, (match, name: string) => {
+      const value = NAMED_ENTITIES[name.toLowerCase()];
+      return value ?? match;
+    });
+}
+
 export function sanitizeProductDescription(html: string): string {
   if (!html) return "";
 
-  let s = html
+  // Some feeds double-encode HTML (`&lt;br/&gt;`). Decode once so that real
+  // markup gets a chance to render before the allow-list sanitizer runs.
+  let s = decodeHtmlEntities(html)
     .replace(DANGEROUS_BLOCKS, "")
     .replace(DANGEROUS_VOID, "")
     .replace(COMMENTS, "");

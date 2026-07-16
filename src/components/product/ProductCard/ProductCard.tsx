@@ -1,11 +1,13 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import { Link } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
-import { ShoppingBag, Heart, ImageOff, Star, Eye } from "lucide-react";
+import { ShoppingBag, Heart, Star, Eye } from "lucide-react";
 import { PriceDisplay } from "@/components/shared/PriceDisplay/PriceDisplay";
 import { useCart } from "@/providers/CartProvider";
+import { getProductImage, getProductImageFallback } from "@/lib/utils/product-image";
 
 interface ProductCardProps {
   id: string;
@@ -36,6 +38,9 @@ export function ProductCard({
 }: ProductCardProps) {
   const t = useTranslations("product");
   const { addItem } = useCart();
+  const [imgSrc, setImgSrc] = useState<string>(
+    getProductImage(imageUrl, name || id),
+  );
   const isOnSale = !!(comparePrice && comparePrice > price);
   const discountPct = isOnSale
     ? Math.round(((comparePrice! - price) / comparePrice!) * 100)
@@ -72,20 +77,16 @@ export function ProductCard({
       <div className="relative aspect-square overflow-hidden bg-[color:var(--color-bg-secondary)]">
         {/* faint tech grid on card image bg */}
         <div aria-hidden className="absolute inset-0 tech-grid opacity-40" />
-        {imageUrl ? (
-          <Image
-            src={imageUrl}
-            alt={name}
-            fill
-            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-            className="relative z-[1] object-contain p-6 transition-transform duration-500 ease-out group-hover:scale-[1.05]"
-          />
-        ) : (
-          <div className="relative z-[1] flex h-full w-full flex-col items-center justify-center gap-1 text-[color:var(--color-text-tertiary)]">
-            <ImageOff size={26} strokeWidth={1.5} />
-            <span className="text-xs">No image</span>
-          </div>
-        )}
+        <Image
+          src={imgSrc}
+          alt={name}
+          fill
+          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+          className="relative z-[1] object-contain p-6 transition-transform duration-500 ease-out group-hover:scale-[1.05]"
+          onError={() =>
+            setImgSrc(getProductImageFallback("400x400", name || id))
+          }
+        />
 
         {/* Discount pill (electric azure) */}
         {isOnSale && (

@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { ImageOff, Maximize2 } from "lucide-react";
+import { Maximize2 } from "lucide-react";
+import { getProductImageFallback } from "@/lib/utils/product-image";
 
 interface ProductGalleryProps {
   images: { id: string; url: string; alt?: string | null }[];
@@ -12,24 +13,22 @@ interface ProductGalleryProps {
 
 export function ProductGallery({ images, productName }: ProductGalleryProps) {
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [errored, setErrored] = useState<Record<string, boolean>>({});
 
-  if (images.length === 0) {
-    return (
-      <div className="flex flex-col gap-3">
-        <div className="relative flex aspect-square items-center justify-center overflow-hidden rounded-2xl border border-[color:var(--color-line)] bg-[color:var(--color-bg-elevated)] p-3 text-[color:var(--color-text-tertiary)] sm:aspect-[4/3] sm:p-5">
-          <div className="absolute inset-0 tech-grid opacity-30" />
-          <div className="relative flex flex-col items-center gap-2">
-            <ImageOff size={28} strokeWidth={1.4} />
-            <span className="font-mono text-[11px] uppercase tracking-[0.14em]">
-              No image
-            </span>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  const effectiveImages = useMemo(() => {
+    if (images.length > 0) return images;
+    return [
+      {
+        id: "fallback",
+        url: getProductImageFallback("800x800", productName),
+        alt: productName,
+      },
+    ];
+  }, [images, productName]);
 
-  const active = images[selectedIndex];
+  const active = effectiveImages[selectedIndex];
+  const resolveSrc = (id: string, url: string) =>
+    errored[id] ? getProductImageFallback("800x800", `${productName}-${id}`) : url;
 
   return (
     <div className="flex flex-col gap-3">
@@ -44,7 +43,7 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
           </span>
           <span className="opacity-50">/</span>
           <span className="tabular-nums opacity-70">
-            {images.length.toString().padStart(2, "0")}
+            {effectiveImages.length.toString().padStart(2, "0")}
           </span>
         </span>
 
@@ -63,12 +62,15 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
             className="relative h-full w-full"
           >
             <Image
-              src={active.url}
+              src={resolveSrc(active.id, active.url)}
               alt={active.alt || productName}
               fill
               sizes="(max-width: 768px) 100vw, 50vw"
               className="object-contain p-6 transition-transform duration-500 ease-out group-hover:scale-[1.03] sm:p-10"
               priority
+              onError={() =>
+                setErrored((prev) => ({ ...prev, [active.id]: true }))
+              }
             />
           </motion.div>
         </AnimatePresence>
@@ -81,9 +83,9 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
       </div>
 
       {/* Thumbnails */}
-      {images.length > 1 && (
+      {effectiveImages.length > 1 && (
         <div className="scrollbar-none flex gap-2 overflow-x-auto p-1">
-          {images.map((image, index) => {
+          {effectiveImages.map((image, index) => {
             const isActive = index === selectedIndex;
             return (
               <motion.button
@@ -99,11 +101,14 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
               >
                 <div className="pointer-events-none absolute inset-0 tech-grid opacity-25" />
                 <Image
-                  src={image.url}
+                  src={resolveSrc(image.id, image.url)}
                   alt={image.alt || `${productName} ${index + 1}`}
                   fill
                   sizes="76px"
                   className="relative object-contain"
+                  onError={() =>
+                    setErrored((prev) => ({ ...prev, [image.id]: true }))
+                  }
                 />
                 {isActive && (
                   <motion.span

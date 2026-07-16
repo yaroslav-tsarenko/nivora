@@ -128,7 +128,7 @@ export default function SizeGuidePage() {
             </h2>
           </div>
           <Link
-            href="/catalog/laptops-computers"
+            href="/catalog?q=laptop"
             className="hidden font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-[color:var(--color-primary)] hover:underline sm:inline-flex sm:items-center sm:gap-1"
           >
             Shop laptops <ArrowRight size={14} />
@@ -150,7 +150,7 @@ export default function SizeGuidePage() {
             </h2>
           </div>
           <Link
-            href="/catalog/displays-monitors"
+            href="/catalog?q=monitor"
             className="hidden font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-[color:var(--color-primary)] hover:underline sm:inline-flex sm:items-center sm:gap-1"
           >
             Shop monitors <ArrowRight size={14} />
@@ -197,7 +197,7 @@ export default function SizeGuidePage() {
             </h2>
           </div>
           <Link
-            href="/catalog/audio-headphones"
+            href="/catalog?q=audio"
             className="hidden font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-[color:var(--color-primary)] hover:underline sm:inline-flex sm:items-center sm:gap-1"
           >
             Shop audio <ArrowRight size={14} />

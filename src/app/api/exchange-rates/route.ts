@@ -18,14 +18,14 @@ export async function GET() {
 
     const data = await res.json();
     cachedRates = {
-      rates: { EUR: 1, USD: data.rates.USD, GBP: data.rates.GBP },
+      rates: { USD: data.rates.USD, GBP: data.rates.GBP },
       timestamp: Date.now(),
     };
 
     return NextResponse.json({ rates: cachedRates.rates });
   } catch {
     return NextResponse.json({
-      rates: { EUR: 1, USD: 1.08, GBP: 0.85 },
+      rates: { USD: 1.08, GBP: 0.85 },
     });
   }
 }

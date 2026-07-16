@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import NextLink from "next/link";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
@@ -41,6 +41,8 @@ import {
 } from "lucide-react";
 import { useCart } from "@/providers/CartProvider";
 import { useAuth } from "@/providers/AuthProvider";
+import { useCurrency } from "@/providers/CurrencyProvider";
+import { formatPrice } from "@/lib/utils/format-price";
 import { ThemeToggle } from "./ThemeToggle";
 import { AnimatePresence, motion } from "framer-motion";
 import { NivroLogo } from "../NivroLogo";
@@ -254,17 +256,32 @@ const DEPARTMENTS: Array<{
   },
 ];
 
-const SEARCH_SCOPES = [
-  { value: "all", label: "All departments" },
-  ...DEPARTMENTS.map((d) => ({ value: d.slug, label: d.short })),
+const ALL_SEARCH_SCOPE = { value: "all", label: "All departments" };
+
+const DEFAULT_DEPT_ICON = LayoutGrid;
+const DEPT_ICON_BY_KEYWORD: Array<[RegExp, React.ElementType]> = [
+  [/head|audio|sound|speaker|music/i, Headphones],
+  [/laptop|computer|pc|monitor/i, Laptop2],
+  [/phone|mobile|smartphone/i, Smartphone],
+  [/tv|television|video/i, Tv],
+  [/camera|photo/i, Camera],
+  [/home|kitchen|garden|smart\s?home/i, HomeIcon],
+  [/gam|console|xbox|playstation|nintendo/i, Gamepad2],
+  [/watch|wear/i, Watch],
+  [/cable|charger|accessor/i, Cable],
 ];
+
+function iconForCategory(name: string): React.ElementType {
+  for (const [re, Icon] of DEPT_ICON_BY_KEYWORD) if (re.test(name)) return Icon;
+  return DEFAULT_DEPT_ICON;
+}
 
 const ROTATING_PROMOS = [
   { icon: Truck, text: "Free UK delivery on orders over £50" },
   { icon: Package, text: "Order by 8pm for next-day delivery" },
   { icon: Zap, text: "0% interest-free finance available at checkout" },
   { icon: Sparkles, text: "Trade in your old device — up to £700 credit" },
-  { icon: Star, text: "Rated 4.9 / 5 on Trustpilot" },
+  { icon: Star, text: "Rated 4.9 / 5 by verified customers" },
 ];
 
 function useDropdownDismiss(onClose: () => void) {
@@ -293,11 +310,13 @@ export function Header() {
   const items = cart.items;
   const subtotal = cart.subtotal;
   const { user, role } = useAuth();
+  const { currency, convert } = useCurrency();
+  const formatMoney = (amount: number) => formatPrice(convert(amount), currency);
 
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [deptOpen, setDeptOpen] = useState(false);
-  const [activeDept, setActiveDept] = useState<string>(DEPARTMENTS[0].slug);
+  const [activeDept, setActiveDept] = useState<string>("");
   const [accountOpen, setAccountOpen] = useState(false);
   const [miniCartOpen, setMiniCartOpen] = useState(false);
   const [scope, setScope] = useState<string>("all");
@@ -375,8 +394,47 @@ export function Header() {
     (slug: string) => categories.find((c) => c.slug === slug),
     [categories],
   );
-  const activeDeptData = DEPARTMENTS.find((d) => d.slug === activeDept)!;
-  const activeDeptLive = findLiveDept(activeDept);
+
+  // Only surface departments whose slug actually exists in the DB so mega-menu
+  // links never dead-end at a 404.
+  const liveDepartments = useMemo(() => {
+    if (categories.length === 0) return [] as Array<{
+      slug: string;
+      name: string;
+      short: string;
+      Icon: React.ElementType;
+      tagline: string;
+      children: Category[];
+      productCount: number;
+    }>;
+    return categories.map((c) => {
+      const template = DEPARTMENTS.find((d) => d.slug === c.slug);
+      return {
+        slug: c.slug,
+        name: c.name,
+        short: template?.short ?? c.name,
+        Icon: template?.Icon ?? iconForCategory(c.name),
+        tagline: template?.tagline ?? `Shop ${c.name.toLowerCase()}`,
+        children: c.children ?? [],
+        productCount: c._count?.products ?? 0,
+      };
+    });
+  }, [categories]);
+
+  const effectiveDeptSlug =
+    activeDept || liveDepartments[0]?.slug || "";
+  const activeDeptLive = findLiveDept(effectiveDeptSlug);
+  const activeDeptData =
+    liveDepartments.find((d) => d.slug === effectiveDeptSlug) ??
+    liveDepartments[0];
+
+  const searchScopes = useMemo(
+    () => [
+      ALL_SEARCH_SCOPE,
+      ...liveDepartments.map((d) => ({ value: d.slug, label: d.short })),
+    ],
+    [liveDepartments],
+  );
 
   const accountDismissRef = useDropdownDismiss(() => setAccountOpen(false));
   const cartDismissRef = useDropdownDismiss(() => setMiniCartOpen(false));
@@ -453,7 +511,7 @@ export function Header() {
               <CurrencySwitcher />
               <span className="hidden h-3 w-px bg-white/15 sm:inline-block" />
               <span className="hidden text-[10px] uppercase tracking-[0.14em] text-white/70 sm:inline">
-                UK · EN · GBP £
+                UK · EN · {currency}
               </span>
             </div>
           </div>
@@ -535,7 +593,7 @@ export function Header() {
                     className="inline-flex h-full items-center gap-1.5 border-r border-[color:var(--color-line)] bg-[color:var(--color-bg-secondary)] px-3.5 text-[12px] font-semibold text-[color:var(--color-text)] hover:bg-[color:var(--color-primary-tint)] hover:text-[color:var(--color-primary)]"
                   >
                     <span className="max-w-[100px] truncate">
-                      {SEARCH_SCOPES.find((s) => s.value === scope)?.label}
+                      {searchScopes.find((s) => s.value === scope)?.label}
                     </span>
                     <ChevronDown size={12} />
                   </button>
@@ -549,7 +607,7 @@ export function Header() {
                         role="listbox"
                         className="absolute left-0 top-full z-30 mt-2 min-w-[240px] overflow-hidden rounded-2xl border border-[color:var(--color-line)] bg-white py-1 shadow-lg dark:bg-[color:var(--color-bg-elevated)]"
                       >
-                        {SEARCH_SCOPES.map((s) => (
+                        {searchScopes.map((s) => (
                           <li key={s.value}>
                             <button
                               type="button"
@@ -629,7 +687,7 @@ export function Header() {
                     <div className="px-2 pb-1 pt-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-[color:var(--color-text-tertiary)]">
                       Popular departments
                     </div>
-                    {DEPARTMENTS.slice(0, 6).map((d) => (
+                    {liveDepartments.slice(0, 6).map((d) => (
                       <Link
                         key={d.slug}
                         href={`/catalog/${d.slug}`}
@@ -800,7 +858,7 @@ export function Header() {
                       Basket
                     </span>
                     <span className="text-[12.5px] font-semibold tabular-nums">
-                      £{subtotal.toFixed(2)}
+                      {formatMoney(subtotal)}
                     </span>
                   </span>
                 </Link>
@@ -819,7 +877,7 @@ export function Header() {
                           Basket · {itemCount} item{itemCount === 1 ? "" : "s"}
                         </span>
                         <span className="text-[13px] font-bold text-[color:var(--color-text)] tabular-nums">
-                          £{subtotal.toFixed(2)}
+                          {formatMoney(subtotal)}
                         </span>
                       </div>
                       {items.length === 0 ? (
@@ -850,7 +908,7 @@ export function Header() {
                                     {it.name}
                                   </div>
                                   <div className="mt-0.5 text-[11px] text-[color:var(--color-text-tertiary)] tabular-nums">
-                                    {it.quantity} × £{it.price.toFixed(2)}
+                                    {it.quantity} × {formatMoney(it.price)}
                                   </div>
                                 </div>
                                 <button
@@ -962,7 +1020,7 @@ export function Header() {
                   </button>
                 </div>
                 <ul className="flex-1 overflow-y-auto py-2">
-                  {DEPARTMENTS.map((d) => {
+                  {liveDepartments.map((d) => {
                     const live = findLiveDept(d.slug);
                     const isActive = activeDept === d.slug;
                     return (
@@ -1011,7 +1069,7 @@ export function Header() {
                     className="flex items-center justify-between rounded-lg bg-[color:var(--color-coral-tint)] px-3 py-2 text-[12.5px] font-bold text-[color:var(--color-coral)] transition-colors hover:bg-[#F0453A] hover:text-white"
                   >
                     <span className="inline-flex items-center gap-2">
-                      <Percent size={14} /> Today's deals
+                      <Percent size={14} /> Today&apos;s deals
                     </span>
                     <ArrowRight size={13} />
                   </Link>
@@ -1019,108 +1077,112 @@ export function Header() {
               </nav>
 
               {/* Secondary panel — active dept sub-categories, brands, promo */}
-              <div className="flex flex-1 flex-col overflow-y-auto">
-                <div className="border-b border-[color:var(--color-line)] px-8 py-6">
-                  <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-[color:var(--color-text-secondary)]">
-                    Department
-                  </div>
-                  <Link
-                    href={`/catalog/${activeDeptData.slug}`}
-                    onClick={() => setDeptOpen(false)}
-                    className="mt-1 inline-flex items-center gap-2 font-display text-[26px] font-bold text-[color:var(--color-text)] hover:text-[color:var(--color-primary)]"
-                  >
-                    {activeDeptData.name}
-                    <ArrowRight size={18} className="text-[color:var(--color-primary)]" />
-                  </Link>
-                  <p className="mt-1 text-[14px] text-[color:var(--color-text-secondary)]">
-                    {activeDeptData.tagline}
-                  </p>
-                </div>
-
-                <div className="grid flex-1 grid-cols-[1fr_240px] gap-6 px-8 py-6">
-                  <div className="flex flex-col gap-5">
-                    <div>
-                      <div className="mb-2 text-[10px] font-bold uppercase tracking-[0.14em] text-[color:var(--color-text-secondary)]">
-                        Shop by category
-                      </div>
-                      <div className="grid grid-cols-2 gap-x-6 gap-y-1">
-                        {(activeDeptLive?.children?.length
-                          ? activeDeptLive.children.map((sub) => ({
-                              label: sub.name,
-                              slug: sub.slug,
-                              count: sub._count?.products,
-                            }))
-                          : activeDeptData.featured.map((f) => ({
-                              label: f.label,
-                              slug: f.slug,
-                              count: undefined,
-                            }))
-                        ).map((sub) => (
-                          <Link
-                            key={sub.slug + sub.label}
-                            href={`/catalog/${sub.slug}`}
-                            onClick={() => setDeptOpen(false)}
-                            className="group flex items-center justify-between rounded-md px-2 py-1.5 text-[13.5px] text-[color:var(--color-text)] transition-colors hover:bg-[color:var(--color-primary-tint)] hover:text-[color:var(--color-primary)]"
-                          >
-                            <span>{sub.label}</span>
-                            {typeof sub.count === "number" ? (
-                              <span className="text-[11px] text-[color:var(--color-text-tertiary)] tabular-nums">
-                                {sub.count}
-                              </span>
-                            ) : (
-                              <ChevronRight
-                                size={12}
-                                className="opacity-0 transition-opacity group-hover:opacity-100"
-                              />
-                            )}
-                          </Link>
-                        ))}
-                      </div>
+              {activeDeptData && (
+                <div className="flex flex-1 flex-col overflow-y-auto">
+                  <div className="border-b border-[color:var(--color-line)] px-8 py-6">
+                    <div className="text-[10px] font-bold uppercase tracking-[0.14em] text-[color:var(--color-text-secondary)]">
+                      Department
                     </div>
-
-                    <div className="border-t border-[color:var(--color-line)] pt-4">
-                      <div className="mb-2 text-[10px] font-bold uppercase tracking-[0.14em] text-[color:var(--color-text-secondary)]">
-                        Featured brands
-                      </div>
-                      <div className="flex flex-wrap items-center gap-1.5">
-                        {["Apple", "Samsung", "LG", "Sony", "Bose", "HP", "Lenovo", "Google", "Sonos"].map((b) => (
-                          <Link
-                            key={b}
-                            href={`/search?q=${encodeURIComponent(b)}`}
-                            onClick={() => setDeptOpen(false)}
-                            className="inline-flex items-center rounded-full border border-[color:var(--color-line)] bg-[color:var(--color-bg-elevated)] px-2.5 py-1 text-[11.5px] font-semibold text-[color:var(--color-text)] transition-colors hover:border-[color:var(--color-primary)] hover:bg-[color:var(--color-primary-tint)] hover:text-[color:var(--color-primary)]"
-                          >
-                            {b}
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
+                    <Link
+                      href={`/catalog/${activeDeptData.slug}`}
+                      onClick={() => setDeptOpen(false)}
+                      className="mt-1 inline-flex items-center gap-2 font-display text-[26px] font-bold text-[color:var(--color-text)] hover:text-[color:var(--color-primary)]"
+                    >
+                      {activeDeptData.name}
+                      <ArrowRight size={18} className="text-[color:var(--color-primary)]" />
+                    </Link>
+                    <p className="mt-1 text-[14px] text-[color:var(--color-text-secondary)]">
+                      {activeDeptData.tagline}
+                    </p>
                   </div>
 
-                  {/* Promo tile */}
-                  <Link
-                    href={activeDeptData.promo.href}
-                    onClick={() => setDeptOpen(false)}
-                    className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-[color:var(--color-line)] bg-gradient-to-br from-[#1E6BE6] to-[#0FB5A6] p-5 text-white"
-                  >
-                    <div aria-hidden className="pointer-events-none absolute inset-0 retail-dots opacity-25" />
-                    <div className="relative z-10">
-                      <span className="mb-3 inline-flex w-fit items-center gap-1 rounded-full bg-white/20 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.14em] backdrop-blur">
-                        {activeDeptData.promo.badge}
-                      </span>
-                      <div className="font-display text-[17px] font-bold leading-tight">
-                        {activeDeptData.promo.title}
+                  <div className="grid flex-1 grid-cols-[1fr_240px] gap-6 px-8 py-6">
+                    <div className="flex flex-col gap-5">
+                      <div>
+                        <div className="mb-2 text-[10px] font-bold uppercase tracking-[0.14em] text-[color:var(--color-text-secondary)]">
+                          Shop by category
+                        </div>
+                        <div className="grid grid-cols-2 gap-x-6 gap-y-1">
+                          {(activeDeptLive?.children?.length
+                            ? activeDeptLive.children.map((sub) => ({
+                                label: sub.name,
+                                slug: sub.slug,
+                                count: sub._count?.products,
+                              }))
+                            : [
+                                {
+                                  label: `Shop all ${activeDeptData.name}`,
+                                  slug: activeDeptData.slug,
+                                  count: activeDeptData.productCount,
+                                },
+                              ]
+                          ).map((sub) => (
+                            <Link
+                              key={sub.slug + sub.label}
+                              href={`/catalog/${sub.slug}`}
+                              onClick={() => setDeptOpen(false)}
+                              className="group flex items-center justify-between rounded-md px-2 py-1.5 text-[13.5px] text-[color:var(--color-text)] transition-colors hover:bg-[color:var(--color-primary-tint)] hover:text-[color:var(--color-primary)]"
+                            >
+                              <span>{sub.label}</span>
+                              {typeof sub.count === "number" && sub.count > 0 ? (
+                                <span className="text-[11px] text-[color:var(--color-text-tertiary)] tabular-nums">
+                                  {sub.count}
+                                </span>
+                              ) : (
+                                <ChevronRight
+                                  size={12}
+                                  className="opacity-0 transition-opacity group-hover:opacity-100"
+                                />
+                              )}
+                            </Link>
+                          ))}
+                        </div>
                       </div>
-                      <div className="mt-1.5 text-[12.5px] text-white/85">
-                        {activeDeptData.promo.subtitle}
+
+                      <div className="border-t border-[color:var(--color-line)] pt-4">
+                        <div className="mb-2 text-[10px] font-bold uppercase tracking-[0.14em] text-[color:var(--color-text-secondary)]">
+                          Featured brands
+                        </div>
+                        <div className="flex flex-wrap items-center gap-1.5">
+                          {["Apple", "Samsung", "LG", "Sony", "Bose", "HP", "Lenovo", "Google", "Sonos"].map((b) => (
+                            <Link
+                              key={b}
+                              href={`/search?q=${encodeURIComponent(b)}`}
+                              onClick={() => setDeptOpen(false)}
+                              className="inline-flex items-center rounded-full border border-[color:var(--color-line)] bg-[color:var(--color-bg-elevated)] px-2.5 py-1 text-[11.5px] font-semibold text-[color:var(--color-text)] transition-colors hover:border-[color:var(--color-primary)] hover:bg-[color:var(--color-primary-tint)] hover:text-[color:var(--color-primary)]"
+                            >
+                              {b}
+                            </Link>
+                          ))}
+                        </div>
                       </div>
                     </div>
-                    <div className="relative z-10 mt-4 inline-flex items-center gap-1.5 text-[11.5px] font-bold uppercase tracking-[0.12em] transition-transform group-hover:translate-x-0.5">
-                      Shop now <ArrowRight size={12} />
-                    </div>
-                  </Link>
+
+                    {/* Promo tile */}
+                    <Link
+                      href={`/catalog/${activeDeptData.slug}`}
+                      onClick={() => setDeptOpen(false)}
+                      className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-[color:var(--color-line)] bg-gradient-to-br from-[#1E6BE6] to-[#0FB5A6] p-5 text-white"
+                    >
+                      <div aria-hidden className="pointer-events-none absolute inset-0 retail-dots opacity-25" />
+                      <div className="relative z-10">
+                        <span className="mb-3 inline-flex w-fit items-center gap-1 rounded-full bg-white/20 px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.14em] backdrop-blur">
+                          Explore
+                        </span>
+                        <div className="font-display text-[17px] font-bold leading-tight">
+                          {activeDeptData.name}
+                        </div>
+                        <div className="mt-1.5 text-[12.5px] text-white/85">
+                          {activeDeptData.tagline}
+                        </div>
+                      </div>
+                      <div className="relative z-10 mt-4 inline-flex items-center gap-1.5 text-[11.5px] font-bold uppercase tracking-[0.12em] transition-transform group-hover:translate-x-0.5">
+                        Shop now <ArrowRight size={12} />
+                      </div>
+                    </Link>
+                  </div>
                 </div>
-              </div>
+              )}
             </motion.aside>
           </div>
         )}
@@ -1160,7 +1222,7 @@ export function Header() {
                   <div className="px-2 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-[color:var(--color-text-tertiary)]">
                     Shop by department
                   </div>
-                  {DEPARTMENTS.map((d) => {
+                  {liveDepartments.map((d) => {
                     const live = findLiveDept(d.slug);
                     const isOpen = mobileAcc === d.slug;
                     return (
@@ -1200,12 +1262,7 @@ export function Header() {
                                 >
                                   Shop all {d.short}
                                 </Link>
-                                {(live?.children ?? d.featured.map((f, i) => ({
-                                  id: String(i),
-                                  slug: f.slug,
-                                  name: f.label,
-                                  _count: { products: 0 },
-                                }))).map((sub) => (
+                                {(live?.children ?? []).map((sub) => (
                                   <Link
                                     key={sub.id}
                                     href={`/catalog/${sub.slug}`}

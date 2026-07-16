@@ -2,12 +2,11 @@
 
 import { createContext, useContext, useEffect, useState, useCallback, type ReactNode } from "react";
 
-export type Currency = "EUR" | "USD" | "GBP";
+export type Currency = "USD" | "GBP";
 
 interface Rates {
   USD: number;
   GBP: number;
-  EUR: number;
 }
 
 interface CurrencyContextType {
@@ -17,17 +16,18 @@ interface CurrencyContextType {
   rates: Rates;
 }
 
-const DEFAULT_RATES: Rates = { EUR: 1, USD: 1.08, GBP: 0.85 };
+const DEFAULT_RATES: Rates = { USD: 1.08, GBP: 0.85 };
+const SUPPORTED: Currency[] = ["USD", "GBP"];
 
 const CurrencyContext = createContext<CurrencyContextType | undefined>(undefined);
 
 export function CurrencyProvider({ children }: { children: ReactNode }) {
-  const [currency, setCurrencyState] = useState<Currency>("EUR");
+  const [currency, setCurrencyState] = useState<Currency>("GBP");
   const [rates, setRates] = useState<Rates>(DEFAULT_RATES);
 
   useEffect(() => {
     const stored = localStorage.getItem("currency") as Currency | null;
-    if (stored && ["EUR", "USD", "GBP"].includes(stored)) {
+    if (stored && SUPPORTED.includes(stored)) {
       setCurrencyState(stored);
     }
   }, []);
@@ -37,7 +37,7 @@ export function CurrencyProvider({ children }: { children: ReactNode }) {
       .then((r) => r.json())
       .then((data) => {
         if (data.rates) {
-          setRates({ EUR: 1, USD: data.rates.USD, GBP: data.rates.GBP });
+          setRates({ USD: data.rates.USD, GBP: data.rates.GBP });
         }
       })
       .catch(() => {});
@@ -50,7 +50,6 @@ export function CurrencyProvider({ children }: { children: ReactNode }) {
 
   const convert = useCallback(
     (amountInEur: number) => {
-      if (currency === "EUR") return amountInEur;
       return Math.round(amountInEur * rates[currency] * 100) / 100;
     },
     [currency, rates]

@@ -23,7 +23,6 @@ import {
   Repeat,
   Award,
   Lock,
-  Star,
   ChevronDown,
   Percent,
   Sparkles,
@@ -31,6 +30,7 @@ import {
 } from "lucide-react";
 import { NivroLogo } from "../NivroLogo";
 import { brand } from "@/lib/brand";
+import { useCurrency } from "@/providers/CurrencyProvider";
 import visaLogo from "@/assets/visa-logo.svg";
 import mastercardLogo from "@/assets/mastercard-logo.svg";
 import pciDssLogo from "@/assets/pci-dss-compliant-logo-vector.svg";
@@ -49,17 +49,12 @@ import pciDssLogo from "@/assets/pci-dss-compliant-logo-vector.svg";
  */
 
 const shopLinks = [
-  { href: "/catalog/audio-headphones",     label: "Audio & Headphones" },
-  { href: "/catalog/laptops-computers",    label: "Laptops & Computers" },
-  { href: "/catalog/smartphones",          label: "Smartphones" },
-  { href: "/catalog/tv-video",             label: "TV & Video" },
-  { href: "/catalog/cameras-photography",  label: "Cameras & Photography" },
-  { href: "/catalog/smart-home",           label: "Smart Home" },
-  { href: "/catalog/gaming",               label: "Gaming" },
-  { href: "/catalog/wearables",            label: "Wearables" },
-  { href: "/catalog/accessories",          label: "Accessories" },
+  { href: "/catalog",                      label: "All products" },
   { href: "/catalog?onSale=true",          label: "Deals & clearance" },
   { href: "/catalog?sort=newest",          label: "New arrivals" },
+  { href: "/catalog?sort=popular",         label: "Most popular" },
+  { href: "/catalog?featured=true",        label: "Featured products" },
+  { href: "/search",                       label: "Search catalog" },
 ];
 
 const serviceLinks = [
@@ -76,16 +71,11 @@ const serviceLinks = [
 
 const companyLinks = [
   { href: "/about",                     label: "About Nivro" },
-  { href: "/contact",                   label: "Careers" },
-  { href: "/contact",                   label: "Press & media" },
-  { href: "/policies",                  label: "Sustainability" },
-  { href: "/contact",                   label: "Affiliates" },
-  { href: "/contact",                   label: "For business" },
+  { href: "/contact",                   label: "Contact" },
+  { href: "/policies",                  label: "Policies overview" },
   { href: "/policies/privacy",          label: "Privacy centre" },
   { href: "/policies/terms",            label: "Terms & conditions" },
   { href: "/policies/cookies",          label: "Cookie preferences" },
-  { href: "/policies",                  label: "Modern Slavery" },
-  { href: "/policies",                  label: "WEEE recycling" },
 ];
 
 const legalLinks = [
@@ -171,6 +161,7 @@ export function Footer() {
   const currentYear = new Date().getFullYear();
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
+  const { currency } = useCurrency();
 
   return (
     <footer className="mt-auto" role="contentinfo">
@@ -330,11 +321,22 @@ export function Footer() {
                 </span>
                 {brand.contact.phone}
               </a>
-              <span className="inline-flex items-center gap-2 text-white/60">
-                <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/5">
+              <span className="inline-flex items-start gap-2 text-white/60">
+                <span className="mt-0.5 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/5">
                   <MapPin size={13} />
                 </span>
-                {brand.company.address.city}, {brand.company.address.country}
+                <span className="not-italic">
+                  {brand.company.legalName}
+                  <br />
+                  {brand.company.address.line1}, {brand.company.address.line2}
+                  <br />
+                  {brand.company.address.city}, {brand.company.address.region}{" "}
+                  {brand.company.address.postcode}
+                  <br />
+                  {brand.company.address.country}
+                  <br />
+                  Company No. {brand.company.number}
+                </span>
               </span>
             </div>
 
@@ -360,7 +362,7 @@ export function Footer() {
       <div className="relative bg-[#111826] text-white">
         <div className="mx-auto flex max-w-[1280px] flex-col gap-6 border-t border-white/10 px-4 py-8 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:gap-8 lg:px-8">
           {/* Payments + security */}
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-wrap items-center gap-4">
             <span className="mr-1 text-[10.5px] font-bold uppercase tracking-[0.14em] text-white/50">
               We accept:
             </span>
@@ -369,31 +371,19 @@ export function Footer() {
               { src: mastercardLogo, alt: "Mastercard" },
               { src: pciDssLogo, alt: "PCI DSS Compliant" },
             ].map(({ src, alt }) => (
-              <span
+              /* eslint-disable-next-line @next/next/no-img-element */
+              <img
                 key={alt}
-                className="inline-flex h-9 items-center rounded-lg border border-white/10 bg-white px-2.5"
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={src.src}
-                  alt={alt}
-                  style={{
-                    height: 18,
-                    width: "auto",
-                    maxWidth: "none",
-                    display: "inline-block",
-                  }}
-                  className="shrink-0"
-                />
-              </span>
-            ))}
-            {["PayPal", "Klarna", "Apple Pay"].map((p) => (
-              <span
-                key={p}
-                className="inline-flex h-9 items-center rounded-lg border border-white/10 bg-white/5 px-3 text-[10.5px] font-bold uppercase tracking-[0.12em] text-white/85"
-              >
-                {p}
-              </span>
+                src={src.src}
+                alt={alt}
+                style={{
+                  height: 55,
+                  width: "auto",
+                  maxWidth: "none",
+                  display: "inline-block",
+                }}
+                className="shrink-0"
+              />
             ))}
             <span className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-2.5 text-[10.5px] font-bold uppercase tracking-[0.12em] text-white/85">
               <Lock size={11} className="text-[#5EE0D1]" />
@@ -405,21 +395,8 @@ export function Footer() {
             </span>
           </div>
 
-          {/* Rating + social */}
+          {/* Social */}
           <div className="flex flex-wrap items-center gap-4">
-            <div className="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-3 py-2">
-              <div className="flex items-center gap-0.5 text-[color:var(--color-teal)]">
-                {[0, 1, 2, 3, 4].map((i) => (
-                  <Star key={i} size={12} className="fill-current" strokeWidth={0} />
-                ))}
-              </div>
-              <span className="text-[13px] font-bold text-white tabular-nums">
-                4.9
-              </span>
-              <span className="text-[10.5px] uppercase tracking-[0.12em] text-white/60">
-                Trustpilot · 12,400 reviews
-              </span>
-            </div>
             <div className="flex items-center gap-1">
               {socialLinks
                 .filter((s) => s.env)
@@ -456,7 +433,7 @@ export function Footer() {
           <div className="flex flex-col gap-2 md:items-end">
             <div className="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-[11px] uppercase tracking-[0.12em] text-white/85">
               <Globe size={11} className="text-[#5EE0D1]" />
-              <span>United Kingdom · English · GBP £</span>
+              <span>United Kingdom · English · {currency}</span>
             </div>
             <nav aria-label="Legal" className="flex flex-wrap items-center gap-3">
               {legalLinks.map((link) => (
