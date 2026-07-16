@@ -8,7 +8,7 @@
  */
 
 const PLACEHOLDER_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
-  <rect width="400" height="400" fill="#FFFFFF"/>
+  <rect width="400" height="400" fill="#F7F7F7"/>
   <g fill="none" stroke="#CBD5E1" stroke-width="1.5">
     <rect x="120" y="140" width="160" height="120" rx="8"/>
     <path d="M120 220 L170 175 L215 205 L260 165 L280 195"/>

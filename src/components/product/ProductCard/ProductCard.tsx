@@ -73,9 +73,9 @@ export function ProductCard({
       href={`/product/${slug}`}
       className="group relative flex flex-col overflow-hidden rounded-xl border border-[color:var(--color-line)] bg-[color:var(--color-bg-elevated)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[color:var(--color-primary)]/60 hover:shadow-[0_10px_28px_-8px_rgba(46,125,255,0.35)]"
     >
-      {/* Image area — fixed uniform aspect, always white so product PNGs
-          with transparent backgrounds don't merge into dark theme */}
-      <div className="relative aspect-square overflow-hidden bg-white">
+      {/* Image area — fixed uniform aspect, neutral off-white so product
+          PNGs with transparent backgrounds don't merge into dark theme */}
+      <div className="relative aspect-square overflow-hidden bg-[rgb(247,247,247)]">
         <Image
           src={imgSrc}
           alt={name}
