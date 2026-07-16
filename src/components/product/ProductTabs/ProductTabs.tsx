@@ -8,6 +8,7 @@ import { sanitizeProductDescription } from "@/lib/utils/sanitize-html";
 import {
   parseProductDescription,
   type SpecGroup,
+  type NarrativeBlock,
 } from "@/lib/utils/parse-description";
 
 interface Review {
@@ -258,7 +259,7 @@ function DescriptionView({
   parsed,
 }: {
   parsed: {
-    narrative: string[];
+    narrative: NarrativeBlock[];
     groups: SpecGroup[];
     fullDescriptionLine?: string;
   };
@@ -269,9 +270,20 @@ function DescriptionView({
     <div className="flex flex-col gap-8">
       {narrative.length > 0 && (
         <div className="max-w-[78ch] space-y-4 text-[15px] leading-[1.75] text-[color:var(--color-text-secondary)]">
-          {narrative.map((paragraph, i) => (
-            <p key={i}>{paragraph}</p>
-          ))}
+          {narrative.map((block, i) =>
+            block.kind === "paragraph" ? (
+              <p key={i}>{block.text}</p>
+            ) : (
+              <ul
+                key={i}
+                className="mt-2 list-disc space-y-1.5 pl-6 marker:text-[color:var(--color-primary)]"
+              >
+                {block.items.map((item, j) => (
+                  <li key={j}>{item}</li>
+                ))}
+              </ul>
+            ),
+          )}
         </div>
       )}
 
