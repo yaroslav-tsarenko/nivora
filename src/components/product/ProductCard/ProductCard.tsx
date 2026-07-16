@@ -76,16 +76,19 @@ export function ProductCard({
       {/* Image area — fixed uniform aspect, neutral off-white so product
           PNGs with transparent backgrounds don't merge into dark theme */}
       <div className="relative aspect-square overflow-hidden bg-[rgb(247,247,247)]">
-        <Image
-          src={imgSrc}
-          alt={name}
-          fill
-          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-          className="relative z-[1] object-contain p-6 transition-transform duration-500 ease-out group-hover:scale-[1.05]"
-          onError={() =>
-            setImgSrc(getProductImageFallback("400x400", name || id))
-          }
-        />
+        <div className="absolute inset-0 flex items-center justify-center p-6">
+          <Image
+            src={imgSrc}
+            alt={name}
+            width={400}
+            height={400}
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            className="relative z-[1] max-h-full max-w-full object-contain object-center transition-transform duration-500 ease-out group-hover:scale-[1.05]"
+            onError={() =>
+              setImgSrc(getProductImageFallback("400x400", name || id))
+            }
+          />
+        </div>
 
         {/* Discount pill (electric azure) */}
         {isOnSale && (

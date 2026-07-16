@@ -62,17 +62,20 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
             className="relative h-full w-full"
           >
-            <Image
-              src={resolveSrc(active.id, active.url)}
-              alt={active.alt || productName}
-              fill
-              sizes="(max-width: 768px) 100vw, 50vw"
-              className="object-contain p-6 transition-transform duration-500 ease-out group-hover:scale-[1.03] sm:p-10"
-              priority
-              onError={() =>
-                setErrored((prev) => ({ ...prev, [active.id]: true }))
-              }
-            />
+            <div className="absolute inset-0 flex items-center justify-center p-6 sm:p-10">
+              <Image
+                src={resolveSrc(active.id, active.url)}
+                alt={active.alt || productName}
+                width={800}
+                height={800}
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="max-h-full max-w-full object-contain object-center transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+                priority
+                onError={() =>
+                  setErrored((prev) => ({ ...prev, [active.id]: true }))
+                }
+              />
+            </div>
           </motion.div>
         </AnimatePresence>
 
@@ -100,16 +103,19 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
                     : "border-[color:var(--color-line)] hover:-translate-y-px hover:border-[color:var(--color-primary)]/60"
                 }`}
               >
-                <Image
-                  src={resolveSrc(image.id, image.url)}
-                  alt={image.alt || `${productName} ${index + 1}`}
-                  fill
-                  sizes="76px"
-                  className="relative object-contain"
-                  onError={() =>
-                    setErrored((prev) => ({ ...prev, [image.id]: true }))
-                  }
-                />
+                <div className="absolute inset-0 flex items-center justify-center p-1">
+                  <Image
+                    src={resolveSrc(image.id, image.url)}
+                    alt={image.alt || `${productName} ${index + 1}`}
+                    width={76}
+                    height={76}
+                    sizes="76px"
+                    className="max-h-full max-w-full object-contain object-center"
+                    onError={() =>
+                      setErrored((prev) => ({ ...prev, [image.id]: true }))
+                    }
+                  />
+                </div>
                 {isActive && (
                   <motion.span
                     layoutId="gallery-active-underline"

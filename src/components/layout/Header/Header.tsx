@@ -508,8 +508,6 @@ export function Header() {
             <div className="ml-auto flex items-center gap-2 text-white">
               <ThemeToggle />
               <span className="hidden h-3 w-px bg-white/15 sm:inline-block" />
-              <CurrencySwitcher />
-              <span className="hidden h-3 w-px bg-white/15 sm:inline-block" />
               <span className="hidden text-[10px] uppercase tracking-[0.14em] text-white/70 sm:inline">
                 UK · EN · {currency}
               </span>
@@ -584,54 +582,18 @@ export function Header() {
                     : "border-[color:var(--color-line)]",
                 ].join(" ")}
               >
-                <div className="relative">
-                  <button
-                    type="button"
-                    aria-haspopup="listbox"
-                    aria-expanded={scopeOpen}
-                    onClick={() => setScopeOpen((v) => !v)}
-                    className="inline-flex h-full items-center gap-1.5 border-r border-[color:var(--color-line)] bg-[color:var(--color-bg-secondary)] px-3.5 text-[12px] font-semibold text-[color:var(--color-text)] hover:bg-[color:var(--color-primary-tint)] hover:text-[color:var(--color-primary)]"
-                  >
-                    <span className="max-w-[100px] truncate">
-                      {searchScopes.find((s) => s.value === scope)?.label}
-                    </span>
-                    <ChevronDown size={12} />
-                  </button>
-                  <AnimatePresence>
-                    {scopeOpen && (
-                      <motion.ul
-                        initial={{ opacity: 0, y: 4 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 4 }}
-                        transition={{ duration: 0.15 }}
-                        role="listbox"
-                        className="absolute left-0 top-full z-30 mt-2 min-w-[240px] overflow-hidden rounded-2xl border border-[color:var(--color-line)] bg-white py-1 shadow-lg dark:bg-[color:var(--color-bg-elevated)]"
-                      >
-                        {searchScopes.map((s) => (
-                          <li key={s.value}>
-                            <button
-                              type="button"
-                              onClick={() => {
-                                setScope(s.value);
-                                setScopeOpen(false);
-                              }}
-                              role="option"
-                              aria-selected={scope === s.value}
-                              className={[
-                                "flex w-full items-center gap-2 px-3 py-2 text-left text-sm transition-colors",
-                                scope === s.value
-                                  ? "bg-[color:var(--color-primary-tint)] text-[color:var(--color-primary)]"
-                                  : "text-[color:var(--color-text)] hover:bg-[color:var(--color-bg-secondary)]",
-                              ].join(" ")}
-                            >
-                              {s.label}
-                            </button>
-                          </li>
-                        ))}
-                      </motion.ul>
-                    )}
-                  </AnimatePresence>
-                </div>
+                <button
+                  type="button"
+                  aria-haspopup="listbox"
+                  aria-expanded={scopeOpen}
+                  onClick={() => setScopeOpen((v) => !v)}
+                  className="inline-flex h-full items-center gap-1.5 border-r border-[color:var(--color-line)] bg-[color:var(--color-bg-secondary)] px-3.5 text-[12px] font-semibold text-[color:var(--color-text)] hover:bg-[color:var(--color-primary-tint)] hover:text-[color:var(--color-primary)]"
+                >
+                  <span className="max-w-[100px] truncate">
+                    {searchScopes.find((s) => s.value === scope)?.label}
+                  </span>
+                  <ChevronDown size={12} />
+                </button>
 
                 <input
                   type="text"
@@ -650,6 +612,43 @@ export function Header() {
                   <Search size={15} />
                 </button>
               </form>
+
+              {/* Scope dropdown — rendered outside <form> so its overflow-hidden
+                  round-full doesn't clip the panel */}
+              <AnimatePresence>
+                {scopeOpen && (
+                  <motion.ul
+                    initial={{ opacity: 0, y: 4 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 4 }}
+                    transition={{ duration: 0.15 }}
+                    role="listbox"
+                    className="absolute left-0 top-full z-40 mt-2 min-w-[240px] overflow-hidden rounded-2xl border border-[color:var(--color-line)] bg-white py-1 shadow-lg dark:bg-[color:var(--color-bg-elevated)]"
+                  >
+                    {searchScopes.map((s) => (
+                      <li key={s.value}>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setScope(s.value);
+                            setScopeOpen(false);
+                          }}
+                          role="option"
+                          aria-selected={scope === s.value}
+                          className={[
+                            "flex w-full items-center gap-2 px-3 py-2 text-left text-sm transition-colors",
+                            scope === s.value
+                              ? "bg-[color:var(--color-primary-tint)] text-[color:var(--color-primary)]"
+                              : "text-[color:var(--color-text)] hover:bg-[color:var(--color-bg-secondary)]",
+                          ].join(" ")}
+                        >
+                          {s.label}
+                        </button>
+                      </li>
+                    ))}
+                  </motion.ul>
+                )}
+              </AnimatePresence>
 
               <AnimatePresence>
                 {searchFocus && (recentSearches.length > 0 || searchQuery.length > 0) && (
