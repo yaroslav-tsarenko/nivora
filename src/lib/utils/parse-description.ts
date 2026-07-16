@@ -42,16 +42,18 @@ function splitOnBreaks(html: string): string[] {
 /**
  * A "label" in a spec line is short, has no sentence structure, and only
  * a handful of words. Marketing text also has colons ("A big leap forward
- * in productivity: The M2540idw...") so we must be strict here or the
- * whole intro paragraph gets misclassified as a spec.
+ * in productivity: The M2540idw...") so we must be strict here — but real
+ * feed specs can also be long, e.g. "Shipping/Package Box Dimensions /
+ * Shipping Box Weight" (~53 chars, 7 words). The value-length check is
+ * what ultimately separates the two.
  */
 function looksLikeSpecLabel(label: string): boolean {
   if (!label) return false;
-  if (label.length > 45) return false;
+  if (label.length > 65) return false;
   if (/[.!?]/.test(label)) return false;
   if (/^[-•*·]/.test(label)) return false;
   const words = label.split(/[\s/]+/).filter(Boolean);
-  if (words.length > 6) return false;
+  if (words.length > 8) return false;
   // First character should be alphanumeric — colons inside URLs etc. leak in.
   if (!/^[A-Za-z0-9]/.test(label)) return false;
   return true;
@@ -61,11 +63,12 @@ function parseSpecLine(line: string): SpecEntry | null {
   const clean = stripTags(line);
   if (!clean) return null;
   const colon = clean.indexOf(":");
-  if (colon <= 0 || colon > 50) return null;
+  if (colon <= 0 || colon > 70) return null;
   const label = clean.slice(0, colon).trim();
   const value = clean.slice(colon + 1).trim();
   if (!value) return null;
-  if (value.length > 300) return null;
+  // Sentence-length values are narrative, not specs.
+  if (value.length > 240) return null;
   if (!looksLikeSpecLabel(label)) return null;
   return { label, value };
 }

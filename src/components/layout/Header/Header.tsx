@@ -463,8 +463,8 @@ export function Header() {
           ].join(" ")}
           aria-hidden={scrolled}
         >
-          <div className="relative mx-auto flex h-10 max-w-[1280px] items-center justify-between px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center gap-4">
+          <div className="mx-auto flex h-10 max-w-[1280px] items-center gap-6 px-4 sm:px-6 lg:px-8">
+            <div className="flex min-w-0 items-center gap-4">
               <Link href="/contact" className="inline-flex items-center gap-1.5 text-[11px] font-medium tracking-wide transition-colors hover:text-white">
                 <HelpCircle size={12} /> Help centre
               </Link>
@@ -472,17 +472,17 @@ export function Header() {
               <Link href="/account/orders" className="inline-flex items-center gap-1.5 text-[11px] font-medium tracking-wide transition-colors hover:text-white">
                 <Package size={12} /> Track my order
               </Link>
-              <span className="hidden h-3 w-px bg-white/15 sm:inline-block" />
-              <Link href="/contact" className="hidden items-center gap-1.5 text-[11px] font-medium tracking-wide transition-colors hover:text-white sm:inline-flex">
-                <MapPin size={12} /> Store finder
-              </Link>
               <span className="hidden h-3 w-px bg-white/15 md:inline-block" />
               <Link href="/contact" className="hidden items-center gap-1.5 text-[11px] font-medium tracking-wide transition-colors hover:text-white md:inline-flex">
+                <MapPin size={12} /> Store finder
+              </Link>
+              <span className="hidden h-3 w-px bg-white/15 2xl:inline-block" />
+              <Link href="/contact" className="hidden items-center gap-1.5 text-[11px] font-medium tracking-wide transition-colors hover:text-white 2xl:inline-flex">
                 <Repeat size={12} className="text-[#5EE0D1]" /> Trade in — up to £700
               </Link>
             </div>
 
-            <div className="pointer-events-none absolute left-1/2 hidden -translate-x-1/2 items-center gap-2 text-[11px] font-medium tracking-wide text-white/90 lg:inline-flex">
+            <div className="hidden min-w-0 flex-1 justify-center overflow-hidden text-[11px] font-medium tracking-wide text-white/90 xl:flex">
               <AnimatePresence mode="wait">
                 <motion.span
                   key={promoIdx}
@@ -490,14 +490,14 @@ export function Header() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -8 }}
                   transition={{ duration: 0.25 }}
-                  className="inline-flex items-center gap-1.5"
+                  className="inline-flex max-w-full items-center gap-1.5 truncate"
                 >
                   {(() => {
                     const P = ROTATING_PROMOS[promoIdx];
                     return (
                       <>
-                        <P.icon size={12} className="text-[#5EE0D1]" />
-                        <span>{P.text}</span>
+                        <P.icon size={12} className="shrink-0 text-[#5EE0D1]" />
+                        <span className="truncate">{P.text}</span>
                       </>
                     );
                   })()}
@@ -505,7 +505,7 @@ export function Header() {
               </AnimatePresence>
             </div>
 
-            <div className="flex items-center gap-2 text-white">
+            <div className="ml-auto flex items-center gap-2 text-white">
               <ThemeToggle />
               <span className="hidden h-3 w-px bg-white/15 sm:inline-block" />
               <CurrencySwitcher />
