@@ -4,7 +4,7 @@ import { useState, useMemo } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { Maximize2 } from "lucide-react";
-import { getProductImageFallback } from "@/lib/utils/product-image";
+import { getProductImage, getProductImageFallback } from "@/lib/utils/product-image";
 
 interface ProductGalleryProps {
   images: { id: string; url: string; alt?: string | null }[];
@@ -28,7 +28,9 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
 
   const active = effectiveImages[selectedIndex];
   const resolveSrc = (id: string, url: string) =>
-    errored[id] ? getProductImageFallback("800x800", `${productName}-${id}`) : url;
+    errored[id]
+      ? getProductImageFallback("800x800", `${productName}-${id}`)
+      : getProductImage(url, productName);
 
   return (
     <div className="flex flex-col gap-3">

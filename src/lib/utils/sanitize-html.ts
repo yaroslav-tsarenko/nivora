@@ -100,7 +100,7 @@ const NAMED_ENTITIES: Record<string, string> = {
   times: "×",
 };
 
-function decodeHtmlEntities(input: string): string {
+function decodeHtmlEntitiesOnce(input: string): string {
   return input
     .replace(/&#x([0-9a-fA-F]+);/g, (_m, hex) =>
       String.fromCodePoint(parseInt(hex, 16)),
@@ -112,6 +112,18 @@ function decodeHtmlEntities(input: string): string {
       const value = NAMED_ENTITIES[name.toLowerCase()];
       return value ?? match;
     });
+}
+
+// Feeds sometimes double- or triple-encode entities (`&amp;lt;br/&amp;gt;`).
+// Decode iteratively until it stops changing (capped for safety).
+function decodeHtmlEntities(input: string): string {
+  let out = input;
+  for (let i = 0; i < 3; i++) {
+    const next = decodeHtmlEntitiesOnce(out);
+    if (next === out) break;
+    out = next;
+  }
+  return out;
 }
 
 export function sanitizeProductDescription(html: string): string {

@@ -27,8 +27,33 @@ const PLACEHOLDER_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40
 const PLACEHOLDER_DATA_URL = `data:image/svg+xml;utf8,${encodeURIComponent(PLACEHOLDER_SVG)}`;
 
 /**
+ * Hosts whose /wp-content/uploads/* URLs we treat as same-origin. When the
+ * old WordPress domain got repointed to this Next.js app, absolute image
+ * URLs stopped resolving. Rewriting them to a same-origin path lets the
+ * `WP_IMAGE_UPSTREAM` rewrite in next.config.ts proxy them to whatever
+ * host still holds the files.
+ */
+const LEGACY_WP_HOSTS = new Set([
+  "nivro.co.uk",
+  "www.nivro.co.uk",
+]);
+
+function toSameOrigin(url: string): string {
+  try {
+    const u = new URL(url);
+    if (LEGACY_WP_HOSTS.has(u.host) && u.pathname.startsWith("/wp-content/")) {
+      return `${u.pathname}${u.search}`;
+    }
+  } catch {
+    /* not an absolute URL — leave untouched */
+  }
+  return url;
+}
+
+/**
  * Return the original image URL if present, otherwise the branded
- * "no image" placeholder. Never returns a random remote image.
+ * "no image" placeholder. Absolute URLs pointing at the legacy WP host
+ * are rewritten to same-origin so they can be proxied.
  */
 export function getProductImage(
   imageUrl: string | null | undefined,
@@ -37,9 +62,9 @@ export function getProductImage(
 ): string {
   void _productName;
   void _size;
-  if (imageUrl && (imageUrl.startsWith("http") || imageUrl.startsWith("/"))) {
-    return imageUrl;
-  }
+  if (!imageUrl) return PLACEHOLDER_DATA_URL;
+  if (imageUrl.startsWith("/")) return imageUrl;
+  if (imageUrl.startsWith("http")) return toSameOrigin(imageUrl);
   return PLACEHOLDER_DATA_URL;
 }
 

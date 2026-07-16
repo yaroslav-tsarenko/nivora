@@ -3,6 +3,15 @@ import createNextIntlPlugin from "next-intl/plugin";
 
 const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
+/**
+ * Legacy WordPress uploads live at `https://nivro.co.uk/wp-content/uploads/…`
+ * but that domain now serves this Next.js app after the DNS switch. Set
+ * `WP_IMAGE_UPSTREAM` to the host that still has those files (a WP backup
+ * host, an R2 bucket, a Blob store, etc.) and every `/wp-content/uploads/*`
+ * request is transparently proxied there.
+ */
+const wpImageUpstream = process.env.WP_IMAGE_UPSTREAM?.replace(/\/+$/, "");
+
 const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
@@ -56,6 +65,15 @@ const nextConfig: NextConfig = {
         hostname: "*.nivro.co.uk",
       },
     ],
+  },
+  async rewrites() {
+    if (!wpImageUpstream) return [];
+    return [
+      {
+        source: "/wp-content/uploads/:path*",
+        destination: `${wpImageUpstream}/wp-content/uploads/:path*`,
+      },
+    ];
   },
   headers: async () => [
     {
