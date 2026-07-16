@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { PriceDisplay } from "@/components/shared/PriceDisplay/PriceDisplay";
 import { QuantitySelector } from "@/components/shared/QuantitySelector/QuantitySelector";
+import { RichText } from "@/components/shared/RichText/RichText";
 import { useCart } from "@/providers/CartProvider";
 import { useCurrency } from "@/providers/CurrencyProvider";
 import { formatPrice } from "@/lib/utils/format-price";
@@ -191,9 +192,10 @@ export function ProductInfo({
       </div>
 
       {shortDescription && (
-        <p className="text-[15px] leading-relaxed text-[color:var(--color-text-secondary)]">
-          {shortDescription}
-        </p>
+        <RichText
+          html={shortDescription}
+          className="text-[15px] leading-relaxed text-[color:var(--color-text-secondary)] [&_p]:mb-2 [&_p:last-child]:mb-0 [&_ul]:mt-2 [&_ul]:list-disc [&_ul]:pl-5 [&_li]:my-1 [&_strong]:font-semibold [&_strong]:text-[color:var(--color-text)] [&_a]:text-[color:var(--color-primary)] [&_a]:underline"
+        />
       )}
 
       <hr className="h-px border-0 bg-[color:var(--color-line)]" />
