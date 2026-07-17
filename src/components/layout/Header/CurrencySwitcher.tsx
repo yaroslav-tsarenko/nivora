@@ -6,6 +6,7 @@ import { ChevronDown } from "lucide-react";
 
 const CURRENCIES: { code: Currency; symbol: string; label: string }[] = [
   { code: "GBP", symbol: "£", label: "GBP · Pound Sterling" },
+  { code: "EUR", symbol: "€", label: "EUR · Euro" },
   { code: "USD", symbol: "$", label: "USD · US Dollar" },
 ];
 

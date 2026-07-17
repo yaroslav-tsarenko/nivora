@@ -2,11 +2,12 @@
 
 import { createContext, useContext, useEffect, useState, useCallback, type ReactNode } from "react";
 
-export type Currency = "USD" | "GBP";
+export type Currency = "GBP" | "EUR" | "USD";
 
 interface Rates {
   USD: number;
   GBP: number;
+  EUR: number;
 }
 
 interface CurrencyContextType {
@@ -16,8 +17,9 @@ interface CurrencyContextType {
   rates: Rates;
 }
 
-const DEFAULT_RATES: Rates = { USD: 1.08, GBP: 0.85 };
-const SUPPORTED: Currency[] = ["USD", "GBP"];
+// Prices are stored in EUR, so the EUR rate is always 1.
+const DEFAULT_RATES: Rates = { USD: 1.08, GBP: 0.85, EUR: 1 };
+const SUPPORTED: Currency[] = ["GBP", "EUR", "USD"];
 
 const CurrencyContext = createContext<CurrencyContextType | undefined>(undefined);
 
@@ -37,7 +39,7 @@ export function CurrencyProvider({ children }: { children: ReactNode }) {
       .then((r) => r.json())
       .then((data) => {
         if (data.rates) {
-          setRates({ USD: data.rates.USD, GBP: data.rates.GBP });
+          setRates({ USD: data.rates.USD, GBP: data.rates.GBP, EUR: 1 });
         }
       })
       .catch(() => {});

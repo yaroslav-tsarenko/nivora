@@ -13,15 +13,18 @@ import {
   Repeat,
   Play,
   Pause,
+  Printer,
+  Monitor,
+  Cpu,
+  Presentation,
+  Projector,
   Headphones,
-  Laptop2,
-  Smartphone,
-  Tv,
-  Camera,
-  Home as HomeIcon,
-  Gamepad2,
-  Watch,
-  Cable,
+  Wind,
+  Droplets,
+  Scissors,
+  FileStack,
+  Package,
+  LayoutGrid,
   Truck,
   ShieldCheck,
   Star,
@@ -55,59 +58,66 @@ interface Slide {
   headlineAccent: string;
   sub: string;
   priceFrom: string;
-  cta: { label: string; href: string };
+  cta: { label: string };
   secondary: { label: string; href: string };
+  // Candidate category slugs — the first one that exists in the DB is linked;
+  // otherwise the CTA falls back to /catalog so it never dead-ends at a 404.
+  targets: string[];
   image: string;
 }
 
 const slides: Slide[] = [
   {
-    id: "audio",
-    eyebrow: "Autumn Audio Event",
-    headline: "Bright, honest sound —",
-    headlineAccent: "for every room.",
-    sub: "Wireless headphones, home speakers and soundbars from Sony, Bose, Sonos and JBL. Free next-day delivery on £50+.",
-    priceFrom: "£49",
-    cta: { label: "Shop audio", href: "/catalog/audio-headphones" },
+    id: "computers",
+    eyebrow: "Workspace Computing",
+    headline: "Powerful computers,",
+    headlineAccent: "built to work.",
+    sub: "Desktop towers and all-in-one PCs for the office, home studio and everything in between. Free next-day delivery on £50+.",
+    priceFrom: "£199",
+    cta: { label: "Shop computers" },
     secondary: { label: "See all offers", href: "/catalog?onSale=true" },
+    targets: ["desktop-computers", "all-in-one-pcs"],
     image:
-      "https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=2000&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1547082299-de196ea013d6?w=2000&q=80&auto=format&fit=crop",
   },
   {
-    id: "laptops",
-    eyebrow: "Back-to-work laptops",
-    headline: "A laptop for every day,",
-    headlineAccent: "at your budget.",
-    sub: "From lightweight Chromebooks to pro-grade MacBooks. Split payment with 0% APR interest-free finance at checkout.",
-    priceFrom: "£299",
-    cta: { label: "Shop laptops", href: "/catalog/laptops-computers" },
-    secondary: { label: "Compare models", href: "/catalog/laptops-computers" },
+    id: "printing",
+    eyebrow: "Print & Supplies",
+    headline: "Reliable printing,",
+    headlineAccent: "every single page.",
+    sub: "Laser and inkjet printers with genuine toner and ink supplies in stock. Keep the whole office running without a hitch.",
+    priceFrom: "£89",
+    cta: { label: "Shop printers" },
+    secondary: { label: "Browse supplies", href: "/catalog?sort=newest" },
+    targets: ["laser-printers", "laser-printer-supplies", "inkjet-supplies"],
     image:
-      "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=2000&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?w=2000&q=80&auto=format&fit=crop",
   },
   {
-    id: "tv",
-    eyebrow: "TV & Video",
-    headline: "Big-screen entertainment,",
-    headlineAccent: "delivered & set up.",
-    sub: "4K OLED and QLED TVs from LG, Sony and Samsung — with free 5-year warranty on selected models and expert installation.",
-    priceFrom: "£399",
-    cta: { label: "Shop TVs", href: "/catalog/tv-video" },
-    secondary: { label: "Book installation", href: "/contact" },
+    id: "presentation",
+    eyebrow: "Meetings & Presenting",
+    headline: "Present with clarity,",
+    headlineAccent: "in any room.",
+    sub: "Projectors, screens and wireless presenters that make every meeting land. Expert setup available on request.",
+    priceFrom: "£129",
+    cta: { label: "Shop projectors" },
+    secondary: { label: "Book setup", href: "/contact" },
+    targets: ["projectors-screens", "presenters"],
     image:
-      "https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=2000&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=2000&q=80&auto=format&fit=crop",
   },
   {
-    id: "smart-home",
-    eyebrow: "Smart Home",
-    headline: "A smarter home,",
-    headlineAccent: "in a single tap.",
-    sub: "Voice hubs, smart lighting, security cameras and thermostats. Matter & Thread-ready, from just £29.",
-    priceFrom: "£29",
-    cta: { label: "Shop smart home", href: "/catalog/smart-home" },
+    id: "office",
+    eyebrow: "Office Essentials",
+    headline: "Everything for a",
+    headlineAccent: "productive office.",
+    sub: "Shredders, binding machines, headsets and cleaning products — the day-to-day kit that keeps your workspace tidy and sharp.",
+    priceFrom: "£19",
+    cta: { label: "Shop essentials" },
     secondary: { label: "Deals & clearance", href: "/catalog?onSale=true" },
+    targets: ["shredders", "binding-machines", "cleaning-products", "headsets"],
     image:
-      "https://images.unsplash.com/photo-1558002038-1055907df827?w=2000&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1497215728101-856f4ea42174?w=2000&q=80&auto=format&fit=crop",
   },
 ];
 
@@ -115,8 +125,8 @@ const promoTiles = [
   {
     id: "new-arrivals",
     eyebrow: "New arrivals",
-    title: "Fresh drops this week",
-    sub: "Latest phones, TVs & audio, hand-picked.",
+    title: "Fresh stock this week",
+    sub: "The latest office tech, hand-picked.",
     href: "/catalog?sort=newest",
     icon: Sparkles,
     accent: "teal" as const,
@@ -126,8 +136,8 @@ const promoTiles = [
   {
     id: "deal",
     eyebrow: "Deal of the week",
-    title: "Up to 40% off select audio",
-    sub: "Save on Sony, Bose & JBL — ends Sunday.",
+    title: "Save across the catalogue",
+    sub: "Discounts on computing & printing — ends Sunday.",
     href: "/catalog?onSale=true",
     icon: Percent,
     accent: "coral" as const,
@@ -135,10 +145,10 @@ const promoTiles = [
       "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=1000&q=80&auto=format&fit=crop",
   },
   {
-    id: "trade-in",
-    eyebrow: "Trade in · 0% APR",
-    title: "Upgrade with credit",
-    sub: "Instant online valuation up to £700.",
+    id: "help",
+    eyebrow: "Business support",
+    title: "Talk to our team",
+    sub: "Bulk orders, invoicing and expert advice.",
     href: "/contact",
     icon: Repeat,
     accent: "azure" as const,
@@ -147,16 +157,32 @@ const promoTiles = [
   },
 ];
 
-const quickAccess = [
-  { label: "Audio",       icon: Headphones, href: "/catalog/audio-headphones" },
-  { label: "Laptops",     icon: Laptop2,    href: "/catalog/laptops-computers" },
-  { label: "Smartphones", icon: Smartphone, href: "/catalog/smartphones" },
-  { label: "TV & Video",  icon: Tv,         href: "/catalog/tv-video" },
-  { label: "Cameras",     icon: Camera,     href: "/catalog/cameras-photography" },
-  { label: "Smart Home",  icon: HomeIcon,   href: "/catalog/smart-home" },
-  { label: "Gaming",      icon: Gamepad2,   href: "/catalog/gaming" },
-  { label: "Wearables",   icon: Watch,      href: "/catalog/wearables" },
-  { label: "Accessories", icon: Cable,      href: "/catalog/accessories" },
+const DEFAULT_QUICK_ICON = LayoutGrid;
+const QUICK_ICON_BY_KEYWORD: Array<[RegExp, React.ElementType]> = [
+  [/print/i, Printer],
+  [/ink|toner|suppl/i, Droplets],
+  [/all-?in-?one|desktop|comput|pc/i, Monitor],
+  [/processor|cpu|component/i, Cpu],
+  [/project|screen/i, Projector],
+  [/present/i, Presentation],
+  [/head|audio|sound/i, Headphones],
+  [/air|condition|climate|vent/i, Wind],
+  [/shred/i, Scissors],
+  [/bind|paper|laminat/i, FileStack],
+  [/clean/i, Droplets],
+];
+
+function quickIcon(name: string): React.ElementType {
+  for (const [re, Icon] of QUICK_ICON_BY_KEYWORD) if (re.test(name)) return Icon;
+  return DEFAULT_QUICK_ICON;
+}
+
+// Safe fallback rail shown only when no live categories are available.
+const FALLBACK_QUICK = [
+  { label: "All products", icon: LayoutGrid, href: "/catalog" },
+  { label: "New arrivals", icon: Sparkles, href: "/catalog?sort=newest" },
+  { label: "Deals", icon: Percent, href: "/catalog?onSale=true" },
+  { label: "Support", icon: Package, href: "/contact" },
 ];
 
 const reassurance = [
@@ -166,17 +192,40 @@ const reassurance = [
   { icon: Star,        label: "Rated 4.9 on Trustpilot" },
 ];
 
+interface HeroCategory {
+  name: string;
+  slug: string;
+  productCount?: number;
+}
+
 interface Props {
   slides?: unknown[];
   deals?: unknown[];
+  categories?: HeroCategory[];
 }
 
-export function HeroCarousel(_props: Props) {
+export function HeroCarousel({ categories = [] }: Props) {
   const [current, setCurrent] = useState(0);
   const [paused, setPaused] = useState(false);
   const [dir, setDir] = useState(1);
   const touchStart = useRef<number | null>(null);
   const slide = slides[current];
+
+  // Only link to category slugs that actually exist, so no CTA hits a 404.
+  const realSlugs = new Set(categories.map((c) => c.slug));
+  const hrefForTargets = (targets: string[]) => {
+    const match = targets.find((t) => realSlugs.has(t));
+    return match ? `/catalog/${match}` : "/catalog";
+  };
+
+  const quickItems =
+    categories.length > 0
+      ? categories.slice(0, 9).map((c) => ({
+          label: c.name,
+          href: `/catalog/${c.slug}`,
+          icon: quickIcon(c.name),
+        }))
+      : FALLBACK_QUICK;
 
   const go = useCallback(
     (idx: number) => {
@@ -283,7 +332,7 @@ export function HeroCarousel(_props: Props) {
                   </span>
                 </div>
                 <Link
-                  href={slide.cta.href}
+                  href={hrefForTargets(slide.targets)}
                   className="group inline-flex items-center gap-2 rounded-full bg-[#1E6BE6] px-6 py-3 text-[13.5px] font-bold text-white shadow-[0_6px_20px_rgba(30,107,230,0.28)] transition-all hover:bg-[#1857BF] hover:shadow-[0_10px_28px_rgba(30,107,230,0.42)]"
                 >
                   {slide.cta.label}
@@ -413,7 +462,7 @@ export function HeroCarousel(_props: Props) {
       <div className="mx-auto max-w-[1280px] px-4 pb-4 sm:px-6 lg:px-8">
         <div className="overflow-hidden rounded-2xl border border-[color:var(--color-line)] bg-white dark:bg-[color:var(--color-bg-elevated)]">
           <div className="scrollbar-none flex items-stretch overflow-x-auto">
-            {quickAccess.map((c) => (
+            {quickItems.map((c) => (
               <Link
                 key={c.label}
                 href={c.href}

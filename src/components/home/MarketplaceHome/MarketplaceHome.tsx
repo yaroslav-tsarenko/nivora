@@ -124,7 +124,7 @@ export function MarketplaceHome({ data }: Props) {
     <div className="min-h-screen bg-[color:var(--color-bg)]">
       <PromoStrip items={promoStripItems} />
 
-      <HeroCarousel slides={heroSlides} deals={dealCards} />
+      <HeroCarousel slides={heroSlides} deals={dealCards} categories={categoryShowcase} />
 
       <div className="mx-auto max-w-[var(--container-content)] px-4 pb-24 pt-8 sm:px-6 lg:px-8">
         <div className="flex items-start gap-0">
