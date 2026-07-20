@@ -329,9 +329,23 @@ export function Header() {
   const [mobileAcc, setMobileAcc] = useState<string | null>(null);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
+    // Hysteresis: enable the compact header well past the collapse point and
+    // only release it near the very top. A single threshold makes `scrolled`
+    // flip back and forth while scrolling slowly, and since toggling changes
+    // the header height, that shift feeds back into scrollY — causing jitter.
+    let ticking = false;
+    const update = () => {
+      ticking = false;
+      const y = window.scrollY;
+      setScrolled((prev) => (prev ? y > 20 : y > 80));
+    };
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
+    };
     window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
+    update();
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
@@ -897,7 +911,7 @@ export function Header() {
                                 key={it.productId}
                                 className="flex items-center gap-3 rounded-lg border border-[color:var(--color-line)] p-2"
                               >
-                                <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-md bg-[color:var(--color-bg-secondary)]">
+                                <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-md bg-[rgb(247,247,247)]">
                                   {it.imageUrl && (
                                     <Image
                                       src={it.imageUrl}
