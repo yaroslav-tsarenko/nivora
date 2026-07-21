@@ -85,8 +85,8 @@ const legalLinks = [
 ];
 
 const trustBadges = [
-  { icon: Truck,       label: "Free delivery over £50" },
-  { icon: RotateCcw,   label: "30-day easy returns" },
+  { icon: Truck,       label: "Free delivery over £100" },
+  { icon: RotateCcw,   label: "14-day easy returns" },
   { icon: ShieldCheck, label: "2-year Nivro warranty" },
   { icon: Repeat,      label: "Trade-in credit" },
 ];

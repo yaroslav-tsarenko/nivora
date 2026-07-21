@@ -133,7 +133,7 @@ export async function sendWelcomeEmail(email: string, name?: string | null): Pro
       `
       <h1 style="margin:0 0 16px;font-size:22px;font-weight:800;color:${TEXT_COLOR};">${greeting}, welcome to Nivro!</h1>
       <p style="color:${MUTED_COLOR};line-height:1.6;margin:0 0 16px;">
-        Your account has been created successfully. You now have access to thousands of electrical materials and supplies at competitive prices.
+        Your account has been created successfully. You now have access to thousands of electronics and tech accessories at competitive prices.
       </p>
       <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:16px;margin:0 0 16px;text-align:center;">
         <p style="margin:0 0 4px;font-weight:700;color:#166534;font-size:18px;">🎉 10% OFF your first order</p>

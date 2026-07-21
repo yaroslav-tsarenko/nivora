@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import { Link } from "@/i18n/routing";
 import { motion, useInView } from "framer-motion";
-import { Package } from "lucide-react";
+import { getProductImage, getProductImageFallback } from "@/lib/utils/product-image";
 
 interface CategoryItem {
   id: string;
@@ -48,20 +48,17 @@ export function CategoryShowcase({ categories }: Props) {
               href={`/catalog/${cat.slug}`}
               className="group flex h-full flex-col overflow-hidden rounded-2xl border border-[color:var(--color-line)] bg-[color:var(--color-bg-elevated)] transition-colors hover:border-[color:var(--color-primary)]"
             >
-              <div className="relative aspect-[4/3] w-full overflow-hidden bg-[color:var(--color-bg-secondary)]">
-                {cat.imageUrl ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={cat.imageUrl}
-                    alt={cat.name}
-                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    loading="lazy"
-                  />
-                ) : (
-                  <div className="flex h-full w-full items-center justify-center text-[color:var(--color-text-tertiary)]">
-                    <Package size={28} />
-                  </div>
-                )}
+              <div className="relative aspect-[4/3] w-full overflow-hidden bg-[rgb(247,247,247)]">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={getProductImage(cat.imageUrl, cat.name)}
+                  alt={cat.name}
+                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  loading="lazy"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = getProductImageFallback();
+                  }}
+                />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
               </div>
               <div className="flex flex-col gap-0.5 p-4">

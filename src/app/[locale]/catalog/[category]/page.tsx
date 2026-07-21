@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
     title: category.name,
     description:
       category.description ||
-      `Shop ${category.name} products at Nivro. Browse electronics, accessories, electrical materials and installation supplies.`,
+      `Shop ${category.name} products at Nivro. Browse electronics, gadgets, and tech accessories.`,
     alternates: { canonical: `/${locale}/catalog/${category.slug}` },
     openGraph: {
       title: `${category.name} | Nivro`,

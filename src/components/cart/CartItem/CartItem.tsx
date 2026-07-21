@@ -17,7 +17,7 @@ export function CartItem({ item }: CartItemProps) {
 
   return (
     <div className="flex gap-4 border-b border-[color:var(--color-line)] py-5 first:pt-0">
-      <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-lg border border-[color:var(--color-line)] bg-white">
+      <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-lg border border-[color:var(--color-line)] bg-[rgb(247,247,247)]">
         {item.imageUrl ? (
           <Image
             src={item.imageUrl}

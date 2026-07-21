@@ -106,7 +106,7 @@ export default function CheckoutPage() {
   const steps = [t("contact"), t("shipping"), t("review")];
   const selectedMethod = watch("shippingMethod");
   const selectedCountry = watch("shipping.country");
-  const availableMethods = cart.subtotal >= 100
+  const availableMethods = convert(cart.subtotal) >= 100
     ? SHIPPING_METHODS
     : SHIPPING_METHODS.filter((m) => m.key !== "free");
   const shippingPrice = SHIPPING_METHODS.find((m) => m.key === selectedMethod)?.price ?? 5.99;
@@ -117,7 +117,7 @@ export default function CheckoutPage() {
   const discountAmount = discount ? +(cart.subtotal * (discount.percent / 100)).toFixed(2) : 0;
   const discountedSubtotal = Math.max(cart.subtotal - discountAmount, 0);
   const taxOnDiscounted = +(discountedSubtotal * 0.21).toFixed(2);
-  const finalShipping = discountedSubtotal >= 100 && selectedMethod === "free" ? 0 : shippingPrice;
+  const finalShipping = convert(discountedSubtotal) >= 100 && selectedMethod === "free" ? 0 : shippingPrice;
 
   useEffect(() => {
     let cancelled = false;
@@ -218,7 +218,7 @@ export default function CheckoutPage() {
 
   if (cart.items.length === 0) return null;
 
-  const freeShippingThreshold = convert(100);
+  const freeShippingThreshold = 100;
   const subtotalConverted = convert(cart.subtotal);
   const amountToFreeShipping = freeShippingThreshold - subtotalConverted;
 
@@ -499,7 +499,7 @@ export default function CheckoutPage() {
                         i < cart.items.length - 1 ? "border-b border-[color:var(--color-line)]" : ""
                       }`}
                     >
-                      <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl border border-[color:var(--color-line)] bg-white">
+                      <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl border border-[color:var(--color-line)] bg-[rgb(247,247,247)]">
                         {item.imageUrl ? (
                           <Image src={item.imageUrl} alt={item.name} fill sizes="56px" className="object-contain p-1" />
                         ) : (
@@ -570,7 +570,7 @@ export default function CheckoutPage() {
           <div className="mb-5 flex flex-col gap-2.5 border-b border-[color:var(--color-line)] pb-5">
             {cart.items.map((item) => (
               <div key={item.id} className="flex items-center gap-3">
-                <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-lg border border-[color:var(--color-line)] bg-white">
+                <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-lg border border-[color:var(--color-line)] bg-[rgb(247,247,247)]">
                   {item.imageUrl ? (
                     <Image src={item.imageUrl} alt={item.name} fill sizes="40px" className="object-contain p-0.5" />
                   ) : (

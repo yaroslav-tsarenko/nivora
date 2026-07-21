@@ -12,7 +12,6 @@ import { TrustStrip } from "../TrustStrip/TrustStrip";
 import { StatsBand } from "../StatsBand/StatsBand";
 import { ShopByPurpose } from "../ShopByPurpose/ShopByPurpose";
 import { ServicePromise } from "../ServicePromise/ServicePromise";
-import { Testimonials } from "../Testimonials/Testimonials";
 import { KnowledgeHub } from "../KnowledgeHub/KnowledgeHub";
 import { CategoryShowcase } from "../CategoryShowcase/CategoryShowcase";
 import { WhyShopWithUs } from "../WhyShopWithUs/WhyShopWithUs";
@@ -236,9 +235,6 @@ export function MarketplaceHome({ data }: Props) {
 
             {/* Why shop with us */}
             <WhyShopWithUs />
-
-            {/* Testimonials */}
-            <Testimonials />
 
             {/* Brand Strip */}
             {brands.length > 0 && <BrandStrip brands={brands} />}

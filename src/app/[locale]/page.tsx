@@ -327,17 +327,37 @@ async function getHomeData() {
 
     const brandSections = getBrandSections(brandProducts, TOP_BRANDS, 8);
 
-    const categoryShowcase = categoryTree
-      .map((node) => ({
-        id: node.id,
-        name: node.name,
-        slug: node.slug,
-        imageUrl: node.imageUrl,
-        productCount: node.descendantProductCount,
-      }))
-      .filter((c) => c.productCount > 0)
-      .sort((a, b) => b.productCount - a.productCount)
+    const showcaseNodes = categoryTree
+      .filter((node) => node.descendantProductCount > 0)
+      .sort((a, b) => b.descendantProductCount - a.descendantProductCount)
       .slice(0, 8);
+
+    const categoryShowcase = await Promise.all(
+      showcaseNodes.map(async (node) => {
+        let imageUrl = node.imageUrl;
+        if (!imageUrl) {
+          // No category image on record — borrow the first product's image so
+          // the "Shop by category" tiles always render a picture.
+          const rep = await prisma.product.findFirst({
+            where: {
+              status: "ACTIVE",
+              images: { some: {} },
+              categories: { some: { categoryId: { in: collectDescendantIds(node) } } },
+            },
+            orderBy: { createdAt: "desc" },
+            select: { images: { take: 1, orderBy: { sortOrder: "asc" }, select: { url: true } } },
+          });
+          imageUrl = rep?.images[0]?.url ?? null;
+        }
+        return {
+          id: node.id,
+          name: node.name,
+          slug: node.slug,
+          imageUrl,
+          productCount: node.descendantProductCount,
+        };
+      }),
+    );
 
     return {
       heroSlides,

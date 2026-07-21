@@ -207,7 +207,7 @@ export default function TermsPage() {
       </p>
 
       <h2>8. Prices, VAT, and Currencies</h2>
-      <p>8.1 The Website may display prices in EUR, GBP, and USD.</p>
+      <p>8.1 The Website may display prices in EUR and GBP.</p>
       <p>
         8.2 Prices displayed on the Website include VAT where applicable, unless clearly stated otherwise.
       </p>
@@ -257,7 +257,7 @@ export default function TermsPage() {
         delivery thresholds, or trade pricing.
       </p>
       <p>
-        10.2 Unless stated otherwise, free delivery applies to eligible orders over &euro;100 / &pound;100 / $100.
+        10.2 Unless stated otherwise, free delivery applies to eligible orders over &euro;100 / &pound;100.
       </p>
       <p>
         10.3 The free delivery threshold is calculated based on the product subtotal after discounts and

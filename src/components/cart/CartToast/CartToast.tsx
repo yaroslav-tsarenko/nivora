@@ -28,7 +28,7 @@ export function CartToast({ name, imageUrl, quantity }: CartToastProps) {
         <Check size={14} strokeWidth={3} />
       </motion.div>
 
-      <div className="relative z-10 flex h-[52px] w-[52px] shrink-0 items-center justify-center overflow-hidden rounded-xl border border-[color:var(--color-line)] bg-white text-[color:var(--color-text-tertiary)]">
+      <div className="relative z-10 flex h-[52px] w-[52px] shrink-0 items-center justify-center overflow-hidden rounded-xl border border-[color:var(--color-line)] bg-[rgb(247,247,247)] text-[color:var(--color-text-tertiary)]">
         {imageUrl ? (
           <Image src={imageUrl} alt={name} fill sizes="52px" className="object-contain" />
         ) : (

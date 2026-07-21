@@ -17,7 +17,7 @@ const reasons = [
   {
     icon: Heart,
     title: "Certified products",
-    desc: "Every electrical material is sourced from certified manufacturers and meets professional standards.",
+    desc: "Every product is sourced from certified manufacturers and meets professional standards.",
   },
   {
     icon: RefreshCw,
@@ -46,7 +46,7 @@ export function WhyShopWithUs() {
             Why choose Nivro
           </h2>
           <p className="max-w-xl text-sm text-[color:var(--color-text-secondary)]">
-            Professional-grade electrical materials with expert support and fast delivery.
+            Professional-grade electronics with expert support and fast delivery.
           </p>
         </div>
 

@@ -19,7 +19,9 @@ export default function CartPage() {
   const { cart, updateQuantity, removeItem } = useCart();
   const { currency, convert } = useCurrency();
 
-  const freeShippingThreshold = convert(100);
+  // Flat per-currency threshold to match policy (£100 GBP / €100 EUR),
+  // compared against the converted (displayed) subtotal.
+  const freeShippingThreshold = 100;
   const subtotalConverted = convert(cart.subtotal);
 
   return (
@@ -79,7 +81,7 @@ export default function CartPage() {
                   transition={{ delay: index * 0.05, duration: 0.25 }}
                   className="flex items-start gap-3.5 p-4 sm:items-center sm:gap-5 sm:p-5 sm:px-6 [&+&]:border-t [&+&]:border-[color:var(--color-line)]"
                 >
-                  <div className="relative h-[72px] w-[72px] shrink-0 overflow-hidden rounded-lg border border-[color:var(--color-line)] bg-white sm:h-[100px] sm:w-[100px]">
+                  <div className="relative h-[72px] w-[72px] shrink-0 overflow-hidden rounded-lg border border-[color:var(--color-line)] bg-[rgb(247,247,247)] sm:h-[100px] sm:w-[100px]">
                     {item.imageUrl ? (
                       <Image
                         src={item.imageUrl}

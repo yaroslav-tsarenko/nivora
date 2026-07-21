@@ -277,8 +277,8 @@ function iconForCategory(name: string): React.ElementType {
 }
 
 const ROTATING_PROMOS = [
-  { icon: Truck, text: "Free UK delivery on orders over £50" },
-  { icon: Package, text: "Order by 8pm for next-day delivery" },
+  { icon: Truck, text: "Free UK delivery on orders over £100" },
+  { icon: Package, text: "Dispatched from the UK within 1–2 business days" },
   { icon: Zap, text: "0% interest-free finance available at checkout" },
   { icon: Sparkles, text: "Trade in your old device — up to £700 credit" },
   { icon: Star, text: "Rated 4.9 / 5 by verified customers" },

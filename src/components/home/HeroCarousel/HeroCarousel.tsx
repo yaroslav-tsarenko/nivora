@@ -72,7 +72,7 @@ const slides: Slide[] = [
     eyebrow: "Workspace Computing",
     headline: "Powerful computers,",
     headlineAccent: "built to work.",
-    sub: "Desktop towers and all-in-one PCs for the office, home studio and everything in between. Free next-day delivery on £50+.",
+    sub: "Desktop towers and all-in-one PCs for the office, home studio and everything in between. Free UK delivery on orders over £100.",
     priceFrom: "£199",
     cta: { label: "Shop computers" },
     secondary: { label: "See all offers", href: "/catalog?onSale=true" },
@@ -186,8 +186,8 @@ const FALLBACK_QUICK = [
 ];
 
 const reassurance = [
-  { icon: Truck,       label: "Free next-day delivery on £50+" },
-  { icon: Repeat,      label: "30-day returns, no fuss" },
+  { icon: Truck,       label: "Free UK delivery over £100" },
+  { icon: Repeat,      label: "14-day return policy" },
   { icon: ShieldCheck, label: "2-year Nivro warranty" },
   { icon: Star,        label: "Rated 4.9 on Trustpilot" },
 ];

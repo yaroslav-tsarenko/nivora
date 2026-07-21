@@ -3,44 +3,44 @@
 import { useRef } from "react";
 import { Link } from "@/i18n/routing";
 import { motion, useInView } from "framer-motion";
-import { Building2, Home, Factory, Lightbulb, ShieldCheck, Wrench, ArrowRight } from "lucide-react";
+import { Laptop, Gamepad2, Headphones, Home, Smartphone, Camera, ArrowRight } from "lucide-react";
 
 const purposes = [
   {
+    icon: Laptop,
+    title: "Work & Office",
+    desc: "Laptops, monitors, keyboards and everything for a productive desk.",
+    href: "/catalog/laptops-computers",
+  },
+  {
+    icon: Gamepad2,
+    title: "Gaming",
+    desc: "Consoles, gaming laptops, controllers and high-refresh displays.",
+    href: "/catalog/gaming-consoles",
+  },
+  {
+    icon: Headphones,
+    title: "Audio",
+    desc: "Headphones, earbuds, speakers and studio-grade sound gear.",
+    href: "/catalog/audio-headphones",
+  },
+  {
     icon: Home,
-    title: "Residential",
-    desc: "Switches, sockets, lighting and household wiring kits.",
-    href: "/catalog?purpose=residential",
+    title: "Smart Home",
+    desc: "Hubs, sensors, smart lighting and connected security.",
+    href: "/catalog/smart-home",
   },
   {
-    icon: Building2,
-    title: "Commercial",
-    desc: "Distribution boards, smart panels and energy meters.",
-    href: "/catalog?purpose=commercial",
+    icon: Smartphone,
+    title: "Mobile",
+    desc: "Smartphones, tablets, chargers and everyday accessories.",
+    href: "/catalog/smartphones-tablets",
   },
   {
-    icon: Factory,
-    title: "Industrial",
-    desc: "High-current cables, motor protection and PLC accessories.",
-    href: "/catalog?purpose=industrial",
-  },
-  {
-    icon: Lightbulb,
-    title: "Lighting",
-    desc: "LED fixtures, drivers, dimmers and outdoor luminaires.",
-    href: "/catalog?purpose=lighting",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Protection",
-    desc: "RCDs, MCBs, fuses, surge protection devices.",
-    href: "/catalog?purpose=protection",
-  },
-  {
-    icon: Wrench,
-    title: "Tools & accessories",
-    desc: "Conduit, mounting, terminals, professional hand tools.",
-    href: "/catalog?purpose=tools",
+    icon: Camera,
+    title: "Photo & Video",
+    desc: "Cameras, drones, lenses and creator essentials.",
+    href: "/catalog/cameras-drones",
   },
 ];
 
@@ -58,7 +58,7 @@ export function ShopByPurpose() {
           </h2>
         </div>
         <p className="max-w-lg text-sm text-[color:var(--color-text-secondary)]">
-          Six tailored entry points into the catalog — every product is filtered, spec-matched, and ready to install.
+          Six tailored entry points into the catalog — every product is hand-picked, spec-matched, and ready to ship.
         </p>
       </div>
 

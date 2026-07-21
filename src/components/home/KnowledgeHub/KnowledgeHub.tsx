@@ -9,22 +9,22 @@ const articles = [
   {
     icon: BookOpen,
     eyebrow: "Guide",
-    title: "How to size a cable for a 32 A circuit",
-    desc: "Cross-sections, voltage drop, and what the latest IEC 60364 says about derating in conduit.",
+    title: "How to choose the right laptop for your work",
+    desc: "CPU, RAM and storage explained — what actually matters for everyday productivity and creative workloads.",
     href: "/about",
   },
   {
     icon: Calculator,
     eyebrow: "Tool",
-    title: "Distribution board planner",
-    desc: "Pick a panel layout, count breakers, and we'll auto-suggest spare slots and DIN-rail width.",
+    title: "Home office setup planner",
+    desc: "Pick a monitor, keyboard and audio combo, and we'll suggest the accessories that complete your desk.",
     href: "/about",
   },
   {
     icon: FileText,
     eyebrow: "Reference",
-    title: "RCD vs RCBO: a 60-second cheat sheet",
-    desc: "Where each one fits in a residential installation — and why we ship more RCBOs every year.",
+    title: "OLED vs IPS: a 60-second cheat sheet",
+    desc: "Where each panel type shines — for gaming, colour-critical work, and everyday viewing.",
     href: "/about",
   },
 ];
@@ -42,7 +42,7 @@ export function KnowledgeHub() {
             Resources to help you spec right
           </h2>
           <p className="text-sm text-[color:var(--color-text-secondary)]">
-            Practical guides and tools from our in-house electrical engineers.
+            Practical guides and tools from our in-house product specialists.
           </p>
         </div>
         <Link

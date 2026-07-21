@@ -6,7 +6,7 @@ import { CheckCircle2, Sparkles, ShieldCheck, Truck } from "lucide-react";
 
 const bullets = [
   "Same-day dispatch on orders placed before 14:00 GMT",
-  "Free UK returns within 30 days, no questions asked",
+  "Free UK returns within 14 days, no questions asked",
   "Manufacturer-certified inventory with batch traceability",
   "Bulk pricing tiers automatically applied at checkout",
 ];
@@ -31,8 +31,8 @@ export function ServicePromise() {
             Built for professionals who can&apos;t afford to wait.
           </h2>
           <p className="max-w-lg text-base leading-relaxed text-[color:var(--color-text-secondary)]">
-            Every order at Nivro is handled by a team that knows what an installer
-            needs on a Monday morning. Spec-correct, certified, and out the door fast.
+            Every order at Nivro is handled by a team that knows what customers
+            need on a Monday morning. Spec-correct, certified, and out the door fast.
           </p>
           <ul className="mt-2 flex flex-col gap-3">
             {bullets.map((b, i) => (
