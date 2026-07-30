@@ -48,9 +48,38 @@ export function getNewProducts(products: HomepageProduct[], limit = 10): Homepag
 }
 
 export function getPopularProducts(products: HomepageProduct[], limit = 10): HomepageProduct[] {
-  return [...products]
-    .sort((a, b) => (b.quantity ?? 0) - (a.quantity ?? 0))
-    .slice(0, limit);
+  return diversifyByCategory(
+    [...products].sort((a, b) => (b.quantity ?? 0) - (a.quantity ?? 0)),
+    limit,
+  );
+}
+
+// Round-robin across categories so a single high-stock category (e.g. printers)
+// can't monopolise a section. Input order is treated as the ranking; within each
+// category that ranking is preserved.
+export function diversifyByCategory(products: HomepageProduct[], limit = 10): HomepageProduct[] {
+  const buckets = new Map<string, HomepageProduct[]>();
+  for (const product of products) {
+    const key = product.categories?.[0]?.category.slug ?? "_uncategorized";
+    const bucket = buckets.get(key);
+    if (bucket) bucket.push(product);
+    else buckets.set(key, [product]);
+  }
+
+  const queues = [...buckets.values()];
+  const result: HomepageProduct[] = [];
+  let exhausted = false;
+  while (result.length < limit && !exhausted) {
+    exhausted = true;
+    for (const queue of queues) {
+      const next = queue.shift();
+      if (!next) continue;
+      exhausted = false;
+      result.push(next);
+      if (result.length >= limit) break;
+    }
+  }
+  return result;
 }
 
 export function getProductsByCategory(products: HomepageProduct[], categorySlug: string): HomepageProduct[] {

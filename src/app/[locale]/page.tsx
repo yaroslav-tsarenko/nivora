@@ -5,6 +5,7 @@ import { JsonLd } from "@/components/shared/SEO/JsonLd";
 import { MarketplaceHome } from "@/components/home/MarketplaceHome/MarketplaceHome";
 import {
   getBrandSections,
+  getPopularProducts,
   TOP_BRANDS,
   type CategorySection,
   type HomepageCategory,
@@ -225,7 +226,7 @@ async function getHomeData() {
       fetchProducts({
         where: { status: "ACTIVE", images: { some: {} } },
         orderBy: { quantity: "desc" },
-        take: 10,
+        take: 120,
       }),
       fetchProducts({
         where: { status: "ACTIVE", brand: { in: TOP_BRANDS }, images: { some: {} } },
@@ -282,7 +283,8 @@ async function getHomeData() {
     const featuredProducts = serializeProducts(featuredRows);
     const saleProducts = serializeProducts(saleRows);
     const newProducts = serializeProducts(newRows);
-    const popularProducts = serializeProducts(popularRows);
+    // Rank by stock but round-robin across categories so popular isn't all printers.
+    const popularProducts = getPopularProducts(serializeProducts(popularRows), 10);
     const brandProducts = serializeProducts(brandRows);
 
     const sectionProducts: Record<string, HomepageProduct[]> = {};
