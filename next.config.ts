@@ -58,6 +58,10 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
+        hostname: "images.icecat.biz",
+      },
+      {
+        protocol: "https",
         hostname: "nivro.co.uk",
       },
       {

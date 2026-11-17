@@ -32,6 +32,22 @@ const LEGACY_WP_HOSTS = new Set([
   "www.nivro.co.uk",
 ]);
 
+/**
+ * Hosts that no longer serve our photos: images.nivro.co.uk was a cPanel
+ * mirror of the old WordPress uploads and now redirects every request to a
+ * "suspended" page. Products still pointing there get the placeholder
+ * instead of a broken image.
+ */
+const DEAD_HOSTS = new Set(["images.nivro.co.uk"]);
+
+function isDeadHost(url: string): boolean {
+  try {
+    return DEAD_HOSTS.has(new URL(url).host);
+  } catch {
+    return false;
+  }
+}
+
 function toSameOrigin(url: string): string {
   try {
     const u = new URL(url);
@@ -58,7 +74,9 @@ export function getProductImage(
   void _size;
   if (!imageUrl) return PLACEHOLDER_DATA_URL;
   if (imageUrl.startsWith("/")) return imageUrl;
-  if (imageUrl.startsWith("http")) return toSameOrigin(imageUrl);
+  if (imageUrl.startsWith("http")) {
+    return isDeadHost(imageUrl) ? PLACEHOLDER_DATA_URL : toSameOrigin(imageUrl);
+  }
   return PLACEHOLDER_DATA_URL;
 }
 

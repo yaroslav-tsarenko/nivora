@@ -153,7 +153,7 @@ const promoTiles = [
     icon: Repeat,
     accent: "azure" as const,
     image:
-      "https://images.unsplash.com/photo-1512446733611-9099a758e63c?w=1000&q=80&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1556761175-b413da4baf72?w=1000&q=80&auto=format&fit=crop",
   },
 ];
 
