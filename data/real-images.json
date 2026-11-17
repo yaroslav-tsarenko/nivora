@@ -1,37 +1,23 @@
 {
  "5099206090354": {
-  "source": "bigbuy",
-  "images": [
-   "https://cdnbigbuy.com/images/436014042.jpg",
-   "https://cdnbigbuy.com/images/5099206090354_S5580599_P02.jpg",
-   "https://cdnbigbuy.com/images/436013812.jpg"
-  ]
+  "source": "none",
+  "note": "supplier images returned 404",
+  "images": []
  },
  "5099206053304": {
-  "source": "bigbuy",
-  "images": [
-   "https://cdnbigbuy.com/images/5099206053304_S5580789_P01.jpg",
-   "https://cdnbigbuy.com/images/5099206053304_S5580789_P11.jpg",
-   "https://cdnbigbuy.com/images/5099206053304_S5580789_P21.jpg",
-   "https://cdnbigbuy.com/images/5099206053304_S5580789_P31.jpg",
-   "https://cdnbigbuy.com/images/5099206053304_S5580789_P41.jpg"
-  ]
+  "source": "none",
+  "note": "supplier images returned 404",
+  "images": []
  },
  "5099206090347": {
-  "source": "bigbuy",
-  "images": [
-   "https://cdnbigbuy.com/images/436028713.jpg",
-   "https://cdnbigbuy.com/images/436028723.jpg",
-   "https://cdnbigbuy.com/images/436028703.jpg"
-  ]
+  "source": "none",
+  "note": "supplier images returned 404",
+  "images": []
  },
  "5099206081918": {
-  "source": "bigbuy",
-  "images": [
-   "https://cdnbigbuy.com/images/511762641.jpg",
-   "https://cdnbigbuy.com/images/511762651.jpg",
-   "https://cdnbigbuy.com/images/511762731.jpg"
-  ]
+  "source": "none",
+  "note": "supplier images returned 404",
+  "images": []
  },
  "8716309079501": {
   "source": "bigbuy",
@@ -83,15 +69,9 @@
   "images": []
  },
  "4002888732055": {
-  "source": "icecat-gtin",
-  "title": "Lindy LHXW-e Wireless Active Noise Cancelling Headphones - Black",
-  "images": [
-   "https://images.icecat.biz/img/gallery_mediums/50fbce81cc369fe69c8c8a60a64a525c4b05563c.jpg",
-   "https://images.icecat.biz/img/gallery_mediums/87f34ea0a537160e489ca866d9264a448c4dc007.jpg",
-   "https://images.icecat.biz/img/gallery_mediums/3722e52ff68f575aee5a54155f22e072b1e70fb7.jpg",
-   "https://images.icecat.biz/img/gallery_mediums/b8f4f453276b8bec841eb9eb73b813d5a9f2709c.jpg",
-   "https://images.icecat.biz/img/gallery_mediums/ff6962d9f01cb00f42869f21be7f0a0875298a0b.jpg"
-  ]
+  "source": "none",
+  "note": "supplier images returned 404",
+  "images": []
  },
  "8713439252743": {
   "source": "icecat-gtin",
@@ -160,13 +140,9 @@
   ]
  },
  "4002888732307": {
-  "source": "icecat-gtin",
-  "title": "Lindy LH900XW Replacement Ear Pads",
-  "images": [
-   "https://images.icecat.biz/img/gallery_mediums/73083ce91ccaf76a3995b386500467aa8379806e.jpg",
-   "https://images.icecat.biz/img/gallery_mediums/bc55c3f67ebf0f5e5b8ad1cb52fd8796c7fa5b75.jpg",
-   "https://images.icecat.biz/img/gallery_mediums/74e7ba8c920f59c221c85400709475c0b8ecad21.jpg"
-  ]
+  "source": "none",
+  "note": "supplier images returned 404",
+  "images": []
  },
  "8713439251791": {
   "source": "icecat-gtin",
@@ -1464,23 +1440,14 @@
   "images": []
  },
  "4002888732048": {
-  "source": "icecat-gtin",
-  "title": "Lindy LH500XW+ Headset Wired & Wireless Head-band Music USB Type-C Bluetooth Black",
-  "images": [
-   "https://images.icecat.biz/img/gallery_mediums/e7abe3afeeb8a6e74733ce6272a0be3940d004f4.jpg",
-   "https://images.icecat.biz/img/gallery_mediums/267c99a54e2608ea5c0a58f5b7b0efb847f5f7bf.jpg",
-   "https://images.icecat.biz/img/gallery_mediums/60c493e5403efc75019a74ef5f73bce58c5d7213.jpg",
-   "https://images.icecat.biz/img/gallery_mediums/62507577894dca96fd15eef6a1be8820508b58b1.jpg",
-   "https://images.icecat.biz/img/gallery_mediums/dbb147c2b3fed30f00dc0c2a015d3ba4b14d12ff.jpg"
-  ]
+  "source": "none",
+  "note": "supplier images returned 404",
+  "images": []
  },
  "4002888732017": {
-  "source": "icecat-gtin",
-  "title": "Lindy LH500XW Headset Wired & Wireless Head-band Micro-USB Bluetooth Black",
-  "images": [
-   "https://images.icecat.biz/img/gallery_mediums/46f5ef7617b38533621e0e10381e0baad5b45bc3.jpg",
-   "https://images.icecat.biz/img/gallery_mediums/1c05bfd804dcaf68188f5324d955b336ef5dd3b4.jpg"
-  ]
+  "source": "none",
+  "note": "supplier images returned 404",
+  "images": []
  },
  "196188047781": {
   "source": "icecat-gtin",
@@ -1494,14 +1461,9 @@
   ]
  },
  "4002888732024": {
-  "source": "icecat-gtin",
-  "title": "Lindy LH700XW Headset Wired & Wireless Head-band Music Micro-USB Bluetooth Black",
-  "images": [
-   "https://images.icecat.biz/img/gallery_mediums/f9ece7442625a06da3344ecef42f9817b7dcf920.jpg",
-   "https://images.icecat.biz/img/gallery_mediums/6e5ba8f86b0e653aab939e9882db145b89bba290.jpg",
-   "https://images.icecat.biz/img/gallery_mediums/7d1228d3e09c637387b06fb7450e498da38d0ed0.jpg",
-   "https://images.icecat.biz/img/gallery_mediums/8125b3165c03b3168727ef893971a05518ee0fc1.jpg"
-  ]
+  "source": "none",
+  "note": "supplier images returned 404",
+  "images": []
  },
  "196188047361": {
   "source": "icecat-gtin",
@@ -1515,14 +1477,9 @@
   ]
  },
  "4002888732031": {
-  "source": "icecat-gtin",
-  "title": "Lindy LH900XW Headset Wired & Wireless Head-band Calls/Music USB Type-C Bluetooth Black",
-  "images": [
-   "https://images.icecat.biz/img/gallery_mediums/8a0bf0e8118110729112f0a70086406d7652690c.jpg",
-   "https://images.icecat.biz/img/gallery_mediums/a2050e6a9bfb715689b691307c6085e933f50381.jpg",
-   "https://images.icecat.biz/img/gallery_mediums/9b2d03b114b6f3a938bec55143645fe9a8ba2470.jpg",
-   "https://images.icecat.biz/img/gallery_mediums/0a2733c02724dd80828d7907380e7553ec2483a1.jpg"
-  ]
+  "source": "none",
+  "note": "supplier images returned 404",
+  "images": []
  },
  "194644082215": {
   "source": "none",
@@ -1876,14 +1833,9 @@
   "images": []
  },
  "4002888204392": {
-  "source": "icecat-gtin",
-  "title": "Lindy USB-C Office Headset with USB A to C Adapter",
-  "images": [
-   "https://images.icecat.biz/img/gallery_mediums/209c0c5247fdc2e0940283379aad53c4fc2f30e2.jpg",
-   "https://images.icecat.biz/img/gallery_mediums/457cafb61568b8313bca6b3e083edc49327963a8.jpg",
-   "https://images.icecat.biz/img/gallery_mediums/649b968926d16008ddf97348cddb25325c28d7f5.jpg",
-   "https://images.icecat.biz/img/gallery_mediums/27d732489de8e05157e9d1faa8c4c77154a7921f.jpg"
-  ]
+  "source": "none",
+  "note": "supplier images returned 404",
+  "images": []
  },
  "4002888428705": {
   "source": "icecat-gtin",

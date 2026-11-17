@@ -2013,5 +2013,73 @@
   "page": "https://www.kaina24.lt/p/dell-qb24250-cu5-235-24t-16gb-512gb-windows-11-pro/",
   "image": "https://images.kaina24.lt/5662/64/dell-qb24250-cu5-235-24t-16gb-512gb-windows-11-pro.jpg",
   "file": "/products/144558900000.jpg"
+ },
+ "4002888732048": {
+  "match": "mpn",
+  "query": "LH500XW+/WIRELESS 73204 LINDY",
+  "title": "HEADSET LH500XW+/WIRELESS 73204 LINDY - RPC.LT",
+  "page": "https://rpc.lt/p/headset-lh500xw-wireless-73204-lindy/",
+  "image": "https://rpc.lt/wp-content/uploads/2025/10/4ce1f1a5-6031-48ec-9a47-d8d88708a901.jpeg",
+  "file": "/products/4002888732048.jpg"
+ },
+ "5099206081918": {
+  "match": "model",
+  "query": "GAMING G935/981-000744 LOGITECH",
+  "title": "Headset Logitech Gaming G935 wireless black (981-000744) | Nexoc Store GmbH",
+  "page": "https://www.nexoc-store.de/hardware/peripherie/pc-audio/headsets/kabellos/headset-logitech-gaming-g935-wireless-black-981-000744",
+  "image": "https://www.nexoc-store.de/media/f4/c8/16/1781161616/01929423bbb970d6822e37afd7546f0e.jpg?ts=1781161616",
+  "file": "/products/5099206081918.jpg"
+ },
+ "4002888732307": {
+  "match": "none",
+  "query": "ACC EAR PADS/73230 LINDY"
+ },
+ "4002888732024": {
+  "match": "mpn",
+  "query": "LH700XW/WIRELESS 73202 LINDY",
+  "title": "Lindy LH700XW Headphones with mic | 73202",
+  "page": "https://www.singular.com.cy/lindy-lh700xw-headphones-with-mic-full-size-bluetooth-wireless-active-noise-cancelling-3-5-mm-jack-black.html",
+  "image": "https://www.singular.com.cy/images/detailed/376/Lindy_LH700XW_Headphones_with_mic_73202-927584.jpg",
+  "file": "/products/4002888732024.jpg"
+ },
+ "4002888732031": {
+  "match": "mpn",
+  "query": "LH900XW/WIRELESS 73203 LINDY",
+  "title": "Lindy LH900XW Wireless Active Noise Cancelling Headphone - Headsets ...",
+  "page": "https://www.mindfactory.de/product_info.php/Lindy-LH900XW-Wireless-Active-Noise-Cancelling-Headphone_1421371.html",
+  "image": "https://image1280.macovi.de/images/product_images/1280/1421371_2__9027338-2.jpg",
+  "file": "/products/4002888732031.jpg"
+ },
+ "4002888732017": {
+  "match": "mpn",
+  "query": "LH500XW/WIRELESS 73201 LINDY",
+  "title": "Lindy 73201 LH500XW Headphones Huss Light & Sound",
+  "page": "https://www.huss-licht-ton.de/product_info.php/en/Lindy-73201-LH500XW-Headphones/info/43479.html",
+  "image": "https://www.huss-licht-ton.de/images/product_images/large_images/41/43479_3.jpg",
+  "file": "/products/4002888732017.jpg"
+ },
+ "5099206090354": {
+  "match": "none",
+  "query": "ZONE WIRED/DARK GREY 981-000875 LOGITECH"
+ },
+ "5099206053304": {
+  "match": "model",
+  "query": "STEREO H570E/981-000575 LOGITECH",
+  "title": "Logitech H570e Stereo USB Headset | Noise‑Cancel Mic | Kenya",
+  "page": "https://computerskenya.com/product/logitech-h570e/",
+  "image": "https://computerskenya.com/wp-content/uploads/2025/10/Logitech-H570e-Stereo-USB‑A-Headset-with-Noise-Cancelling-Mic-–-Black-981-000575.png",
+  "file": "/products/5099206053304.jpg"
+ },
+ "4002888732055": {
+  "match": "none",
+  "query": "HEADPHONES WRL LHXW-E/BLACK 73205 LINDY"
+ },
+ "4002888204392": {
+  "match": "none",
+  "query": "USB-C OFFICE/20439 LINDY"
+ },
+ "5099206090347": {
+  "match": "none",
+  "query": "ZONE WIRED/981-000870 LOGITECH"
  }
 }
