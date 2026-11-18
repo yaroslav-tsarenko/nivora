@@ -12,7 +12,7 @@ function getFrom(): string {
   return (
     process.env.RESEND_FROM_EMAIL ||
     process.env.RESEND_FROM ||
-    "Nivro <noreply@nivro.co.uk>"
+    "Nivro <info@nivro.co.uk>"
   );
 }
 

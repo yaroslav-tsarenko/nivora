@@ -43,7 +43,7 @@ export function ContactBlock() {
         <br />
         General email: info@nivro.co.uk
         <br />
-        Wholesale (B2B): b2b@nivro.co.uk
+        Wholesale (B2B): info@nivro.co.uk
       </p>
     </div>
   );

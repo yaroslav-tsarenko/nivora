@@ -28,7 +28,7 @@ export const brand = {
 
   contact: {
     email: "info@nivro.co.uk",
-    emailB2B: "b2b@nivro.co.uk",
+    emailB2B: "info@nivro.co.uk",
     phone: "+44 7412 839910",
     phoneHref: "tel:+447412839910",
     contactPage: "/en/contact",
