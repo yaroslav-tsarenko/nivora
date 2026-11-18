@@ -3,44 +3,45 @@
 import { useRef } from "react";
 import { Link } from "@/i18n/routing";
 import { motion, useInView } from "framer-motion";
-import { Laptop, Gamepad2, Headphones, Home, Smartphone, Camera, ArrowRight } from "lucide-react";
+import { Monitor, Printer, Droplets, Headphones, Projector, Scissors, ArrowRight } from "lucide-react";
 
+// Every href must be a live category slug — a stale one renders a 404.
 const purposes = [
   {
-    icon: Laptop,
+    icon: Monitor,
     title: "Work & Office",
-    desc: "Laptops, monitors, keyboards and everything for a productive desk.",
-    href: "/catalog/laptops-computers",
+    desc: "Desktop PCs and all-in-ones for a productive desk.",
+    href: "/catalog/desktop-computers",
   },
   {
-    icon: Gamepad2,
-    title: "Gaming",
-    desc: "Consoles, gaming laptops, controllers and high-refresh displays.",
-    href: "/catalog/gaming-consoles",
+    icon: Printer,
+    title: "Printing",
+    desc: "Laser printers and multifunction devices for home and office.",
+    href: "/catalog/laser-printers",
+  },
+  {
+    icon: Droplets,
+    title: "Ink & Toner",
+    desc: "Original toner and ink cartridges for the printers you own.",
+    href: "/catalog/laser-printer-supplies",
   },
   {
     icon: Headphones,
-    title: "Audio",
-    desc: "Headphones, earbuds, speakers and studio-grade sound gear.",
-    href: "/catalog/audio-headphones",
+    title: "Calls & Audio",
+    desc: "Headsets and earbuds for calls, meetings and music.",
+    href: "/catalog/headsets",
   },
   {
-    icon: Home,
-    title: "Smart Home",
-    desc: "Hubs, sensors, smart lighting and connected security.",
-    href: "/catalog/smart-home",
+    icon: Projector,
+    title: "Presenting",
+    desc: "Projectors, screens and presenters for meeting rooms.",
+    href: "/catalog/projectors-screens",
   },
   {
-    icon: Smartphone,
-    title: "Mobile",
-    desc: "Smartphones, tablets, chargers and everyday accessories.",
-    href: "/catalog/smartphones-tablets",
-  },
-  {
-    icon: Camera,
-    title: "Photo & Video",
-    desc: "Cameras, drones, lenses and creator essentials.",
-    href: "/catalog/cameras-drones",
+    icon: Scissors,
+    title: "Office Essentials",
+    desc: "Shredders, binding machines and cleaning supplies.",
+    href: "/catalog/shredders",
   },
 ];
 
