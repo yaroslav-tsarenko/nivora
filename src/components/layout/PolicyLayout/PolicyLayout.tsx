@@ -37,7 +37,7 @@ export function ContactBlock() {
       <p>
         <strong>EDGEBRAY LIMITED</strong>
         <br />
-        Registration number: 16020956
+        Registration number: 15854749
         <br />
         Registered office: Academy House, 11 Dunraven Place, Bridgend, Mid Glamorgan, CF31 1JF, United Kingdom
         <br />
