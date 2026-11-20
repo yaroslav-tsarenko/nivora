@@ -20,6 +20,12 @@ for (const port of [...DB_PORTS, NEXT_PORT]) {
   killPort(port);
 }
 
+try {
+  const home = process.env.HOME || "/Users/mihailssegins";
+  execSync(`rm -f "${home}/Library/Application Support/prisma-dev-nodejs/default/server.json"`, { stdio: "ignore" });
+  execSync(`rm -rf "${home}/Library/Application Support/prisma-dev-nodejs/durable-streams/default/server.lock"*`, { stdio: "ignore" });
+} catch {}
+
 console.log("[dev] Starting Prisma Postgres...");
 const db = spawn("npx", ["prisma", "dev"], {
   stdio: ["ignore", "pipe", "pipe"],

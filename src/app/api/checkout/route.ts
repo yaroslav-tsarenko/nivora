@@ -125,7 +125,7 @@ export async function POST(request: NextRequest) {
         where: { id: order.id },
         data: { paymentId },
       });
-    } catch (paymentError) {
+    } catch (paymentError: any) {
       console.error("Payadmit payment creation failed:", paymentError);
       // Cancel the order and restore stock
       await prisma.order.update({
@@ -138,10 +138,13 @@ export async function POST(request: NextRequest) {
           data: { quantity: { increment: item.quantity } },
         });
       }
-      return NextResponse.json({ error: "Failed to initialize payment gateway" }, { status: 500 });
+      return NextResponse.json(
+        { error: paymentError?.message || "Failed to initialize payment gateway" },
+        { status: 500 }
+      );
     }
 
-    return NextResponse.json({ ...order, redirectUrl }, { status: 201 });
+    return NextResponse.json({ ...order, paymentId, redirectUrl }, { status: 201 });
   } catch (error: any) {
     console.error("Error creating order:", error);
     return NextResponse.json({ error: error.message || "Failed to create order" }, { status: 500 });
