@@ -152,7 +152,7 @@ export async function createPayadmitPayment(args: {
   siteUrl?: string;
 }): Promise<{ redirectUrl: string; paymentId: string }> {
   const apiToken = process.env.PAYADMIT_API_TOKEN;
-  const baseUrl = (process.env.PAYADMIT_BASE_URL || "https://api.payadmit.com").replace(/\/$/, "");
+  const baseUrl = (process.env.PAYADMIT_BASE_URL || "https://app.payadmit.com").replace(/\/$/, "");
   const siteUrl = (args.siteUrl || process.env.NEXT_PUBLIC_SITE_URL || "https://nivro.co.uk").replace(/\/$/, "");
 
   if (!apiToken) {
