@@ -23,7 +23,7 @@ function getSmtp(): Transporter | null {
       // 465 = implicit TLS; 587/25 upgrade with STARTTLS.
       secure: process.env.SMTP_SECURE ? process.env.SMTP_SECURE === "true" : port === 465,
       auth: process.env.SMTP_USER
-        ? { user: process.env.SMTP_USER, pass: process.env.SMTP_PASSWORD || "" }
+        ? { user: process.env.SMTP_USER, pass: process.env.SMTP_PASSWORD || process.env.SMTP_PASS || "" }
         : undefined,
     });
   }
@@ -33,6 +33,7 @@ function getSmtp(): Transporter | null {
 function getFrom(): string {
   return (
     process.env.SMTP_FROM ||
+    process.env.SMTP_FROM_EMAIL ||
     process.env.RESEND_FROM_EMAIL ||
     process.env.RESEND_FROM ||
     "Nivro <info@nivro.co.uk>"
