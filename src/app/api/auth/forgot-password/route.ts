@@ -3,16 +3,18 @@ import { prisma } from "@/lib/prisma";
 import { randomBytes } from "crypto";
 import { sendPasswordResetEmail } from "@/lib/email";
 import { scheduleEmail } from "@/lib/email-jobs";
+import { findUserByEmail, normalizeEmail } from "@/lib/utils/email";
 
 export async function POST(request: NextRequest) {
   try {
-    const { email } = await request.json();
+    const body = await request.json();
+    const email = normalizeEmail(body?.email);
 
     if (!email) {
       return NextResponse.json({ error: "Email is required" }, { status: 400 });
     }
 
-    const user = await prisma.user.findUnique({ where: { email } });
+    const user = await findUserByEmail(email);
 
     // Always return success to prevent email enumeration
     if (!user) {
@@ -39,7 +41,7 @@ export async function POST(request: NextRequest) {
       "https://nivro.co.uk";
     const resetUrl = `${baseUrl.replace(/\/+$/, "")}/en/auth/reset-password?token=${token}`;
 
-    scheduleEmail("password reset", () => sendPasswordResetEmail(email, resetUrl, user.name));
+    scheduleEmail("password reset", () => sendPasswordResetEmail(user.email, resetUrl, user.name));
 
     return NextResponse.json({ success: true });
   } catch (error) {

@@ -79,6 +79,9 @@ export default function ForgotPasswordPage() {
                 <Mail size={16} className="pointer-events-none absolute left-3 z-10 text-[color:var(--color-text-tertiary)]" />
                 <input
                   type="email"
+                  autoComplete="email"
+                  autoCapitalize="none"
+                  spellCheck={false}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required

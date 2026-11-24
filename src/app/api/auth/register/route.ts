@@ -3,13 +3,16 @@ import { prisma } from "@/lib/prisma";
 import { hashPassword, setSessionCookie } from "@/lib/auth";
 import { sendWelcomeEmail } from "@/lib/email";
 import { scheduleEmail } from "@/lib/email-jobs";
+import { findUserByEmail, normalizeEmail } from "@/lib/utils/email";
 
 export async function POST(request: NextRequest) {
   try {
     const {
-      email, password, firstName, lastName, phone,
+      email: rawEmail, password, firstName, lastName, phone,
       street, city, country, postalCode, dateOfBirth,
     } = await request.json();
+
+    const email = normalizeEmail(rawEmail);
 
     if (!email || !password) {
       return NextResponse.json({ error: "Email and password required" }, { status: 400 });
@@ -21,7 +24,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Password must be at least 6 characters" }, { status: 400 });
     }
 
-    const existing = await prisma.user.findUnique({ where: { email } });
+    const existing = await findUserByEmail(email);
     if (existing) {
       return NextResponse.json({ error: "Email already registered" }, { status: 409 });
     }

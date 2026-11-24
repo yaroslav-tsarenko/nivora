@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
 import { verifyPassword, setSessionCookie } from "@/lib/auth";
+import { findUserByEmail } from "@/lib/utils/email";
 
 export async function POST(request: NextRequest) {
   try {
@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Email and password required" }, { status: 400 });
     }
 
-    const user = await prisma.user.findUnique({ where: { email } });
+    const user = await findUserByEmail(email);
 
     if (!user || !user.passwordHash) {
       return NextResponse.json({ error: "Invalid email or password" }, { status: 401 });
