@@ -1,4 +1,5 @@
 import { Resend } from "resend";
+import nodemailer, { type Transporter } from "nodemailer";
 
 let resend: Resend | null = null;
 
@@ -8,8 +9,30 @@ function getResend(): Resend | null {
   return resend;
 }
 
+let smtp: Transporter | null = null;
+
+// SMTP takes priority when SMTP_HOST is set (e.g. Google Workspace, Zoho,
+// Mailgun/Brevo SMTP relay); otherwise emails go through Resend.
+function getSmtp(): Transporter | null {
+  if (!process.env.SMTP_HOST) return null;
+  if (!smtp) {
+    const port = Number(process.env.SMTP_PORT || 587);
+    smtp = nodemailer.createTransport({
+      host: process.env.SMTP_HOST,
+      port,
+      // 465 = implicit TLS; 587/25 upgrade with STARTTLS.
+      secure: process.env.SMTP_SECURE ? process.env.SMTP_SECURE === "true" : port === 465,
+      auth: process.env.SMTP_USER
+        ? { user: process.env.SMTP_USER, pass: process.env.SMTP_PASSWORD || "" }
+        : undefined,
+    });
+  }
+  return smtp;
+}
+
 function getFrom(): string {
   return (
+    process.env.SMTP_FROM ||
     process.env.RESEND_FROM_EMAIL ||
     process.env.RESEND_FROM ||
     "Nivro <info@nivro.co.uk>"
@@ -17,7 +40,7 @@ function getFrom(): string {
 }
 
 function getReplyTo(): string | undefined {
-  return process.env.RESEND_REPLY_TO || undefined;
+  return process.env.SMTP_REPLY_TO || process.env.RESEND_REPLY_TO || undefined;
 }
 
 function getSiteUrl(): string {
@@ -38,9 +61,26 @@ interface SendArgs {
 }
 
 async function send({ to, subject, html, replyTo }: SendArgs): Promise<boolean> {
+  const transport = getSmtp();
+  if (transport) {
+    try {
+      await transport.sendMail({
+        from: getFrom(),
+        to,
+        subject,
+        html,
+        replyTo: replyTo ?? getReplyTo(),
+      });
+      return true;
+    } catch (err) {
+      console.error(`[Email] SMTP send failed → ${subject} to ${to}:`, err);
+      return false;
+    }
+  }
+
   const r = getResend();
   if (!r) {
-    console.log(`[Email] Skipped (Resend not configured) → ${subject} to ${to}`);
+    console.log(`[Email] Skipped (no SMTP_HOST or RESEND_API_KEY) → ${subject} to ${to}`);
     return false;
   }
   try {
