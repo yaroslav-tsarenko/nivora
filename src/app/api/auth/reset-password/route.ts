@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { hashPassword } from "@/lib/auth";
+import { sendPasswordChangedEmail } from "@/lib/email";
+import { scheduleEmail } from "@/lib/email-jobs";
 
 export async function POST(request: NextRequest) {
   try {
@@ -35,6 +37,8 @@ export async function POST(request: NextRequest) {
         data: { usedAt: new Date() },
       }),
     ]);
+
+    scheduleEmail("password changed", () => sendPasswordChangedEmail(resetToken.user.email, resetToken.user.name));
 
     return NextResponse.json({ success: true });
   } catch (error) {

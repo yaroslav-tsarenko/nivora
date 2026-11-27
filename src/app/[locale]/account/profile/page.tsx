@@ -78,6 +78,64 @@ export default function ProfilePage() {
         </div>
         <Button type="submit" color="primary" isLoading={loading}>{common("save")}</Button>
       </form>
+
+      <ChangePasswordForm />
     </div>
+  );
+}
+
+function ChangePasswordForm() {
+  const [current, setCurrent] = useState("");
+  const [next, setNext] = useState("");
+  const [confirm, setConfirm] = useState("");
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const onSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    if (next.length < 6) return setError("New password must be at least 6 characters");
+    if (next !== confirm) return setError("Passwords do not match");
+    setSaving(true);
+    try {
+      const res = await fetch("/api/auth/change-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ currentPassword: current, newPassword: next }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setError(data.error || "Could not change password");
+        return;
+      }
+      setCurrent("");
+      setNext("");
+      setConfirm("");
+      toast.success("Password changed. We have emailed you a confirmation.");
+    } catch {
+      setError("Could not change password");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <form onSubmit={onSubmit} className="mt-10 flex flex-col gap-4 border-t border-[color:var(--color-line)] pt-8">
+      <h2 className="font-serif text-xl font-medium tracking-tight text-[color:var(--color-text)]">Change password</h2>
+      <div>
+        <label htmlFor="current-password" className="mb-1 block text-sm font-medium text-[color:var(--color-text-secondary)]">Current password</label>
+        <input id="current-password" type="password" autoComplete="current-password" value={current} onChange={(e) => setCurrent(e.target.value)} className={INPUT} />
+      </div>
+      <div>
+        <label htmlFor="new-password" className="mb-1 block text-sm font-medium text-[color:var(--color-text-secondary)]">New password</label>
+        <input id="new-password" type="password" autoComplete="new-password" value={next} onChange={(e) => setNext(e.target.value)} className={INPUT} />
+      </div>
+      <div>
+        <label htmlFor="confirm-password" className="mb-1 block text-sm font-medium text-[color:var(--color-text-secondary)]">Confirm new password</label>
+        <input id="confirm-password" type="password" autoComplete="new-password" value={confirm} onChange={(e) => setConfirm(e.target.value)} className={INPUT} />
+      </div>
+      {error && <p role="alert" className="text-xs text-[color:var(--color-danger)]">{error}</p>}
+      <Button type="submit" color="primary" isLoading={saving}>Update password</Button>
+    </form>
   );
 }

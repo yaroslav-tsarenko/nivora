@@ -11,37 +11,51 @@ function getResend(): Resend | null {
 
 let smtp: Transporter | null = null;
 
-// SMTP takes priority when SMTP_HOST is set (e.g. Google Workspace, Zoho,
-// Mailgun/Brevo SMTP relay); otherwise emails go through Resend.
+// The nivro.co.uk mailboxes are on Namecheap Private Email.
+const DEFAULT_SMTP_HOST = "mail.privateemail.com";
+
+function smtpUser(): string | undefined {
+  return (process.env.SMTP_USER || process.env.SMTP_EMAIL)?.trim() || undefined;
+}
+
+function smtpPass(): string {
+  return process.env.SMTP_PASSWORD || process.env.SMTP_PASS || "";
+}
+
+// SMTP takes priority when it is configured (SMTP_HOST, or a mailbox in SMTP_USER/SMTP_EMAIL
+// with a password); otherwise emails go through Resend.
 function getSmtp(): Transporter | null {
-  if (!process.env.SMTP_HOST) return null;
+  const user = smtpUser();
+  const host = process.env.SMTP_HOST?.trim() || (user && smtpPass() ? DEFAULT_SMTP_HOST : "");
+  if (!host) return null;
   if (!smtp) {
     const port = Number(process.env.SMTP_PORT || 587);
     smtp = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
+      host,
       port,
       // 465 = implicit TLS; 587/25 upgrade with STARTTLS.
       secure: process.env.SMTP_SECURE ? process.env.SMTP_SECURE === "true" : port === 465,
-      auth: process.env.SMTP_USER
-        ? { user: process.env.SMTP_USER, pass: process.env.SMTP_PASSWORD || process.env.SMTP_PASS || "" }
-        : undefined,
+      auth: user ? { user, pass: smtpPass() } : undefined,
+      connectionTimeout: 20_000,
+      greetingTimeout: 20_000,
     });
   }
   return smtp;
 }
 
 function getFrom(): string {
-  return (
-    process.env.SMTP_FROM ||
-    process.env.SMTP_FROM_EMAIL ||
-    process.env.RESEND_FROM_EMAIL ||
-    process.env.RESEND_FROM ||
-    "Nivro <info@nivro.co.uk>"
-  );
+  const explicit = process.env.SMTP_FROM || process.env.SMTP_FROM_EMAIL;
+  if (explicit) return explicit;
+  // Private Email only relays mail whose From is the signed-in mailbox.
+  const user = smtpUser();
+  if (getSmtp() && user) return `Nivro <${user}>`;
+  return process.env.RESEND_FROM_EMAIL || process.env.RESEND_FROM || "Nivro <info@nivro.co.uk>";
 }
 
 function getReplyTo(): string | undefined {
-  return process.env.SMTP_REPLY_TO || process.env.RESEND_REPLY_TO || undefined;
+  if (process.env.SMTP_REPLY_TO) return process.env.SMTP_REPLY_TO;
+  if (getSmtp()) return smtpUser();
+  return process.env.RESEND_REPLY_TO || undefined;
 }
 
 function getSiteUrl(): string {
@@ -596,6 +610,33 @@ export async function sendPasswordResetEmail(email: string, resetUrl: string, na
       </p>
     `,
       { preheader: "Reset your Nivro password — link expires in 1 hour." },
+    ),
+  });
+}
+
+// ============================================================
+// Password changed
+// ============================================================
+
+export async function sendPasswordChangedEmail(email: string, name?: string | null): Promise<boolean> {
+  const greeting = name ? `Hi ${escape(name)}` : "Hi there";
+  const siteUrl = getSiteUrl();
+  const when = new Date().toLocaleString("en-GB", { dateStyle: "long", timeStyle: "short", timeZone: "Europe/London" });
+  return send({
+    to: email,
+    subject: "Your Nivro password was changed",
+    html: emailWrapper(
+      `
+      <h1 style="margin:0 0 16px;font-size:22px;font-weight:800;color:${TEXT_COLOR};">Your password was changed</h1>
+      <p style="color:${MUTED_COLOR};line-height:1.6;margin:0 0 16px;">
+        ${greeting}, the password on your Nivro account was changed on <strong>${escape(when)}</strong> (UK time).
+      </p>
+      <p style="color:${MUTED_COLOR};line-height:1.6;margin:0 0 24px;">
+        If this was you, there is nothing else to do. If you didn&rsquo;t change it, reset your password straight away and reply to this email so we can secure your account.
+      </p>
+      ${button(`${siteUrl}/en/auth/forgot-password`, "Reset Password")}
+    `,
+      { preheader: "The password on your Nivro account was just changed." },
     ),
   });
 }
