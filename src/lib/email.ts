@@ -11,9 +11,6 @@ function getResend(): Resend | null {
 
 let smtp: Transporter | null = null;
 
-// The nivro.co.uk mailboxes are on Namecheap Private Email.
-const DEFAULT_SMTP_HOST = "mail.privateemail.com";
-
 function smtpUser(): string | undefined {
   return (process.env.SMTP_USER || process.env.SMTP_EMAIL)?.trim() || undefined;
 }
@@ -22,11 +19,11 @@ function smtpPass(): string {
   return process.env.SMTP_PASSWORD || process.env.SMTP_PASS || "";
 }
 
-// SMTP takes priority when it is configured (SMTP_HOST, or a mailbox in SMTP_USER/SMTP_EMAIL
-// with a password); otherwise emails go through Resend.
+// Mail goes through Resend (info@nivro.co.uk, domain verified there). SMTP is only used when
+// SMTP_HOST is set explicitly.
 function getSmtp(): Transporter | null {
   const user = smtpUser();
-  const host = process.env.SMTP_HOST?.trim() || (user && smtpPass() ? DEFAULT_SMTP_HOST : "");
+  const host = process.env.SMTP_HOST?.trim();
   if (!host) return null;
   if (!smtp) {
     const port = Number(process.env.SMTP_PORT || 587);
